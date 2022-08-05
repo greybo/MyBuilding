@@ -10,19 +10,14 @@ import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.widget.AppCompatEditText
 import com.greybot.mybuilding.R
-import java.lang.RuntimeException
-import java.lang.StringBuilder
 
 class MaskedEditText @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = android.R.attr.editTextStyle
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AppCompatEditText(context, attrs, defStyleAttr), TextWatcher {
 
     private val onEditorActionListener: OnEditorActionListener =
@@ -62,13 +57,12 @@ class MaskedEditText @JvmOverloads constructor(
         deniedChars = attributes.getString(R.styleable.MaskedEditText_denied_chars)
         val enableImeAction: Boolean =
             attributes.getBoolean(R.styleable.MaskedEditText_enable_ime_action, false)
-        attributes.getString(R.styleable.MaskedEditText_char_representation)?.let {
-            val representation: String = it
-            charRepresentation = if (representation == null) {
-                '#'
-            } else {
-                representation[0]
-            }
+        val representation: String? =
+            attributes.getString(R.styleable.MaskedEditText_char_representation)
+        charRepresentation = if (representation == null) {
+            '#'
+        } else {
+            representation[0]
         }
 
         keepHint = attributes.getBoolean(R.styleable.MaskedEditText_keep_hint, false)
@@ -196,11 +190,11 @@ class MaskedEditText @JvmOverloads constructor(
 
     /**
      * Generates positions for values characters. For instance:
-     * Input data: mask = "+7(###)###-##-##
+     * Input data: mask = "+3(###)###-##-##
      * After method execution:
      * rawToMask = [3, 4, 5, 6, 8, 9, 11, 12, 14, 15]
      * maskToRaw = [-1, -1, -1, 0, 1, 2, -1, 3, 4, 5, -1, 6, 7, -1, 8, 9]
-     * charsInMask = "+7()- " (and space, yes)
+     * charsInMask = "+3()- " (and space, yes)
      */
     private fun generatePositionArrays() {
         val aux = IntArray(mask!!.length)
