@@ -4,16 +4,17 @@ import androidx.lifecycle.viewModelScope
 import com.greybot.mybuilding.base.CompositeViewModel
 import com.greybot.mybuilding.utility.LogCust2
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class MainViewModel : CompositeViewModel() {
 
     private val log = LogCust2("MainViewModel")
     private var counter = 0
-    private val lock = ReentrantLock()
+    private val lock = Mutex()
 
     fun runTest() {
         viewModelScope.launch {
@@ -31,8 +32,8 @@ class MainViewModel : CompositeViewModel() {
         }
     }
 
-    private  fun generateInt(): Int {
-        Thread.sleep(100)
+    private suspend fun generateInt(): Int {
+        delay(10)
         return 1
     }
 }
