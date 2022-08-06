@@ -7,8 +7,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 const val TAG = "My_APP"
-class LogCust2(_tag: String?="mapRoute") {
-    private val tag = TAG + (_tag ?: "")
+
+class LogCust2(_tag: String? = "LogCustom") {
+    private val tag = listOf(TAG, _tag).joinToString( "_")
     private val isDebug get() = BuildConfig.BUILD_TYPE == "debug"
 
     fun i(vararg message: String?) {
@@ -29,7 +30,7 @@ class LogCust2(_tag: String?="mapRoute") {
 
     fun time(message: String) {
         val date: String = simpleDateFormat.format(Date(System.currentTimeMillis()))
-        Log.i(tag, "$date - $message")
+        Timber.tag(tag).i("$date - $message")
     }
 }
 
