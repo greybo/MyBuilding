@@ -1,27 +1,22 @@
-package com.greybot.mybuilding
+package com.greybot.mybuilding.base
 
 import androidx.lifecycle.viewModelScope
-import com.greybot.mybuilding.base.CompositeViewModel
 import com.greybot.mybuilding.utility.LogCust2
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.*
 
-class MainViewModel : CompositeViewModel() {
+class CoroutinesViewModel : CompositeViewModel() {
 
     private val log = LogCust2("MainViewModel")
     private var counter = 0
-    private val lock = Mutex()
 
-    fun runTest() {
+    private val singleThreadContext = newSingleThreadContext("Counter")
+
+    fun newSingleThreadTest() {
         viewModelScope.launch {
             val jobs = List(100) {
                 this.launch(start = CoroutineStart.LAZY) {
                     repeat(1_0) {
-                        lock.withLock {
+                        withContext(singleThreadContext) {
                             counter += generateInt()
                             log.i("$counter")
                         }
@@ -29,6 +24,7 @@ class MainViewModel : CompositeViewModel() {
                 }
             }
             jobs.joinAll()
+            singleThreadContext.close()
         }
     }
 
