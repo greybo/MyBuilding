@@ -3,7 +3,7 @@ package com.greybot.mybuilding.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.greybot.mybuilding.utility.LogCust
+import com.greybot.mybuilding.utility.LogApp
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 
@@ -22,7 +22,8 @@ abstract class CompositeViewModel : ViewModel() {
 
     val errorsStream = MutableLiveData<Throwable>()
 
-    protected val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+//        LogApp.w("CompositeViewModel", exception)
         errorsStream.postValue(exception)
     }
 
@@ -39,16 +40,16 @@ abstract class CompositeViewModel : ViewModel() {
     }
 
     suspend fun withMain(block: suspend CoroutineScope.() -> Unit) {
-        return withContext(Dispatchers.Main, block)
+        return withContext(Dispatchers.Main + exceptionHandler, block)
     }
 
     suspend fun <T> withDefault(block: suspend CoroutineScope.() -> T): T {
-        return withContext(Dispatchers.Default, block)
+        return withContext(Dispatchers.Default + exceptionHandler, block)
     }
 
-    val scopeDefault get() = CoroutineScope(Dispatchers.Default)
+    val scopeDefault get() = CoroutineScope(Dispatchers.Default + exceptionHandler )
 
     protected fun handleCatch(error: Throwable) {
-        LogCust.e("CompositeViewModel", "", error)
+        LogApp.e("CompositeViewModel", error)
     }
 }

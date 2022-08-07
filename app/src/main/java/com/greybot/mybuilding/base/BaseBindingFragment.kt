@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import com.greybot.mybuilding.utility.Inflate
-import com.greybot.mybuilding.utility.LogCust
+import com.greybot.mybuilding.utility.LogApp
 import com.greybot.mybuilding.utility.hideKeyboard
 
 abstract class BaseBindingFragment<VB : ViewBinding>(private val bindingInflater: Inflate<VB>) :
@@ -88,7 +87,7 @@ private class CustomLifecycleObserver2(val callback: OnBackPressedCallback) :
     DefaultLifecycleObserver {
 
     override fun onDestroy(owner: LifecycleOwner) {
-        LogCust.i("CustomLifecycleObserver2: onDestroy")
+        LogApp.i("CustomLifecycleObserver2: onDestroy")
         callback.remove()
         super.onDestroy(owner)
     }
