@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.mask
+package com.greybot.mybuilding.utility.mask
 
 import android.content.Context
 import android.content.res.TypedArray

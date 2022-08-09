@@ -23,7 +23,6 @@ abstract class CompositeViewModel : ViewModel() {
     val errorsStream = MutableLiveData<Throwable>()
 
     private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-//        LogApp.w("CompositeViewModel", exception)
         errorsStream.postValue(exception)
     }
 

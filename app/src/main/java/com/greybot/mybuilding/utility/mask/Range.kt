@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.mask
+package com.greybot.mybuilding.utility.mask
 
 class Range internal constructor() {
     var start: Int

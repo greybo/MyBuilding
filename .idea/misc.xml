@@ -3,12 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Project_android/MyBuilding/app/src/main/res/layout/activity_main.xml" value="0.5173137460650578" />
+        <entry key="..\:/Users/SBotlevskyi/AndroidStudioProjects/MyBuilding/app/src/main/res/layout/file_add_fragment.xml" value="0.1160081053698075" />
+        <entry key="..\:/Users/SBotlevskyi/AndroidStudioProjects/MyBuilding/app/src/main/res/layout/file_edit_fragment.xml" value="0.1" />
+        <entry key="..\:/Users/SBotlevskyi/AndroidStudioProjects/MyBuilding/app/src/main/res/layout/profile_fragment.xml" value="0.1160081053698075" />
       </map>
     </option>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
