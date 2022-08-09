@@ -61,4 +61,14 @@
         <item name="android:backgroundTint">@null</item>
         <item name="android:textCursorDrawable">@drawable/bg_gold</item>
     </style>
+
+
+    <style name="CrownToolbarDefault" parent="Theme.MyBuilding">
+        <!--        <item name="android:theme">?attr/actionBarTheme</item>-->
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <!--        <item name="android:textAppearance">@style/H6_high</item>-->
+        <!--        <item name="titleTextColor">@color/__text_high</item>-->
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
 </resources>
