@@ -1,25 +1,23 @@
-package au.com.crownresorts.crma.view
+package com.greybo.mylibrary
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat
-import au.com.crownresorts.crma.extensions.gone
-import au.com.crownresorts.crma.extensions.setGoneOrVisible
 import com.google.android.material.appbar.AppBarLayout
-import com.greybot.mybuilding.R
-import com.greybot.mybuilding.databinding.ActionBarCustomNewBinding
 
 
 class AppToolbarView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AppBarLayout(context, attrs, defStyleAttr) {
 
-    private val binding: ActionBarCustomNewBinding = ActionBarCustomNewBinding.inflate(LayoutInflater.from(context), this, true)
+    init {
+        val view = View.inflate(context, R.layout.action_bar_custom_new)
+    }
+//    private val binding: ActionBarCustomNewBinding = ActionBarCustomNewBinding.inflate(LayoutInflater.from(context), this, true)
 
     val rightButton: Button
         get() = binding.crownToolbarButtonRight
