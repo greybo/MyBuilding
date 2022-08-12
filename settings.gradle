@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "MyBuilding"
 include ':app'
-include ':mylibrary'
