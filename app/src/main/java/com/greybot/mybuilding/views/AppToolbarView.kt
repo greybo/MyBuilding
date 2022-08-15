@@ -196,10 +196,10 @@ data class ToolbarModel(
 )
 
 sealed class ToolbarThemeStyle(val homeIconId: Int, val bgColor: Int, val titleColor: Int) {
-    object Dark : ToolbarThemeStyle(R.drawable.ic_arrow_back_white_24dp, R.color.__black_darker, titleColor = R.color.white)
-    object Light : ToolbarThemeStyle(R.drawable.ic_arrow_back_black_24dp, R.color.__background_darker, R.color.__text_high)
-    object LightWithCrossCancel : ToolbarThemeStyle(R.drawable.ic_pin_close, R.color.__background_darker, R.color.__text_high)
+    object Dark : ToolbarThemeStyle(R.drawable.ic_arrow_back_white_24dp, R.color.black, titleColor = R.color.white)
+    object Light : ToolbarThemeStyle(R.drawable.ic_arrow_back_black_24dp, R.color.white, R.color.black)
+    object LightWithCrossCancel : ToolbarThemeStyle(R.drawable.ic_pin_close, R.color.white, R.color.black)
     object Gold : ToolbarThemeStyle(R.drawable.ic_arrow_back_white_24dp, R.color.onboard_gradient_start, R.color.white)
-    object LightWithoutBack : ToolbarThemeStyle(-1, R.color.__background_darker, R.color.__text_high)
+    object LightWithoutBack : ToolbarThemeStyle(-1, R.color.white, R.color.black)
 }
 

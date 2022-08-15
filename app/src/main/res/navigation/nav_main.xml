@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/nav_main">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainFragment">
+<!--    <action-->
+<!--        android:id="@+id/"-->
+<!--        app:destination="@+id/"-->
+<!--        app:enterAnim="@anim/slide_in_right"-->
+<!--        app:exitAnim="@anim/slide_out_left"-->
+<!--        app:popEnterAnim="@anim/slide_in_left"-->
+<!--        app:popExitAnim="@anim/slide_out_right" />-->
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.greybot.mybuilding.ui.main.MainFragment"
+        android:label="MainFragment" />
 </navigation>

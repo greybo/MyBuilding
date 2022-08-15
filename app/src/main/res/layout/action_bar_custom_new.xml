@@ -20,14 +20,14 @@
             android:layout_height="wrap_content"
             app:contentInsetStart="40dp"
             app:navigationIcon="@null"
-            tools:background="@color/__background_darker"
+            tools:background="@color/white"
             tools:title="Title"
-            tools:titleTextColor="@color/__text_high">
+            tools:titleTextColor="@color/black">
             <!--            tools:navigationIcon="@drawable/ic_arrow_back_black_24dp"-->
 
+<!--                style="@style/Button_label"-->
             <Button
                 android:id="@+id/crownToolbarButtonRight"
-                style="@style/Button_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -43,7 +43,7 @@
             android:id="@+id/crownToolbarShadow"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@drawable/toolbar_dropshadow" />
+            android:background="@color/black_opacity_35" />
         <!--        android:background="@color/__shadow_toolbar_signup" />-->
     </LinearLayout>
 
