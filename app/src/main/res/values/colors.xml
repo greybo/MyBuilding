@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FA2929</color>
     <color name="hint_color">#636363</color>
-    <color name="text_color">#101010</color>
+    <color name="text_body">#373737</color>
     <color name="onboard_gradient_start">#968756</color>
     <color name="black_disable">#61000000</color>
     <color name="black_opacity_35">#59000000</color>
