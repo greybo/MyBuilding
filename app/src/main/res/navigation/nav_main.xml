@@ -12,6 +12,6 @@
 <!--        app:popExitAnim="@anim/slide_out_right" />-->
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.greybot.mybuilding.ui.main.MainFragment"
+        android:name="com.greybot.mybuilding.ui.explore.ExploreFragment"
         android:label="MainFragment" />
 </navigation>
