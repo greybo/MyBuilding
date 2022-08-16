@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.mask
+package com.greybot.mybuilding.utility.mask
 
 /**
  * Raw text, another words TextWithout mask characters
