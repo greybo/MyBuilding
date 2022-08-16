@@ -13,20 +13,18 @@ class MainActivity : AbstractActivity<AppRouter>() {
     override val router: AppRouter by lazy { AppRouter() }
     override val graphId: Int = R.navigation.nav_main
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
 //        viewModel.newSingleThreadTest()
 //        viewModel.actorTest()
+//        viewModel.errorTest1()
+//        viewModel.errorTest2()
+//        viewModel.errorTest3()
+
         viewModel.errorsStream.observe(this) {
             LogApp.e("MainActivity", it, "run in onCreate")
         }
-//        viewModel.errorTest1()
-        viewModel.errorTest2()
-//        viewModel.errorTest3()
     }
-
 
     override fun backPressed() {
         TODO("Not yet implemented")
