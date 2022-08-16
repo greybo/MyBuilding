@@ -10,7 +10,7 @@ class MainActivity : AbstractActivity<AppRouter>() {
 
     private val viewModel by viewModels<CoroutinesViewModel>()
 
-    override val router: AppRouter by lazy { AppRouter() }
+    override val router: AppRouter by lazy { AppRouter(navController) }
     override val graphId: Int = R.navigation.nav_main
 
     override fun onCreate(savedInstanceState: Bundle?) {

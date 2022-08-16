@@ -1,4 +1,6 @@
 package com.greybot.mybuilding
 
-class AppRouter() {
-}
+import androidx.navigation.NavController
+import com.greybot.mybuilding.ui.explore.ExploreRouter
+
+open class AppRouter(override val navController: NavController) : ExploreRouter()

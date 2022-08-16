@@ -3,15 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_main"
     app:startDestination="@id/mainFragment">
-<!--    <action-->
-<!--        android:id="@+id/"-->
-<!--        app:destination="@+id/"-->
-<!--        app:enterAnim="@anim/slide_in_right"-->
-<!--        app:exitAnim="@anim/slide_out_left"-->
-<!--        app:popEnterAnim="@anim/slide_in_left"-->
-<!--        app:popExitAnim="@anim/slide_out_right" />-->
+    <!--    <action-->
+    <!--        android:id="@+id/"-->
+    <!--        app:destination="@+id/"-->
+    <!--        app:enterAnim="@anim/slide_in_right"-->
+    <!--        app:exitAnim="@anim/slide_out_left"-->
+    <!--        app:popEnterAnim="@anim/slide_in_left"-->
+    <!--        app:popExitAnim="@anim/slide_out_right" />-->
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.greybot.mybuilding.ui.explore.ExploreFragment"
         android:label="MainFragment" />
+
+    <action
+        android:id="@+id/toFolderPreviewFragment"
+        app:destination="@+id/folderPreviewFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/folderPreviewFragment"
+        android:name="com.greybot.mybuilding.ui.folder.preview.FolderPreviewFragment"
+        android:label="FolderPreviewFragment">
+
+        <argument
+            android:name="folderName"
+            app:argType="string" />
+
+    </fragment>
 </navigation>
