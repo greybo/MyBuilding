@@ -13,7 +13,7 @@ class ExploreFragment :
 
     private val viewModel by viewModels<ExploreViewModel>()
     private var adapter: ExploreAdapter? = null
-    val router: ExploreRouter by getRouter()
+    private val router: IExploreRouter by getRouter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,7 +28,7 @@ class ExploreFragment :
 
     private fun initAdapter() {
         adapter = ExploreAdapter {
-            router.toFolder(it)
+            router.toFolder("$it/")
         }
         binding.mainRecyclerViewX.setHasFixedSize(true)
         binding.mainRecyclerViewX.adapter = adapter
@@ -36,11 +36,9 @@ class ExploreFragment :
 }
 
 inline fun <reified T> Fragment.getRouter(): Lazy<T> {
-    val activity = (requireActivity() as? MainActivity) ?: throw Throwable()
-
-    return when (this) {
-        is ExploreFragment -> lazy { activity.router as T }
-        else -> TODO()
+    return lazy {
+        val activity = (requireActivity() as? MainActivity) ?: throw Throwable()
+        activity.router as T
     }
 }
 

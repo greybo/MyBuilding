@@ -29,7 +29,7 @@ class FolderPreviewFragment :
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
-        viewModel.fetchData(args?.folderName)
+        viewModel.fetchData(args?.pathName)
     }
 
     private fun initAdapter() {

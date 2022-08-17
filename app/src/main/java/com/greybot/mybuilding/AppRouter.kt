@@ -1,6 +1,12 @@
 package com.greybot.mybuilding
 
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
-import com.greybot.mybuilding.present.explore.ExploreRouter
+import com.greybot.mybuilding.present.explore.IExploreRouter
 
-open class AppRouter(override val navController: NavController) : ExploreRouter()
+class AppRouter(private val navController: NavController) : IExploreRouter {
+
+    override fun toFolder(pathName: String) {
+        navController.navigate(R.id.toFolderPreviewFragment, bundleOf("folderName" to pathName))
+    }
+}

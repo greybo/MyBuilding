@@ -16,9 +16,6 @@ class ExploreViewModel(private val repo: AppRepository = AppRepository()) : Comp
     }
 
     private fun makeItems() {
-        repo.getAllFolder().groupBy {
-
-        }
         val list = repo.getAllFolder().groupBy {
             it.split("/")[0]
         }

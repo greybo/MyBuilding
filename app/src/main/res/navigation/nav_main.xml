@@ -29,7 +29,8 @@
         android:label="FolderPreviewFragment">
 
         <argument
-            android:name="folderName"
+            android:name="pathName"
+            android:defaultValue="false"
             app:argType="string" />
 
     </fragment>
