@@ -2,9 +2,11 @@ package com.greybot.mycosts.present.folder.preview
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.repository.AppRepository
 import com.greybot.mycosts.models.ExploreItem
+import kotlinx.coroutines.launch
 
 class FolderPreviewViewModel(private val repo: AppRepository = AppRepository()) :
     CompositeViewModel() {
@@ -13,10 +15,15 @@ class FolderPreviewViewModel(private val repo: AppRepository = AppRepository()) 
     val state: LiveData<List<ExploreItem>> = _state
 
     fun fetchData(path: String?) {
-        val layer: Int = path?.split("/")?.filter { it.isNotBlank() }?.size ?: 0
-        _state.value = repo.findFolder(path).map {
-           val name = it.split("/")[layer]
-            ExploreItem(name, it)
+        path ?: return
+        val layer: Int = path.split("/").filter { it.isNotBlank() }.size
+        viewModelScope.launch {
+            val list = repo.findFolder(path)?.filter { item ->
+                item.path.split("/").filter { it.isNotBlank() }.size == layer
+            }?.map {
+                ExploreItem(it.name, path)
+            }
+            _state.postValue(list ?: emptyList())
         }
     }
 

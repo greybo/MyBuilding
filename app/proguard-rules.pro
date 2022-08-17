@@ -31,3 +31,7 @@
   *;
 }
 # Firebase RealtimeDatabase end
+
+-keepclassmembers class com.greybot.mycosts.data.dto.** {
+    *;
+}

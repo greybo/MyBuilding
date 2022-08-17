@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
 import com.greybot.mycosts.present.explore.ExploreAdapter
-import com.greybot.mycosts.present.explore.getRouter
+import com.greybot.mycosts.utility.getRouter
 
 class FolderPreviewFragment :
     BaseBindingFragment<FolderPreviewFragmentBinding>(FolderPreviewFragmentBinding::inflate) {

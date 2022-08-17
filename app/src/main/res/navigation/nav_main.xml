@@ -34,4 +34,25 @@
             app:argType="string" />
 
     </fragment>
+
+    <action
+        android:id="@+id/toFolderAddFragment"
+        app:destination="@+id/folderAddFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/folderAddFragment"
+        android:name="com.greybot.mycosts.present.folder.FolderAddFragment"
+        android:label="FolderAddFragment">
+
+        <argument
+            android:name="nameFolder"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
 </navigation>

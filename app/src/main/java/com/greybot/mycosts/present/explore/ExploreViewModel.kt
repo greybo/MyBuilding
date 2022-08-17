@@ -17,12 +17,17 @@ class ExploreViewModel(private val repo: AppRepository = AppRepository()) : Comp
     }
 
     private fun makeItems() {
-        val list = repo.getAllFolder().groupBy {
-            it.split("/")[0]
+        repo.getAllFolder { list ->
+            val map = list?.groupBy { it.name }
+            _state.value = map?.entries?.map {
+                ExploreItem(it.key, "/${it.key}")
+            } ?: emptyList()
         }
-
-        _state.value = list.entries.map {
-            ExploreItem(it.key, "${it.key}/")
-        } //listOf("my building order")
     }
+
+    fun addFolder(name: String?) {
+        if (!name.isNullOrBlank())
+            repo.saveFolder(name, "/$name")
+    }
+
 }
