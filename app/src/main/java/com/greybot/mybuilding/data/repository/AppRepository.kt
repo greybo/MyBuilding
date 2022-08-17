@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.repository
+package com.greybot.mybuilding.data.repository
 
 class AppRepository() {
 

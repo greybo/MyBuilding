@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.ui.explore
+package com.greybot.mybuilding.present.explore
 
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController

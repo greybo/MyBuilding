@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.ui.file
+package com.greybot.mybuilding.present.file
 
 import com.greybot.mybuilding.base.BaseBindingFragment
 import com.greybot.mybuilding.databinding.FileEditFragmentBinding

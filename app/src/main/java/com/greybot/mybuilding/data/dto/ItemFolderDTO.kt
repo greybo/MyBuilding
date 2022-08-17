@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.dto
+package com.greybot.mybuilding.data.dto
 
 class ItemFolderDTO(
     val path: String,

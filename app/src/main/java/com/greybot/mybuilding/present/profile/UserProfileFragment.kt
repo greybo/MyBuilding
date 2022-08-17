@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.profile
+package com.greybot.mybuilding.present.profile
 
 import android.os.Bundle
 import android.view.View

@@ -1,22 +1,25 @@
-package com.greybot.mybuilding.ui.folder.preview
+package com.greybot.mybuilding.present.folder.preview
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.greybot.mybuilding.base.BaseBindingFragment
 import com.greybot.mybuilding.databinding.FolderPreviewFragmentBinding
-import com.greybot.mybuilding.ui.explore.ExploreAdapter
+import com.greybot.mybuilding.present.explore.ExploreAdapter
 
 class FolderPreviewFragment :
     BaseBindingFragment<FolderPreviewFragmentBinding>(FolderPreviewFragmentBinding::inflate) {
 
     private val viewModel by viewModels<FolderPreviewViewModel>()
     private var adapter: ExploreAdapter? = null
+    var args: FolderPreviewFragmentArgs? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.args(arguments)
-        arguments?.clear()
+        arguments?.let {
+            args = FolderPreviewFragmentArgs.fromBundle(it)
+//            arguments?.clear()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,7 +29,7 @@ class FolderPreviewFragment :
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
-        viewModel.fetchData()
+        viewModel.fetchData(args?.folderName)
     }
 
     private fun initAdapter() {

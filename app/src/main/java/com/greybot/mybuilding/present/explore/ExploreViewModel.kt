@@ -1,12 +1,12 @@
-package com.greybot.mybuilding.ui.explore
+package com.greybot.mybuilding.present.explore
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.greybot.mybuilding.base.CompositeViewModel
-import com.greybot.mybuilding.repository.AppRepository
+import com.greybot.mybuilding.data.repository.AppRepository
 
 //TODO init with hilt
-class ExploreViewModel(val repo: AppRepository = AppRepository()) : CompositeViewModel() {
+class ExploreViewModel(private val repo: AppRepository = AppRepository()) : CompositeViewModel() {
 
     private var _state = MutableLiveData<List<String>>()
     val state: LiveData<List<String>> = _state

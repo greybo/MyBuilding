@@ -1,4 +1,4 @@
-package com.greybot.mybuilding.ui.explore
+package com.greybot.mybuilding.present.explore
 
 import android.os.Bundle
 import android.view.View
