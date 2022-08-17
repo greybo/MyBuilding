@@ -6,13 +6,15 @@ import androidx.fragment.app.viewModels
 import com.greybot.mybuilding.base.BaseBindingFragment
 import com.greybot.mybuilding.databinding.FolderPreviewFragmentBinding
 import com.greybot.mybuilding.present.explore.ExploreAdapter
+import com.greybot.mybuilding.present.explore.getRouter
 
 class FolderPreviewFragment :
     BaseBindingFragment<FolderPreviewFragmentBinding>(FolderPreviewFragmentBinding::inflate) {
 
     private val viewModel by viewModels<FolderPreviewViewModel>()
     private var adapter: ExploreAdapter? = null
-    var args: FolderPreviewFragmentArgs? = null
+    private var args: FolderPreviewFragmentArgs? = null
+    private val router: IFolderPreviewRouter by getRouter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +36,7 @@ class FolderPreviewFragment :
 
     private fun initAdapter() {
         adapter = ExploreAdapter {
-
+            router.fromFolderToFolder("$it/")
         }
         binding.folderPreviewRecyclerView.setHasFixedSize(true)
         binding.folderPreviewRecyclerView.adapter = adapter

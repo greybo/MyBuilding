@@ -4,8 +4,9 @@ import androidx.navigation.NavController
 import com.greybot.mybuilding.present.explore.ExploreFragmentDirections
 import com.greybot.mybuilding.present.explore.IExploreRouter
 import com.greybot.mybuilding.present.folder.preview.FolderPreviewFragmentDirections
+import com.greybot.mybuilding.present.folder.preview.IFolderPreviewRouter
 
-class AppRouter(private val navController: NavController) : IExploreRouter {
+class AppRouter(private val navController: NavController) : IExploreRouter, IFolderPreviewRouter {
 
     override fun fromFolderToFolder(pathName: String) {
         val direction = FolderPreviewFragmentDirections.toFolderPreviewFragment(pathName)

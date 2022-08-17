@@ -4,14 +4,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.greybot.mybuilding.databinding.ExploreAdapterItemBinding
+import com.greybot.mybuilding.models.ExploreItem
 import com.greybot.mybuilding.utility.inflateAdapter
 
 class ExploreAdapter(val callback: (String) -> Unit) :
     RecyclerView.Adapter<ExploreAdapter.Holder>() {
 
-    private val list = mutableListOf<String>()
+    private val list = mutableListOf<ExploreItem>()
 
-    fun updateAdapter(newList: List<String>) {
+    fun updateAdapter(newList: List<ExploreItem>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()
@@ -30,16 +31,16 @@ class ExploreAdapter(val callback: (String) -> Unit) :
     }
 
     abstract class Holder(view: View) : RecyclerView.ViewHolder(view) {
-        abstract fun onBind(item: String)
+        abstract fun onBind(item: ExploreItem)
     }
 
     inner class ExploreHolder(private val binding: ExploreAdapterItemBinding) :
         Holder(binding.root) {
 
-        override fun onBind(item: String) {
-            binding.exploreItemTitle.text = item//
+        override fun onBind(item: ExploreItem) {
+            binding.exploreItemTitle.text = item.name//
             itemView.setOnClickListener {
-                callback.invoke(item)
+                callback.invoke(item.path)
             }
         }
     }
