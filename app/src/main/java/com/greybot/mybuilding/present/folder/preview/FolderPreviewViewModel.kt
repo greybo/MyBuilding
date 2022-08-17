@@ -12,7 +12,7 @@ class FolderPreviewViewModel(private val repo: AppRepository = AppRepository()) 
     val state: LiveData<List<String>> = _state
 
     fun fetchData(path: String?) {
-        val layer: Int = path?.split("/")?.size ?: 0
+        val layer: Int = path?.split("/")?.filter { it.isNotBlank() }?.size ?: 0
         _state.value = repo.findFolder(path).map {
             it.split("/")[layer]
         }

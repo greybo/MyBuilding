@@ -28,7 +28,7 @@ class ExploreFragment :
 
     private fun initAdapter() {
         adapter = ExploreAdapter {
-            router.toFolder("$it/")
+            router.fromExploreToFolder("$it/")
         }
         binding.mainRecyclerViewX.setHasFixedSize(true)
         binding.mainRecyclerViewX.adapter = adapter

@@ -30,7 +30,7 @@
 
         <argument
             android:name="pathName"
-            android:defaultValue="false"
+            android:defaultValue=""
             app:argType="string" />
 
     </fragment>
