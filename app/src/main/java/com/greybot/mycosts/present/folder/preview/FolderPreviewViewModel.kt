@@ -16,14 +16,16 @@ class FolderPreviewViewModel(private val repo: AppRepository = AppRepository()) 
 
     fun fetchData(path: String?) {
         path ?: return
-        val layer: Int = path.split("/").filter { it.isNotBlank() }.size
+        val layer: Int = path.split("/").filter { it.isNotBlank() }.size + 1
         viewModelScope.launch {
+
             val list = repo.findFolder(path)?.filter { item ->
                 item.path.split("/").filter { it.isNotBlank() }.size == layer
             }?.map {
                 ExploreItem(it.name, path)
-            }
-            _state.postValue(list ?: emptyList())
+            } ?: emptyList()
+
+            _state.postValue(list)
         }
     }
 

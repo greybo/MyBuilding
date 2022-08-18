@@ -18,16 +18,18 @@ class ExploreViewModel(private val repo: AppRepository = AppRepository()) : Comp
 
     private fun makeItems() {
         repo.getAllFolder { list ->
-            val map = list?.groupBy { it.name }
-            _state.value = map?.entries?.map {
-                ExploreItem(it.key, "/${it.key}")
+            val map = list?.filter { item ->
+                item.path.split("/").filter { it.isNotBlank() }.size == layer
+            }?.map {
+                ExploreItem(it.key, "${it.key}/")
             } ?: emptyList()
         }
+        _state.value =
     }
 
     fun addFolder(name: String?) {
         if (!name.isNullOrBlank())
-            repo.saveFolder(name, "/$name")
+            repo.saveFolder(name, "$name/")
     }
 
 }
