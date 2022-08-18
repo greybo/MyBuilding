@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.utility.ARG_FOLDER_NAME
+import com.greybot.mycosts.utility.ARG_FOLDER_PATH
 import com.greybot.mycosts.utility.FRAGMENT_RESULT_ADD_FOLDER
 import com.greybot.mycosts.utility.getRouter
 
@@ -22,8 +23,9 @@ class ExploreFragment :
         super.onCreate(savedInstanceState)
         setFragmentResultListener(FRAGMENT_RESULT_ADD_FOLDER) { key, bundle ->
             if (FRAGMENT_RESULT_ADD_FOLDER == key) {
-                val name = (bundle.get(ARG_FOLDER_NAME) as? String) ?: ""
-                viewModel.addFolder(name)
+                val name = (bundle.get(ARG_FOLDER_NAME) as? String)
+                val path = (bundle.get(ARG_FOLDER_PATH) as? String)
+                viewModel.addFolder(name, path)
             }
         }
     }

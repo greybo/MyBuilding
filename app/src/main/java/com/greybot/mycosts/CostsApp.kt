@@ -5,11 +5,11 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.greybot.mycosts.analytics.AnalyticsManager
 
 
-class CostsApplication : Application() {
+class CostsApp : Application() {
     var mFirebaseAnalytics: FirebaseAnalytics? = null
 
     companion object {
-        lateinit var share: CostsApplication
+        lateinit var share: CostsApp
     }
 
     override fun onCreate() {

@@ -49,7 +49,7 @@
         android:label="FolderAddFragment">
 
         <argument
-            android:name="nameFolder"
+            android:name="path"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />

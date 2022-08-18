@@ -2,11 +2,11 @@ package com.greybot.mycosts.analytics
 
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.greybot.mycosts.CostsApplication
+import com.greybot.mycosts.CostsApp
 
 
 class AnalyticsManager {
-    private var mFirebaseAnalytics: FirebaseAnalytics? = CostsApplication.share.mFirebaseAnalytics
+    private var mFirebaseAnalytics: FirebaseAnalytics? = CostsApp.share.mFirebaseAnalytics
 
     fun sendAnalytics(id: String, name: String) {
         val bundle = bundleOf(

@@ -3,37 +3,36 @@ package com.greybot.mycosts.present.explore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
+import com.greybot.mycosts.base.FindFolderUseCases
 import com.greybot.mycosts.data.repository.AppRepository
 import com.greybot.mycosts.models.ExploreItem
-import com.greybot.mycosts.utility.splitPath
+import com.greybot.mycosts.utility.addToPath
+import com.greybot.mycosts.utility.toast
 
 //TODO init with hilt
 class ExploreViewModel(private val repo: AppRepository = AppRepository()) : CompositeViewModel() {
 
+    private val findUseCase get() = FindFolderUseCases(repo)
     private var _state = MutableLiveData<List<ExploreItem>>()
     val state: LiveData<List<ExploreItem>> = _state
 
     fun fetchData() {
-        findItems("/")
+        findItems("")
     }
 
-    private fun findItems(findPath: String) {
-        val layer = findPath.splitPath()
-        repo.getAllFolder { list ->
-            val map = list?.filter { item ->
-                item.path.startsWith(findPath)
-//                item.path.splitPath() == layer
-            }?.map {
-                ExploreItem(it.key, "${it.key}/")
-            } ?: emptyList()
+    private fun findItems(path: String) {
+        findUseCase.invoke(path) {
+            _state.value = it
         }
-        _state.value =
     }
 
-    fun addFolder(name: String?) {
-        if (!name.isNullOrBlank())
-            repo.saveFolder(name, "$name/")
+    fun addFolder(name: String?, path: String?) {
+        if (!name.isNullOrBlank()) {
+            repo.saveNewFolder(name, path.addToPath(name))
+        } else toast("name null")
     }
 
 }
+
+
 

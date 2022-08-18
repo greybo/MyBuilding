@@ -23,7 +23,7 @@ class AppRepository {
         return response.await()
     }
 
-    fun saveFolder(name: String, path: String) {
+    fun saveNewFolder(name: String, path: String) {
         val item = ItemFolderDTO(name = name, path = path)
         sourceExp.addFolder(item)
     }
