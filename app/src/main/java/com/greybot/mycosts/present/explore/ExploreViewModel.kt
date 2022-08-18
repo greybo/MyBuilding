@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.repository.AppRepository
 import com.greybot.mycosts.models.ExploreItem
+import com.greybot.mycosts.utility.splitPath
 
 //TODO init with hilt
 class ExploreViewModel(private val repo: AppRepository = AppRepository()) : CompositeViewModel() {
@@ -13,13 +14,15 @@ class ExploreViewModel(private val repo: AppRepository = AppRepository()) : Comp
     val state: LiveData<List<ExploreItem>> = _state
 
     fun fetchData() {
-        makeItems()
+        findItems("/")
     }
 
-    private fun makeItems() {
+    private fun findItems(findPath: String) {
+        val layer = findPath.splitPath()
         repo.getAllFolder { list ->
             val map = list?.filter { item ->
-                item.path.split("/").filter { it.isNotBlank() }.size == layer
+                item.path.startsWith(findPath)
+//                item.path.splitPath() == layer
             }?.map {
                 ExploreItem(it.key, "${it.key}/")
             } ?: emptyList()
@@ -33,3 +36,4 @@ class ExploreViewModel(private val repo: AppRepository = AppRepository()) : Comp
     }
 
 }
+
