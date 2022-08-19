@@ -6,6 +6,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
+import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.utility.ARG_FOLDER_NAME
 import com.greybot.mycosts.utility.ARG_FOLDER_PATH
 import com.greybot.mycosts.utility.FRAGMENT_RESULT_ADD_FOLDER
@@ -44,10 +45,18 @@ class ExploreFragment :
 
     private fun initAdapter() {
         adapter = ExploreAdapter {
-            router.fromExploreToFolder(it)
+
+            handleOnClick(it)
         }
         binding.mainRecyclerViewX.setHasFixedSize(true)
         binding.mainRecyclerViewX.adapter = adapter
+    }
+
+    private fun handleOnClick(item: AdapterItems) {
+        when (item) {
+            is AdapterItems.AddContentItem -> router.fromExploreToAddFolder()
+            is AdapterItems.ExploreItem -> router.fromExploreToFolder(item.name)
+        }
     }
 
     private fun initViews() {
