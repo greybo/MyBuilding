@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/exploreItem_Title"
-        style="@style/Subtitle1_base"
+        style="@style/H6_base"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
@@ -23,13 +23,13 @@
 
     <TextView
         android:id="@+id/exploreItem_body"
-        style="@style/Body_base"
+        style="@style/Subtitle1_base"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/exploreItem_Title"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/exploreItem_Title"
         tools:text="Text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

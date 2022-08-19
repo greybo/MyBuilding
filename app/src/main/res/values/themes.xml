@@ -48,20 +48,31 @@
         <item name="android:textColorHint">@color/red</item>
     </style>
 
+    <style name="H6_base">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/text_high</item>
+        <item name="lineHeight">16sp</item>
+        <item name="android:letterSpacing">0.15</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
     <style name="Subtitle_base">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_high</item>
         <item name="lineHeight">16sp</item>
         <item name="android:letterSpacing">0.0</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+
     </style>
 
     <style name="Subtitle1_base" parent="Subtitle_base">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_high</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
     <style name="Subtitle2_base" parent="Subtitle_base">
         <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="Body_base">
