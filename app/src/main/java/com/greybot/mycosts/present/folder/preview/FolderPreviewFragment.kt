@@ -2,15 +2,11 @@ package com.greybot.mycosts.present.folder.preview
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.explore.ExploreAdapter
-import com.greybot.mycosts.utility.ARG_FOLDER_NAME
-import com.greybot.mycosts.utility.ARG_FOLDER_PATH
-import com.greybot.mycosts.utility.FRAGMENT_RESULT_ADD_FOLDER
 import com.greybot.mycosts.utility.getRouter
 
 class FolderPreviewFragment :
@@ -26,13 +22,13 @@ class FolderPreviewFragment :
         arguments?.let {
             args = FolderPreviewFragmentArgs.fromBundle(it)
         }
-        setFragmentResultListener(FRAGMENT_RESULT_ADD_FOLDER) { key, bundle ->
-            if (FRAGMENT_RESULT_ADD_FOLDER == key) {
-                val name = (bundle.get(ARG_FOLDER_NAME) as? String)
-                val path = (bundle.get(ARG_FOLDER_PATH) as? String)
-                viewModel.addFolder(name, path)
-            }
-        }
+//        setFragmentResultListener(FRAGMENT_RESULT_ADD_FOLDER) { key, bundle ->
+//            if (FRAGMENT_RESULT_ADD_FOLDER == key) {
+//                val name = (bundle.get(ARG_FOLDER_NAME) as? String)
+//                val path = (bundle.get(ARG_FOLDER_PATH) as? String)
+//                viewModel.addFolder(name, path)
+//            }
+//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +56,7 @@ class FolderPreviewFragment :
                 else router.fromFolderToAddRow(args?.pathName ?: "")
             }
             is AdapterItems.FolderItem -> router.fromFolderToFolder(item.path)
-            is AdapterItems.RowItem -> router.fromFolderToFolder(item.path)
+            is AdapterItems.RowItem -> router.fromFolderToEditRow(item.objectId)
         }
     }
 }

@@ -5,7 +5,9 @@ import com.greybot.mycosts.data.repository.FolderDataSource
 import com.greybot.mycosts.utility.addToPath
 import com.greybot.mycosts.utility.toast
 
-class AddFolderUseCases(private val sourceExp: FolderDataSource = FolderDataSource()) {
+class AddFolderUseCases {
+
+    private val sourceExp: FolderDataSource by lazy { FolderDataSource() }
 
     operator fun invoke(name: String?, path: String?) {
         if (!name.isNullOrBlank()) {

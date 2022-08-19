@@ -1,3 +1,3 @@
 package com.greybot.mycosts.data.dto
 
-data class CurrencyDto(val name: String, val value: Float)
+data class CurrencyDto(val name: String = "UAH", val value: Float = 1F)

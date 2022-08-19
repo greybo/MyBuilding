@@ -7,28 +7,49 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.greybot.mycosts.data.dto.RowDto
 import com.greybot.mycosts.utility.LogApp
+import kotlinx.coroutines.CompletableDeferred
 
-class RowDataSource(uid: String = "123456") {
-
+class RowDataSource {
+    private val uid: String = "123456"
     private val path: String = "rows"
     private val myRef = Firebase.database.reference.child(path).child(uid)
 
-    fun getAllData(callback: (List<RowDto>?) -> Unit) {
+    suspend fun getAllData(): List<RowDto>? {
+        val deferred = CompletableDeferred<List<RowDto>?>()
         myRef.orderByKey().addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val itemFolder = snapshot.children.mapNotNull {
                         it.getValue(RowDto::class.java)
                     }
-                    callback.invoke(itemFolder)
+                    deferred.complete(itemFolder)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    callback.invoke(null)
+                    deferred.completeExceptionally(error.toException())
                     LogApp.e("getFolderTest", error.toException())
                 }
             }
         )
+        return deferred.await()
+    }
+
+    suspend fun getById(objectId: String): RowDto? {
+        val deferred = CompletableDeferred<RowDto?>()
+        myRef.child(objectId).addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val itemRow = snapshot.getValue(RowDto::class.java)
+                    deferred.complete(itemRow)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    deferred.completeExceptionally(error.toException())
+                    LogApp.e("getFolderTest", error.toException())
+                }
+            }
+        )
+        return deferred.await()
     }
 
     fun addRow(dto: RowDto) {

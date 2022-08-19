@@ -24,6 +24,6 @@ sealed class AdapterItems {
         }
     }
 
-    class RowItem(val name: String, val path: String, val price: Float = 0F) : AdapterItems()
+    class RowItem(val name: String, val path: String, val price: Float = 0F,val objectId: String,) : AdapterItems()
     class ButtonAddItem(val name: String) : AdapterItems()
 }

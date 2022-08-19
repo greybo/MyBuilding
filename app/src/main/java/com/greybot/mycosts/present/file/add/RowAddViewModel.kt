@@ -9,7 +9,7 @@ import com.greybot.mycosts.utility.LogApp
 class RowAddViewModel : CompositeViewModel() {
 
     //    private val addUseCase = AddRowUseCases(repo)
-    private val source: RowDataSource = RowDataSource()
+    private val source: RowDataSource by lazy { RowDataSource() }
 
     fun addRow(
         path: String,

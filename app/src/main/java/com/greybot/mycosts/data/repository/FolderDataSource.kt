@@ -7,27 +7,37 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.greybot.mycosts.data.dto.FolderDTO
 import com.greybot.mycosts.utility.LogApp
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
-class FolderDataSource(uid: String = "123456") {
+class FolderDataSource(coroutineContext: CoroutineContext = EmptyCoroutineContext) {
+
+    private val scope = CoroutineScope(coroutineContext)
+
+    private val uid: String = "123456"
     private val path: String = "explore"
     private val myRef = Firebase.database.reference.child(path).child(uid)
 
-    fun getFolderAll(callback: (List<FolderDTO>?) -> Unit) {
+    suspend fun getFolderAll(): List<FolderDTO>? {
+        val deferred = CompletableDeferred<List<FolderDTO>?>()
         myRef.orderByKey().addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val itemFolder = snapshot.children.mapNotNull {
                         it.getValue(FolderDTO::class.java)
                     }
-                    callback.invoke(itemFolder)
+                    deferred.complete(itemFolder)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    callback.invoke(null)
+                    deferred.completeExceptionally(error.toException())
                     LogApp.e("getFolderTest", error.toException())
                 }
             }
         )
+        return deferred.await()
     }
 
     fun addFolder(item: FolderDTO) {

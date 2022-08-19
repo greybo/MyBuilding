@@ -5,22 +5,38 @@ import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.AddFolderUseCases
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.base.FindFolderUseCases
+import com.greybot.mycosts.base.RowFolderUseCases
 import com.greybot.mycosts.models.AdapterItems
+import kotlinx.coroutines.async
 
-class FolderPreviewViewModel() :
+class FolderPreviewViewModel:
     CompositeViewModel() {
 
-    private val addFolderUseCase get() = AddFolderUseCases()
-    private val findUseCase get() = FindFolderUseCases()
+    private val folderAddUseCase get() = AddFolderUseCases()
+    private val folderFindUseCase get() = FindFolderUseCases()
+    private val rowFindUseCase get() = RowFolderUseCases()
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
 
     fun fetchData(path: String?) {
         path ?: return
-        findUseCase.invoke(path) {
-            val list = it?.toMutableList()?.addButton() ?: emptyList()
-            _state.postValue(list)
+        launchOnDefault {
+            val folderSet = async { folderFindUseCase.invoke(path) }
+            val rowSet = async { rowFindUseCase.invoke(path) }
+
+            handleResult(folderSet.await()?.toMutableList(), rowSet.await()?.toMutableList())
         }
+    }
+
+    private fun handleResult(
+        folderList: MutableList<AdapterItems>?,
+        rowList: MutableList<AdapterItems>?
+    ) {
+        val itemList = if (!folderList.isNullOrEmpty()) folderList
+        else if (!rowList.isNullOrEmpty()) rowList
+        else mutableListOf()
+
+        _state.postValue(itemList.addButton())
     }
 
     private fun MutableList<AdapterItems>.addButton(): List<AdapterItems> {
@@ -37,7 +53,7 @@ class FolderPreviewViewModel() :
     }
 
     fun addFolder(name: String?, path: String?) {
-        addFolderUseCase.invoke(name, path)
+        folderAddUseCase.invoke(name, path)
     }
 
 }
