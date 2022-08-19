@@ -2,10 +2,15 @@ package com.greybot.mycosts.present.folder.preview
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
+import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.explore.ExploreAdapter
+import com.greybot.mycosts.utility.ARG_FOLDER_NAME
+import com.greybot.mycosts.utility.ARG_FOLDER_PATH
+import com.greybot.mycosts.utility.FRAGMENT_RESULT_ADD_FOLDER
 import com.greybot.mycosts.utility.getRouter
 
 class FolderPreviewFragment :
@@ -20,7 +25,13 @@ class FolderPreviewFragment :
         super.onCreate(savedInstanceState)
         arguments?.let {
             args = FolderPreviewFragmentArgs.fromBundle(it)
-//            arguments?.clear()
+        }
+        setFragmentResultListener(FRAGMENT_RESULT_ADD_FOLDER) { key, bundle ->
+            if (FRAGMENT_RESULT_ADD_FOLDER == key) {
+                val name = (bundle.get(ARG_FOLDER_NAME) as? String)
+                val path = (bundle.get(ARG_FOLDER_PATH) as? String)
+                viewModel.addFolder(name, path)
+            }
         }
     }
 
@@ -36,9 +47,20 @@ class FolderPreviewFragment :
 
     private fun initAdapter() {
         adapter = ExploreAdapter {
-            router.fromFolderToFolder("$it/")
+            handleClick(it)
         }
         binding.folderPreviewRecyclerView.setHasFixedSize(true)
         binding.folderPreviewRecyclerView.adapter = adapter
+    }
+
+    private fun handleClick(item: AdapterItems) {
+        when (item) {
+            is AdapterItems.ButtonAddItem -> {
+                if (item.name == "Folder") router.fromFolderToAddFolder(args?.pathName ?: "")
+                else router.fromFolderToAddRow(args?.pathName ?: "")
+            }
+            is AdapterItems.FolderItem -> router.fromFolderToFolder(item.path)
+            is AdapterItems.RowItem -> router.fromFolderToFolder(item.path)
+        }
     }
 }

@@ -1,25 +1,24 @@
-package com.greybot.mycosts.data
+package com.greybot.mycosts.data.repository
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.greybot.mycosts.data.dto.ItemFolderDTO
+import com.greybot.mycosts.data.dto.RowDto
 import com.greybot.mycosts.utility.LogApp
 
-class ExploreDataSource(
-    uid: String = "123456",
-    path: String = "explore"
-) {
-    private val myRef = Firebase.database.reference.child(uid).child(path)
+class RowDataSource(uid: String = "123456") {
 
-    fun getFolderAll(callback: (List<ItemFolderDTO>?) -> Unit) {
+    private val path: String = "rows"
+    private val myRef = Firebase.database.reference.child(path).child(uid)
+
+    fun getAllData(callback: (List<RowDto>?) -> Unit) {
         myRef.orderByKey().addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val itemFolder = snapshot.children.mapNotNull {
-                        it.getValue(ItemFolderDTO::class.java)
+                        it.getValue(RowDto::class.java)
                     }
                     callback.invoke(itemFolder)
                 }
@@ -32,11 +31,11 @@ class ExploreDataSource(
         )
     }
 
-    fun addFolder(item: ItemFolderDTO) {
+    fun addRow(dto: RowDto) {
         val key = myRef.push().key ?: return
-        item.objectId = key
+        dto.objectId = key
 
-        myRef.child(key).setValue(item) { error, ref ->
+        myRef.child(key).setValue(dto) { error, ref ->
             if (error != null) {
                 LogApp.e("ExploreFragment", error.toException())
             }

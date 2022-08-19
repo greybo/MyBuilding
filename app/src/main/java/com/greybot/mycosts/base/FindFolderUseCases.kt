@@ -6,15 +6,15 @@ import com.greybot.mycosts.utility.getNameFromPath
 
 class FindFolderUseCases(private val repo: AppRepository) {
 
-    operator fun invoke(path: String, callback: (List<AdapterItems>) -> Unit) {
+    operator fun invoke(path: String, callback: (MutableList<AdapterItems>) -> Unit) {
         val findPath = "$path/"
         repo.getAllFolder { list ->
-            callback.invoke(list?.mapNotNull { item ->
+            callback.invoke((list?.mapNotNull { item ->
                 if (item.path.startsWith(findPath)) {
                     val name = item.path.getNameFromPath(findPath)
-                    AdapterItems.ExploreItem(name, "$findPath$name")
+                    AdapterItems.FolderItem(name, "$findPath$name")
                 } else null
-            } ?: emptyList())
+            } ?: emptyList()).toMutableList())
         }
     }
 }

@@ -6,7 +6,7 @@ fun String?.pathSize(): Int {
 }
 
 fun String?.addToPath(text: String?): String {
-    val list = this?.split("/")?.toMutableList() ?: mutableListOf()
+    val list = this?.split("/")?.filter { it.isNotBlank() }?.toMutableList() ?: mutableListOf()
     text?.let { list.add(it) }
     return list.joinToString("/", prefix = "/")
 }

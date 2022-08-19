@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
-    android:layout_marginTop="24dp"
+    android:layout_marginTop="10dp"
     android:layout_marginEnd="16dp"
     android:background="@drawable/button_ripple"
     android:gravity="center"
@@ -16,7 +16,7 @@
         android:src="@android:drawable/ic_input_add" />
 
     <TextView
-        android:id="@+id/exploreItem_Title"
+        android:id="@+id/buttonAddItem_name"
         style="@style/H6_base"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,30 +1,29 @@
 package com.greybot.mycosts.data.repository
 
-import com.greybot.mycosts.data.ExploreDataSource
-import com.greybot.mycosts.data.dto.ItemFolderDTO
-import kotlinx.coroutines.CompletableDeferred
+import com.greybot.mycosts.data.dto.FolderDTO
 
 class AppRepository {
-    private val sourceExp by lazy { ExploreDataSource() }
+    private val sourceExp by lazy { FolderDataSource() }
+    private val sourceRow by lazy { RowDataSource() }
 
-    fun getAllFolder(callback: (List<ItemFolderDTO>?) -> Unit) {
+    fun getAllFolder(callback: (List<FolderDTO>?) -> Unit) {
         sourceExp.getFolderAll {
             callback(it ?: emptyList())
         }
     }
 
-    suspend fun findFolder(
-        path: String?,
-        response: CompletableDeferred<List<ItemFolderDTO>?> = CompletableDeferred()
-    ): List<ItemFolderDTO>? {
-        sourceExp.getFolderAll { list ->
-            response.complete(list?.filter { it.path.startsWith(path ?: "") })
-        }
-        return response.await()
-    }
+//    suspend fun findFolder(
+//        path: String?,
+//        response: CompletableDeferred<List<ItemFolderDTO>?> = CompletableDeferred()
+//    ): List<ItemFolderDTO>? {
+//        sourceExp.getFolderAll { list ->
+//            response.complete(list?.filter { it.path.startsWith(path ?: "") })
+//        }
+//        return response.await()
+//    }
 
-    fun saveNewFolder(name: String, path: String) {
-        val item = ItemFolderDTO(name = name, path = path)
+    fun addNewFolder(name: String, path: String) {
+        val item = FolderDTO(name = name, path = path)
         sourceExp.addFolder(item)
     }
 }

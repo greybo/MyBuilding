@@ -3,8 +3,9 @@ package com.greybot.mycosts.present.explore
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.greybot.mycosts.databinding.AddContentAdapterItemBinding
+import com.greybot.mycosts.databinding.ButtonAddAdapterItemBinding
 import com.greybot.mycosts.databinding.ExploreAdapterItemBinding
+import com.greybot.mycosts.databinding.RowAdapterItemBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.utility.inflateAdapter
 
@@ -14,6 +15,7 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
     companion object {
         const val EXPLORE_ITEM = 0
         const val ADD_CONTENT_ITEM = 1
+        const val ROW_ITEM = 2
     }
 
     private val list = mutableListOf<AdapterItems>()
@@ -26,15 +28,17 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
 
     override fun getItemViewType(position: Int): Int {
         return when (list[position]) {
-            is AdapterItems.ExploreItem -> EXPLORE_ITEM
-            is AdapterItems.AddContentItem -> ADD_CONTENT_ITEM
+            is AdapterItems.FolderItem -> EXPLORE_ITEM
+            is AdapterItems.ButtonAddItem  -> ADD_CONTENT_ITEM
+            is AdapterItems.RowItem -> ROW_ITEM
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return when (viewType) {
             EXPLORE_ITEM -> ExploreHolder(parent.inflateAdapter(ExploreAdapterItemBinding::inflate))
-            ADD_CONTENT_ITEM -> AddContentHolder(parent.inflateAdapter(AddContentAdapterItemBinding::inflate))
+            ADD_CONTENT_ITEM -> ButtonAddHolder(parent.inflateAdapter(ButtonAddAdapterItemBinding::inflate))
+            ROW_ITEM -> RowHolder(parent.inflateAdapter(RowAdapterItemBinding::inflate))
             else -> throw Throwable()
         }
     }
@@ -55,19 +59,32 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
         Holder(binding.root) {
 
         override fun onBind(item: AdapterItems) {
-            item as AdapterItems.ExploreItem
+            item as AdapterItems.FolderItem
             binding.exploreItemTitle.text = item.name
+            binding.exploreItemBody.text = item.description
             itemView.setOnClickListener {
                 callback.invoke(item)
             }
         }
     }
 
-    inner class AddContentHolder(private val binding: AddContentAdapterItemBinding) :
+    inner class ButtonAddHolder(private val binding: ButtonAddAdapterItemBinding) :
         Holder(binding.root) {
         override fun onBind(item: AdapterItems) {
-            item as AdapterItems.AddContentItem
-            binding.exploreItemTitle.text = item.name
+            item as AdapterItems.ButtonAddItem
+            binding.buttonAddItemName.text = item.name
+            itemView.setOnClickListener {
+                callback.invoke(item)
+            }
+        }
+    }
+
+    inner class RowHolder(private val binding: RowAdapterItemBinding) :
+        Holder(binding.root) {
+        override fun onBind(item: AdapterItems) {
+            item as AdapterItems.RowItem
+            binding.rowItemTitle.text = item.name
+            binding.rowItemBody.text = item.price.toString()
             itemView.setOnClickListener {
                 callback.invoke(item)
             }

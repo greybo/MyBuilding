@@ -23,14 +23,14 @@ class ExploreViewModel(private val repo: AppRepository = AppRepository()) : Comp
     private fun findItems(path: String) {
         findUseCase.invoke(path) {
             val list = it.toMutableList()
-            list.add(AdapterItems.AddContentItem("Folder"))
+            list.add(AdapterItems.ButtonAddItem("Folder"))
             _state.value = list
         }
     }
 
     fun addFolder(name: String?, path: String?) {
         if (!name.isNullOrBlank()) {
-            repo.saveNewFolder(name, path.addToPath(name))
+            repo.addNewFolder(name, path.addToPath(name))
         } else toast("name null")
     }
 

@@ -54,8 +54,9 @@ class ExploreFragment :
 
     private fun handleOnClick(item: AdapterItems) {
         when (item) {
-            is AdapterItems.AddContentItem -> router.fromExploreToAddFolder()
-            is AdapterItems.ExploreItem -> router.fromExploreToFolder(item.name)
+            is AdapterItems.ButtonAddItem -> router.fromExploreToAddFolder()
+            is AdapterItems.FolderItem -> router.fromExploreToFolder(item.path)
+            else -> TODO()
         }
     }
 
