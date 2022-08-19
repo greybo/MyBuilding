@@ -13,7 +13,7 @@ fun String?.addToPath(text: String?): String {
 
 fun String?.getNameFromPath(findPath: String): String {
     return this
-        ?.replace(findPath, "")
+        ?.substring(findPath.length, this.length)
         ?.split("/")
         ?.getOrNull(0) ?: ""
 }

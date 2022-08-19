@@ -11,15 +11,15 @@ import com.greybot.mycosts.models.AdapterItems
 class FolderPreviewViewModel(private val repo: AppRepository = AppRepository()) :
     CompositeViewModel() {
 
-    private val addFolderUseCase get() = AddFolderUseCases(repo)
+    private val addFolderUseCase get() = AddFolderUseCases()
     private val findUseCase get() = FindFolderUseCases(repo)
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
 
     fun fetchData(path: String?) {
         path ?: return
-        findUseCase.invoke(path) { list ->
-            list.addButton()
+        findUseCase.invoke(path) {
+            val list = it?.toMutableList()?.addButton() ?: emptyList()
             _state.postValue(list)
         }
     }
@@ -40,19 +40,5 @@ class FolderPreviewViewModel(private val repo: AppRepository = AppRepository()) 
     fun addFolder(name: String?, path: String?) {
         addFolderUseCase.invoke(name, path)
     }
-//    fun fetchData(path: String?) {
-//        path ?: return
-//        val layer: Int = path.split("/").filter { it.isNotBlank() }.size + 1
-//        viewModelScope.launch {
-//
-//            val list = repo.findFolder(path)?.filter { item ->
-//                item.path.split("/").filter { it.isNotBlank() }.size == layer
-//            }?.map {
-//                AdapterItems.ExploreItem(it.name, path)
-//            } ?: emptyList()
-//
-//            _state.postValue(list)
-//        }
-//    }
 
 }

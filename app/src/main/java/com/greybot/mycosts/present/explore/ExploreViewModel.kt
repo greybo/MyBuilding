@@ -22,7 +22,7 @@ class ExploreViewModel(private val repo: AppRepository = AppRepository()) : Comp
 
     private fun findItems(path: String) {
         findUseCase.invoke(path) {
-            val list = it.toMutableList()
+            val list = it?.toMutableList() ?: mutableListOf()
             list.add(AdapterItems.ButtonAddItem("Folder"))
             _state.value = list
         }
