@@ -5,14 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.AddFolderUseCases
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.base.FindFolderUseCases
-import com.greybot.mycosts.data.repository.AppRepository
 import com.greybot.mycosts.models.AdapterItems
 
-class FolderPreviewViewModel(private val repo: AppRepository = AppRepository()) :
+class FolderPreviewViewModel() :
     CompositeViewModel() {
 
     private val addFolderUseCase get() = AddFolderUseCases()
-    private val findUseCase get() = FindFolderUseCases(repo)
+    private val findUseCase get() = FindFolderUseCases()
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
 

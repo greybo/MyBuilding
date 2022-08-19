@@ -2,17 +2,16 @@ package com.greybot.mycosts.present.explore
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.greybot.mycosts.base.AddFolderUseCases
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.base.FindFolderUseCases
-import com.greybot.mycosts.data.repository.AppRepository
 import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.utility.addToPath
-import com.greybot.mycosts.utility.toast
 
 //TODO init with hilt
-class ExploreViewModel(private val repo: AppRepository = AppRepository()) : CompositeViewModel() {
+class ExploreViewModel() : CompositeViewModel() {
 
-    private val findUseCase get() = FindFolderUseCases(repo)
+    private val addFolderUseCase get() = AddFolderUseCases()
+    private val findUseCase get() = FindFolderUseCases()
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
 
@@ -29,9 +28,7 @@ class ExploreViewModel(private val repo: AppRepository = AppRepository()) : Comp
     }
 
     fun addFolder(name: String?, path: String?) {
-        if (!name.isNullOrBlank()) {
-            repo.addNewFolder(name, path.addToPath(name))
-        } else toast("name null")
+        addFolderUseCase.invoke(name, path)
     }
 
 }
