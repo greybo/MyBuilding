@@ -8,9 +8,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 fun ExtendedFloatingActionButton.animateHideFab(isHide: Boolean, callback: (() -> Unit)? = null) {
     val fab = this
     fab.post {
-        val layoutParams: ConstraintLayout.LayoutParams =
-            fab.layoutParams as ConstraintLayout.LayoutParams
-        val fabBottomMargin = layoutParams.bottomMargin
+        val fabBottomMargin = (fab.layoutParams as ConstraintLayout.LayoutParams).bottomMargin
         val target = fab.height.toFloat() + fabBottomMargin
 
         if (isHide) {

@@ -53,7 +53,7 @@ class FolderPreviewFragment :
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
-        viewModel.stateButton2.observe2(viewLifecycleOwner) {
+        viewModel.stateButton.observe(viewLifecycleOwner) {
             buttonType = it
             if (it != ButtonType.None) {
                 binding.folderPreviewFloatButton.animateHideFab(false)
