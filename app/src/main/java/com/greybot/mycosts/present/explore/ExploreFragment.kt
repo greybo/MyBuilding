@@ -7,10 +7,7 @@ import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.utility.ARG_FOLDER_NAME
-import com.greybot.mycosts.utility.ARG_FOLDER_PATH
-import com.greybot.mycosts.utility.FRAGMENT_RESULT_ADD_FOLDER
-import com.greybot.mycosts.utility.getRouter
+import com.greybot.mycosts.utility.*
 
 
 class ExploreFragment :
@@ -53,10 +50,11 @@ class ExploreFragment :
     private fun initViews() {
         with(binding) {
             exploreFloatButton.setOnClickListener {
-                router.fromExploreToAddFolder()
+                exploreFloatButton.animateHideFab(true) {
+                    router.fromExploreToAddFolder()
+                }
             }
             adapter = ExploreAdapter {
-
                 handleOnClick(it)
             }
             mainRecyclerViewX.setHasFixedSize(true)
@@ -64,5 +62,9 @@ class ExploreFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.exploreFloatButton.animateHideFab(false)
+    }
 }
 
