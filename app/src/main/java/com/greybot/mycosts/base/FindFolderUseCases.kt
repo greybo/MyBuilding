@@ -15,7 +15,7 @@ class FindFolderUseCases {
         val list = sourceExp.getFolderAll()
         return list?.mapNotNull { item ->
             if (item.path.startsWith(findPath)) {
-                val name = item.path.getNameFromPath(findPath)
+                val name = getNameFromPath(findPath, item.path)
                 AdapterItems.FolderItem(name, "$findPath$name")
             } else null
         }?.toMutableSet()

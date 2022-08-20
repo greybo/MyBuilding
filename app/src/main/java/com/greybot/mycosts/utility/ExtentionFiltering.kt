@@ -11,9 +11,18 @@ fun String?.addToPath(text: String?): String {
     return list.joinToString("/", prefix = "/")
 }
 
-fun String?.getNameFromPath(findPath: String): String {
+fun getEndSegment(path: String?): String {
+    val array = path?.split("/")
+    return array?.getOrNull(array.lastIndex) ?: ""
+}
+
+fun getNameFromPath(findPath: String, fullPath: String?): String {
+    return fullPath?.getNameFromPath2(findPath) ?: ""
+}
+
+private fun String.getNameFromPath2(findPath: String): String? {
     return this
-        ?.substring(findPath.length, this.length)
-        ?.split("/")
-        ?.getOrNull(0) ?: ""
+        .substring(findPath.length, this.length)
+        .split("/")
+        .getOrNull(0)
 }
