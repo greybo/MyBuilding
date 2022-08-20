@@ -9,8 +9,24 @@ import com.greybot.mycosts.base.RowFolderUseCases
 import com.greybot.mycosts.models.AdapterItems
 import kotlinx.coroutines.async
 
-class FolderPreviewViewModel:
-    CompositeViewModel() {
+inline fun <reified T> makeLiveData(): CustomLiveData<T> {
+    return CustomLiveData<T>()
+}
+
+class CustomLiveData<T> {
+    private val _liveData = MutableLiveData<T?>()
+    private val liveData: LiveData<T?> = _liveData
+
+    fun value(t: T) {
+        _liveData.value = t
+    }
+
+    fun observe2(owner: LifecycleOwner, observer: Observer<T?>) {
+        liveData.observe(owner, observer)
+    }
+}
+
+class FolderPreviewViewModel : CompositeViewModel() {
 
     private val folderAddUseCase get() = AddFolderUseCases()
     private val folderFindUseCase get() = FindFolderUseCases()
