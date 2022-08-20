@@ -29,7 +29,7 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
     override fun getItemViewType(position: Int): Int {
         return when (list[position]) {
             is AdapterItems.FolderItem -> EXPLORE_ITEM
-            is AdapterItems.ButtonAddItem  -> ADD_CONTENT_ITEM
+            is AdapterItems.ButtonAddItem -> ADD_CONTENT_ITEM
             is AdapterItems.RowItem -> ROW_ITEM
         }
     }
@@ -72,7 +72,7 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
         Holder(binding.root) {
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.ButtonAddItem
-            binding.buttonAddItemName.text = item.name
+            binding.buttonAddItemName.text = item.type.row
             itemView.setOnClickListener {
                 callback.invoke(item)
             }

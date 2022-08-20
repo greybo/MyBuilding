@@ -3,6 +3,7 @@ package com.greybot.mycosts.present.folder.preview
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import au.com.crownresorts.crma.extensions.setGoneOrVisible
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
 import com.greybot.mycosts.models.AdapterItems
@@ -16,6 +17,7 @@ class FolderPreviewFragment :
     private var adapter: ExploreAdapter? = null
     private var args: FolderPreviewFragmentArgs? = null
     private val router: IFolderPreviewRouter by getRouter()
+    private var buttonType: ButtonType = ButtonType.None
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,30 +35,45 @@ class FolderPreviewFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
+        initViews()
 
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
+        viewModel.stateButton2.observe2(viewLifecycleOwner) {
+            buttonType = it
+            binding.folderPreviewFloatButton.setGoneOrVisible(it != ButtonType.None)
+        }
         viewModel.fetchData(args?.pathName)
     }
 
-    private fun initAdapter() {
-        adapter = ExploreAdapter {
-            handleClick(it)
+    private fun initViews() {
+        with(binding) {
+            folderPreviewFloatButton.setOnClickListener {
+                handleButtonClick(buttonType)
+            }
+
+            adapter = ExploreAdapter {
+                handleAdapterClick(it)
+            }
+            folderPreviewRecyclerView.setHasFixedSize(true)
+            folderPreviewRecyclerView.adapter = adapter
         }
-        binding.folderPreviewRecyclerView.setHasFixedSize(true)
-        binding.folderPreviewRecyclerView.adapter = adapter
     }
 
-    private fun handleClick(item: AdapterItems) {
+    private fun handleAdapterClick(item: AdapterItems) {
         when (item) {
-            is AdapterItems.ButtonAddItem -> {
-                if (item.name == "Folder") router.fromFolderToAddFolder(args?.pathName ?: "")
-                else router.fromFolderToAddRow(args?.pathName ?: "")
-            }
+            is AdapterItems.ButtonAddItem -> handleButtonClick(item.type)
             is AdapterItems.FolderItem -> router.fromFolderToFolder(item.path)
             is AdapterItems.RowItem -> router.fromFolderToEditRow(item.objectId)
+        }
+    }
+
+    private fun handleButtonClick(type: ButtonType, path: String = args?.pathName ?: "") {
+        when (type) {
+            ButtonType.Folder -> router.fromFolderToAddFolder(path)
+            ButtonType.Row -> router.fromFolderToAddRow(path)
+            else -> {}
         }
     }
 }

@@ -33,23 +33,13 @@ class ExploreFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
+
         initViews()
 
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
         viewModel.fetchData()
-    }
-
-
-    private fun initAdapter() {
-        adapter = ExploreAdapter {
-
-            handleOnClick(it)
-        }
-        binding.mainRecyclerViewX.setHasFixedSize(true)
-        binding.mainRecyclerViewX.adapter = adapter
     }
 
     private fun handleOnClick(item: AdapterItems) {
@@ -61,8 +51,16 @@ class ExploreFragment :
     }
 
     private fun initViews() {
-        binding.exploreFloatButton.setOnClickListener {
-            router.fromExploreToAddFolder()
+        with(binding) {
+            exploreFloatButton.setOnClickListener {
+                router.fromExploreToAddFolder()
+            }
+            adapter = ExploreAdapter {
+
+                handleOnClick(it)
+            }
+            mainRecyclerViewX.setHasFixedSize(true)
+            mainRecyclerViewX.adapter = adapter
         }
     }
 

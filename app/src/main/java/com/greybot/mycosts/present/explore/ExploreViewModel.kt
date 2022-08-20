@@ -7,6 +7,7 @@ import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.base.FindFolderUseCases
 import com.greybot.mycosts.models.AdapterItems
 
+
 //TODO init with hilt
 class ExploreViewModel : CompositeViewModel() {
 
@@ -23,7 +24,6 @@ class ExploreViewModel : CompositeViewModel() {
         launchOnDefault {
             val foundList = findUseCase.invoke(path)
             val list = foundList?.toMutableList() ?: mutableListOf()
-            list.add(AdapterItems.ButtonAddItem("Folder"))
             _state.postValue(list)
         }
     }
@@ -33,6 +33,5 @@ class ExploreViewModel : CompositeViewModel() {
     }
 
 }
-
 
 

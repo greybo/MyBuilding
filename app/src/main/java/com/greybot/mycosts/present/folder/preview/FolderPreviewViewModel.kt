@@ -1,7 +1,9 @@
 package com.greybot.mycosts.present.folder.preview
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.greybot.mycosts.base.AddFolderUseCases
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.base.FindFolderUseCases
@@ -9,19 +11,27 @@ import com.greybot.mycosts.base.RowFolderUseCases
 import com.greybot.mycosts.models.AdapterItems
 import kotlinx.coroutines.async
 
-inline fun <reified T> makeLiveData(): CustomLiveData<T> {
-    return CustomLiveData<T>()
+inline fun <reified T> makeLiveData(any: Any? = null): CustomLiveData<T> {
+    return CustomLiveData(any as T)
 }
 
-class CustomLiveData<T> {
-    private val _liveData = MutableLiveData<T?>()
-    private val liveData: LiveData<T?> = _liveData
+class CustomLiveData<T>(t: T) {
+    private val _liveData = MutableLiveData<T>()
+    private val liveData: LiveData<T> = _liveData
 
-    fun value(t: T) {
-        _liveData.value = t
+    init {
+        t?.let { _liveData.value = it }
     }
 
-    fun observe2(owner: LifecycleOwner, observer: Observer<T?>) {
+    fun value(t: T) {
+        _liveData.value = t as T
+    }
+
+    fun postValue(t: T) {
+        _liveData.postValue(t as T)
+    }
+
+    fun observe2(owner: LifecycleOwner, observer: Observer<T>) {
         liveData.observe(owner, observer)
     }
 }
@@ -31,6 +41,11 @@ class FolderPreviewViewModel : CompositeViewModel() {
     private val folderAddUseCase get() = AddFolderUseCases()
     private val folderFindUseCase get() = FindFolderUseCases()
     private val rowFindUseCase get() = RowFolderUseCases()
+
+    var stateButton2 = makeLiveData<ButtonType>(ButtonType.None)
+//    private var _stateButton = MutableLiveData<FindStateType>()
+//    val stateButton: LiveData<FindStateType> = _stateButton
+
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
 
@@ -56,20 +71,26 @@ class FolderPreviewViewModel : CompositeViewModel() {
     }
 
     private fun MutableList<AdapterItems>.addButton(): List<AdapterItems> {
-        if (this.isEmpty()) {
-            add(AdapterItems.ButtonAddItem("Folder"))
-            add(AdapterItems.ButtonAddItem("Row"))
+        val type = if (this.isEmpty()) {
+            add(AdapterItems.ButtonAddItem(ButtonType.Folder))
+            add(AdapterItems.ButtonAddItem(ButtonType.Row))
+            ButtonType.None
         } else
             if (this[0] is AdapterItems.FolderItem) {
-                add(AdapterItems.ButtonAddItem("Folder"))
+                ButtonType.Folder
             } else
-                add(AdapterItems.ButtonAddItem("Row"))
+                ButtonType.Row
 
+        stateButton2.postValue(type)
         return this
     }
 
-    fun addFolder(name: String?, path: String?) {
-        folderAddUseCase.invoke(name, path)
-    }
+//    fun addFolder(name: String?, path: String?) {
+//        folderAddUseCase.invoke(name, path)
+//    }
 
+}
+
+enum class ButtonType(val row: String) {
+    Folder("Folder"), Row("Row"), None("")
 }
