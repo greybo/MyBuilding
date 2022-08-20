@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import au.com.crownresorts.crma.extensions.setGoneOrVisible
+import au.com.crownresorts.crma.extensions.gone
 import com.greybot.mycosts.base.BaseBindingFragment
+import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.explore.ExploreAdapter
+import com.greybot.mycosts.utility.animateHideFab
 import com.greybot.mycosts.utility.getEndSegment
 import com.greybot.mycosts.utility.getRouter
 
@@ -40,7 +42,9 @@ class FolderPreviewFragment :
         initViews()
         binding.folderPreviewToolbar.getBuilder()
             .homeCallback {
-                findNavController().popBackStack()
+                binding.folderPreviewFloatButton.animateHideFab(true) {
+                    findNavController().popBackStack()
+                }
             }
             .title(getEndSegment(args?.pathName))
             .create()
@@ -49,7 +53,15 @@ class FolderPreviewFragment :
         }
         viewModel.stateButton2.observe2(viewLifecycleOwner) {
             buttonType = it
-            binding.folderPreviewFloatButton.setGoneOrVisible(it != ButtonType.None)
+//            binding.folderPreviewFloatButton.setGoneOrVisible(it != ButtonType.None)
+            if (it != ButtonType.None) {
+                binding.folderPreviewFloatButton.animateHideFab(false)
+            } else binding.folderPreviewFloatButton.gone()
+        }
+        systemBackPressedCallback {
+            binding.folderPreviewFloatButton.animateHideFab(true) {
+                findNavController().popBackStack()
+            }
         }
         viewModel.fetchData(args?.pathName)
     }
@@ -57,11 +69,15 @@ class FolderPreviewFragment :
     private fun initViews() {
         with(binding) {
             folderPreviewFloatButton.setOnClickListener {
-                handleButtonClick(buttonType)
+                binding.folderPreviewFloatButton.animateHideFab(true) {
+                    handleButtonClick(buttonType)
+                }
             }
 
             adapter = ExploreAdapter {
-                handleAdapterClick(it)
+                binding.folderPreviewFloatButton.animateHideFab(true) {
+                    handleAdapterClick(it)
+                }
             }
             folderPreviewRecyclerView.setHasFixedSize(true)
             folderPreviewRecyclerView.adapter = adapter
@@ -82,5 +98,10 @@ class FolderPreviewFragment :
             ButtonType.Row -> router.fromFolderToAddRow(path)
             else -> {}
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 }

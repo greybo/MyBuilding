@@ -35,7 +35,7 @@ fun ExtendedFloatingActionButton.animateHideFab(isHide: Boolean, callback: (() -
                 .translationY(0f)
                 .setInterpolator(LinearInterpolator())
                 .setDuration(100)
-                .setStartDelay(300)
+                .setStartDelay(200)
                 .setListener(object : Animator.AnimatorListener {
                     override fun onAnimationStart(animation: Animator?) {
                         fab.show()
