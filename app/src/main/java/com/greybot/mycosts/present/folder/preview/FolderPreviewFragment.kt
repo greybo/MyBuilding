@@ -1,6 +1,8 @@
 package com.greybot.mycosts.present.folder.preview
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -53,7 +55,6 @@ class FolderPreviewFragment :
         }
         viewModel.stateButton2.observe2(viewLifecycleOwner) {
             buttonType = it
-//            binding.folderPreviewFloatButton.setGoneOrVisible(it != ButtonType.None)
             if (it != ButtonType.None) {
                 binding.folderPreviewFloatButton.animateHideFab(false)
             } else binding.folderPreviewFloatButton.gone()
@@ -63,7 +64,9 @@ class FolderPreviewFragment :
                 findNavController().popBackStack()
             }
         }
-        viewModel.fetchData(args?.pathName)
+        Handler(Looper.getMainLooper()).postDelayed({
+            viewModel.fetchData(args?.pathName)
+        }, 200)
     }
 
     private fun initViews() {
@@ -98,10 +101,5 @@ class FolderPreviewFragment :
             ButtonType.Row -> router.fromFolderToAddRow(path)
             else -> {}
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
     }
 }

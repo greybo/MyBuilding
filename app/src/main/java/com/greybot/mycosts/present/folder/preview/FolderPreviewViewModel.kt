@@ -51,10 +51,9 @@ class FolderPreviewViewModel : CompositeViewModel() {
 
     fun fetchData(path: String?) {
         path ?: return
-        launchOnDefault {
+        launchOnIO {
             val folderSet = async { folderFindUseCase.invoke(path) }
             val rowSet = async { rowFindUseCase.invoke(path) }
-
             handleResult(folderSet.await()?.toMutableList(), rowSet.await()?.toMutableList())
         }
     }
