@@ -18,27 +18,32 @@
 
     <TextView
         android:id="@+id/rowItem_Title"
-        style="@style/H6_base"
+        style="@style/Subtitle1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rowItem_body"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toEndOf="@+id/rowItemCheckDone"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
         tools:text="Text" />
 
     <TextView
         android:id="@+id/rowItem_body"
-        style="@style/Subtitle1_base"
+        style="@style/Subtitle1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="4dp"
+        android:gravity="end"
         app:layout_constraintBottom_toBottomOf="@+id/rowItem_Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/rowItem_Title"
+        app:layout_constraintTop_toTopOf="@+id/rowItem_Title"
+        app:layout_constraintWidth_percent="0.3"
         tools:text="Text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

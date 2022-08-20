@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/exploreItem_body"
-        style="@style/Subtitle1_base"
+        style="@style/Subtitle1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
