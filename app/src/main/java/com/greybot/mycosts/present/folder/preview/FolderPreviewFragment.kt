@@ -44,11 +44,7 @@ class FolderPreviewFragment :
         super.onViewCreated(view, savedInstanceState)
         initViews()
         binding.folderPreviewToolbar.getBuilder()
-            .homeCallback {
-                binding.folderPreviewFloatButton.animateFabHide {
-                    findNavController().popBackStack()
-                }
-            }
+            .homeCallback { backPress() }
             .title(getEndSegment(args?.pathName))
             .create()
         viewModel.state.observe(viewLifecycleOwner) {
@@ -57,14 +53,18 @@ class FolderPreviewFragment :
         viewModel.stateButton.observe(viewLifecycleOwner) { event ->
             setStateButton(event.getContentIfNotHandled())
         }
-        systemBackPressedCallback {
-            binding.folderPreviewFloatButton.animateFabHide {
-                findNavController().popBackStack()
-            }
-        }
+        systemBackPressedCallback { backPress() }
         Handler(Looper.getMainLooper()).postDelayed({
             viewModel.fetchData(args?.pathName)
         }, 200)
+    }
+
+    private fun backPress() {
+        animateFabHide { findNavController().popBackStack() }
+    }
+
+    private fun animateFabHide(callback: (() -> Unit)? = null) {
+        binding.folderPreviewFloatButton.animateFabHide(callback)
     }
 
     private fun setStateButton(type: ButtonType?) {
@@ -80,15 +80,11 @@ class FolderPreviewFragment :
     private fun initViews() {
         with(binding) {
             folderPreviewFloatButton.setOnClickListener {
-                binding.folderPreviewFloatButton.animateFabHide {
-                    handleButtonClick(buttonType)
-                }
+                handleButtonClick(buttonType)
             }
 
             adapter = ExploreAdapter {
-                binding.folderPreviewFloatButton.animateFabHide {
-                    handleAdapterClick(it)
-                }
+                handleAdapterClick(it)
             }
             folderPreviewRecyclerView.setHasFixedSize(true)
             folderPreviewRecyclerView.adapter = adapter
@@ -98,12 +94,14 @@ class FolderPreviewFragment :
     private fun handleAdapterClick(item: AdapterItems) {
         when (item) {
             is AdapterItems.ButtonAddItem -> handleButtonClick(item.type)
-            is AdapterItems.FolderItem -> router.fromFolderToFolder(item.path)
+            is AdapterItems.FolderItem -> {
+                animateFabHide { router.fromFolderToFolder(item.path) }
+            }
             is AdapterItems.RowItem -> {
                 if (item.changeBuy)
                     viewModel.changeRowBuy(item)
                 else
-                    router.fromFolderToEditRow(item.objectId)
+                    animateFabHide { router.fromFolderToEditRow(item.objectId) }
             }
             else -> {}
         }
@@ -111,8 +109,8 @@ class FolderPreviewFragment :
 
     private fun handleButtonClick(type: ButtonType, path: String = args?.pathName ?: "") {
         when (type) {
-            ButtonType.Folder -> router.fromFolderToAddFolder(path)
-            ButtonType.Row -> router.fromFolderToAddRow(path)
+            ButtonType.Folder -> animateFabHide { router.fromFolderToAddFolder(path) }
+            ButtonType.Row -> animateFabHide { router.fromFolderToAddRow(path) }
             else -> {}
         }
     }
