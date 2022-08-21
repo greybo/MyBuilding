@@ -34,4 +34,5 @@ sealed class AdapterItems {
     ) : AdapterItems()
 
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
+    class TotalItem(val value: Float, val name: String = "Total") : AdapterItems()
 }

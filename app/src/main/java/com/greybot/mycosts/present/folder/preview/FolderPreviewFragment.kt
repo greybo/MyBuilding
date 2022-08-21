@@ -100,6 +100,7 @@ class FolderPreviewFragment :
             is AdapterItems.ButtonAddItem -> handleButtonClick(item.type)
             is AdapterItems.FolderItem -> router.fromFolderToFolder(item.path)
             is AdapterItems.RowItem -> router.fromFolderToEditRow(item.objectId)
+            else -> {}
         }
     }
 

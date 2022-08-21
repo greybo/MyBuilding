@@ -71,27 +71,33 @@ class FolderPreviewViewModel : CompositeViewModel() {
         else if (!rowList.isNullOrEmpty()) rowList
         else mutableListOf()
 
-        _state.postValue(itemList.addButton())
+        when (itemList.buttonState()){
+            ButtonType.None ->{
+                itemList.add(AdapterItems.ButtonAddItem(ButtonType.Folder))
+                itemList.add(AdapterItems.ButtonAddItem(ButtonType.Row))
+            }
+            ButtonType.Row->{
+                val total = itemList.fold(0F) { t, item  ->
+                    t + (item as AdapterItems.RowItem).price
+                }
+                itemList.add(AdapterItems.TotalItem(total))
+            }
+            else -> {}
+        }
+
+        _state.postValue(itemList)
     }
 
-    private fun MutableList<AdapterItems>.addButton(): List<AdapterItems> {
-        val type = if (this.isEmpty()) {
-            add(AdapterItems.ButtonAddItem(ButtonType.Folder))
-            add(AdapterItems.ButtonAddItem(ButtonType.Row))
-            ButtonType.None
-        } else
-            if (this[0] is AdapterItems.FolderItem) {
-                ButtonType.Folder
-            } else
-                ButtonType.Row
+    private fun MutableList<AdapterItems>.buttonState(): ButtonType {
+        val type = when (this.getOrNull(0)) {
+            is AdapterItems.FolderItem -> ButtonType.Folder
+            is AdapterItems.RowItem -> ButtonType.Row
+            else -> ButtonType.None
+        }
 
         _stateButton.postValue(Event(type))
-        return this
+        return type
     }
-
-//    fun addFolder(name: String?, path: String?) {
-//        folderAddUseCase.invoke(name, path)
-//    }
 
 }
 
