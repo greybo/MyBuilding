@@ -14,6 +14,12 @@ class DiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
             oldItem is AdapterItems.TotalItem && newItem is AdapterItems.TotalItem -> {
                 true
             }
+            oldItem is AdapterItems.FolderItem && newItem is AdapterItems.FolderItem -> {
+                oldItem.name == newItem.name
+            }
+            oldItem is AdapterItems.ButtonAddItem && newItem is AdapterItems.ButtonAddItem -> {
+                oldItem.type == newItem.type
+            }
             else -> false//oldItem::class == newItem::class//
         }
 //    oldItem.id == newItem.id
@@ -29,6 +35,12 @@ class DiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
             }
             oldItem is AdapterItems.TotalItem && newItem is AdapterItems.TotalItem -> {
                 oldItem.value == newItem.value
+            }
+            oldItem is AdapterItems.FolderItem && newItem is AdapterItems.FolderItem -> {
+                oldItem.name == newItem.name
+            }
+            oldItem is AdapterItems.ButtonAddItem && newItem is AdapterItems.ButtonAddItem -> {
+                oldItem.type == newItem.type
             }
             else -> oldItem::class == newItem::class//false
         }
