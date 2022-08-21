@@ -10,7 +10,7 @@ class FindFolderUseCases {
 
     suspend operator fun invoke(
         path: String
-    ): MutableSet<AdapterItems>? {
+    ): MutableSet<AdapterItems.FolderItem>? {
         val findPath = "$path/"
         val list = sourceExp.getFolderAll()
         return list?.mapNotNull { item ->

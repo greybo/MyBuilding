@@ -26,12 +26,21 @@ sealed class AdapterItems {
         }
     }
 
-    class RowItem(
+  data  class RowItem(
         val name: String,
         val path: String,
         val price: Float = 0F,
+        val check: Boolean = false,
         val objectId: String,
-    ) : AdapterItems()
+    ) : AdapterItems() {
+
+        var changeBuy: Boolean = false
+
+        fun changeBuy(): RowItem {
+            changeBuy = true
+            return this
+        }
+    }
 
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
     class TotalItem(val value: Float, val name: String = "Total") : AdapterItems()

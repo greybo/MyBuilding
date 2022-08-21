@@ -74,7 +74,7 @@ class FolderPreviewFragment :
             ButtonType.Row -> binding.folderPreviewFloatButton.animateShowFab()
             else -> binding.folderPreviewFloatButton.gone()
         }
-         buttonType = type
+        buttonType = type
     }
 
     private fun initViews() {
@@ -99,7 +99,12 @@ class FolderPreviewFragment :
         when (item) {
             is AdapterItems.ButtonAddItem -> handleButtonClick(item.type)
             is AdapterItems.FolderItem -> router.fromFolderToFolder(item.path)
-            is AdapterItems.RowItem -> router.fromFolderToEditRow(item.objectId)
+            is AdapterItems.RowItem -> {
+                if (item.changeBuy)
+                    viewModel.changeRowBuy(item)
+                else
+                    router.fromFolderToEditRow(item.objectId)
+            }
             else -> {}
         }
     }

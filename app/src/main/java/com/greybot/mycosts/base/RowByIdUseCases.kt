@@ -13,7 +13,13 @@ class RowByIdUseCases {
         val list = sourceExp.getAllData()
         return list?.mapNotNull { item ->
             if (item.objectId == objectId) {
-                AdapterItems.RowItem(item.title, item.path, item.price,item.objectId!!)
+                AdapterItems.RowItem(
+                    item.title,
+                    item.path,
+                    item.price,
+                    item.isBought,
+                    item.objectId!!
+                )
             } else null
         }?.toMutableSet()
     }

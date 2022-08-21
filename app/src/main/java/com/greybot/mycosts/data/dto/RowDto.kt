@@ -5,9 +5,10 @@ import java.util.*
 data class RowDto(
     var objectId: String? = null,
     val path: String = "",
-    val title: String="",
-    val count: Int=1,
+    val title: String = "",
+    val count: Int = 1,
     val price: Float = 0F,
-    val currency: CurrencyDto?=CurrencyDto(),
+    val isBought: Boolean = false,
+    val currency: CurrencyDto? = CurrencyDto(),
     val data: Long = Date().time
 )

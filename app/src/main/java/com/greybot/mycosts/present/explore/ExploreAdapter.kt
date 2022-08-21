@@ -2,6 +2,8 @@ package com.greybot.mycosts.present.explore
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.greybot.mycosts.databinding.ButtonAddAdapterItemBinding
 import com.greybot.mycosts.databinding.ExploreAdapterItemBinding
@@ -11,7 +13,11 @@ import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.utility.inflateAdapter
 
 class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
-    RecyclerView.Adapter<ExploreAdapter.Holder>() {
+//    ListAdapter<AdapterItems,ExploreAdapter.Holder>(DiffCallback()){
+    ListAdapter<AdapterItems, ExploreAdapter.Holder>(
+        AsyncDifferConfig.Builder(DiffCallback()).build()
+    ) {
+//    RecyclerView.Adapter<ExploreAdapter.Holder>() {
 
     companion object {
         const val EXPLORE_ITEM = 0
@@ -20,12 +26,15 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
         const val TOTAL_ITEM = 3
     }
 
-    private val list = mutableListOf<AdapterItems>()
+    //    private val list = mutableListOf<AdapterItems>()
+    private val list get() = currentList
 
     fun updateAdapter(newList: List<AdapterItems>) {
-        list.clear()
-        list.addAll(newList)
-        notifyDataSetChanged()
+        submitList(newList)
+//        list.clear()
+//        list.addAll(newList)
+//        notifyDataSetChanged()
+
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -87,10 +96,14 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
         Holder(binding.root) {
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.RowItem
+            binding.rowItemCheckDone.isChecked = item.check
             binding.rowItemTitle.text = item.name
             binding.rowItemBody.text = item.price.toString()
-            itemView.setOnClickListener {
+            binding.rowItemTitle.setOnClickListener {
                 callback.invoke(item)
+            }
+            binding.rowItemCheckDone.setOnClickListener {
+                callback.invoke(item.changeBuy())
             }
         }
     }

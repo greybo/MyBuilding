@@ -9,11 +9,17 @@ class RowFolderUseCases {
 
     suspend operator fun invoke(
         findPath: String
-    ): MutableSet<AdapterItems>? {
+    ): MutableSet<AdapterItems.RowItem>? {
         val list = sourceExp.getAllData()
         return list?.mapNotNull { item ->
             if (item.path == findPath) {
-                AdapterItems.RowItem(item.title, item.path, item.price, item.objectId!!)
+                AdapterItems.RowItem(
+                    item.title,
+                    item.path,
+                    item.price,
+                    item.isBought,
+                    item.objectId!!
+                )
             } else null
         }?.toMutableSet()
     }
