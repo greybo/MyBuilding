@@ -5,7 +5,18 @@ import android.view.animation.LinearInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
-fun ExtendedFloatingActionButton.animateHideFab(isHide: Boolean, callback: (() -> Unit)? = null) {
+fun ExtendedFloatingActionButton.animateShowFab() {
+    animateFabVisibility(false)
+}
+
+fun ExtendedFloatingActionButton.animateFabHide(callback: (() -> Unit)? = null) {
+    animateFabVisibility(true, callback)
+}
+
+private fun ExtendedFloatingActionButton.animateFabVisibility(
+    isHide: Boolean,
+    callback: (() -> Unit)? = null
+) {
     val fab = this
     fab.post {
         val fabBottomMargin = (fab.layoutParams as ConstraintLayout.LayoutParams).bottomMargin

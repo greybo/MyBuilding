@@ -12,7 +12,8 @@ import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.explore.ExploreAdapter
-import com.greybot.mycosts.utility.animateHideFab
+import com.greybot.mycosts.utility.animateFabHide
+import com.greybot.mycosts.utility.animateShowFab
 import com.greybot.mycosts.utility.getEndSegment
 import com.greybot.mycosts.utility.getRouter
 
@@ -44,7 +45,7 @@ class FolderPreviewFragment :
         initViews()
         binding.folderPreviewToolbar.getBuilder()
             .homeCallback {
-                binding.folderPreviewFloatButton.animateHideFab(true) {
+                binding.folderPreviewFloatButton.animateFabHide {
                     findNavController().popBackStack()
                 }
             }
@@ -53,14 +54,11 @@ class FolderPreviewFragment :
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
-        viewModel.stateButton.observe(viewLifecycleOwner) {
-            buttonType = it
-            if (it != ButtonType.None) {
-                binding.folderPreviewFloatButton.animateHideFab(false)
-            } else binding.folderPreviewFloatButton.gone()
+        viewModel.stateButton.observe(viewLifecycleOwner) { event ->
+            setStateButton(event.getContentIfNotHandled())
         }
         systemBackPressedCallback {
-            binding.folderPreviewFloatButton.animateHideFab(true) {
+            binding.folderPreviewFloatButton.animateFabHide {
                 findNavController().popBackStack()
             }
         }
@@ -69,16 +67,26 @@ class FolderPreviewFragment :
         }, 200)
     }
 
+    private fun setStateButton(type: ButtonType?) {
+        type ?: return
+        when (type) {
+            ButtonType.Folder,
+            ButtonType.Row -> binding.folderPreviewFloatButton.animateShowFab()
+            else -> binding.folderPreviewFloatButton.gone()
+        }
+         buttonType = type
+    }
+
     private fun initViews() {
         with(binding) {
             folderPreviewFloatButton.setOnClickListener {
-                binding.folderPreviewFloatButton.animateHideFab(true) {
+                binding.folderPreviewFloatButton.animateFabHide {
                     handleButtonClick(buttonType)
                 }
             }
 
             adapter = ExploreAdapter {
-                binding.folderPreviewFloatButton.animateHideFab(true) {
+                binding.folderPreviewFloatButton.animateFabHide {
                     handleAdapterClick(it)
                 }
             }

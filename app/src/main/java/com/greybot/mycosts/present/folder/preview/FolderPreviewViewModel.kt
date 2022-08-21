@@ -9,8 +9,8 @@ import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.base.FindFolderUseCases
 import com.greybot.mycosts.base.RowFolderUseCases
 import com.greybot.mycosts.models.AdapterItems
+import com.greybot.mycosts.utility.Event
 import kotlinx.coroutines.async
-import java.util.*
 
 inline fun <reified T> makeLiveData(any: Any? = null): CustomLiveData<T> {
     return CustomLiveData(any as T)
@@ -48,7 +48,8 @@ class FolderPreviewViewModel : CompositeViewModel() {
     private val folderFindUseCase get() = FindFolderUseCases()
     private val rowFindUseCase get() = RowFolderUseCases()
 
-    var stateButton = makeLiveData<Event<ButtonType>>(ButtonType.None)
+    private val _stateButton = MutableLiveData<Event<ButtonType>>()
+    val stateButton: LiveData<Event<ButtonType>> = _stateButton
 
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
@@ -84,7 +85,7 @@ class FolderPreviewViewModel : CompositeViewModel() {
             } else
                 ButtonType.Row
 
-        stateButton.postValue(type)
+        _stateButton.postValue(Event(type))
         return this
     }
 

@@ -42,7 +42,7 @@ class ExploreFragment :
     private fun handleOnClick(item: AdapterItems) {
         when (item) {
             is AdapterItems.FolderItem -> {
-                binding.exploreFloatButton.animateHideFab(true) {
+                binding.exploreFloatButton.animateFabHide {
                     router.fromExploreToFolder(item.path)
                 }
             }
@@ -53,7 +53,7 @@ class ExploreFragment :
     private fun initViews() {
         with(binding) {
             exploreFloatButton.setOnClickListener {
-                binding.exploreFloatButton.animateHideFab(true) {
+                binding.exploreFloatButton.animateFabHide {
                     router.fromExploreToAddFolder()
                 }
             }
@@ -67,7 +67,7 @@ class ExploreFragment :
 
     override fun onResume() {
         super.onResume()
-        binding.exploreFloatButton.animateHideFab(false)
+        binding.exploreFloatButton.animateShowFab()
     }
 }
 
