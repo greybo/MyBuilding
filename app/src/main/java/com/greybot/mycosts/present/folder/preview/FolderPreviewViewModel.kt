@@ -90,17 +90,6 @@ class FolderPreviewViewModel : CompositeViewModel() {
         _state.postValue(folderItems)
     }
 
-//    private fun MutableList<AdapterItems>.buttonState(): ButtonType {
-//        val type = when (this.getOrNull(0)) {
-//            is AdapterItems.FolderItem -> ButtonType.Folder
-//            is AdapterItems.RowItem -> ButtonType.Row
-//            else -> ButtonType.None
-//        }
-//
-//        _stateButton.postValue(Event(type))
-//        return type
-//    }
-
 }
 
 enum class ButtonType(val row: String) {

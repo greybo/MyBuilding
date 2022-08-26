@@ -5,16 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.FolderDTO
 import com.greybot.mycosts.data.repository.folder.FolderDataSource
-import com.greybot.mycosts.data.repository.row.RowDataSource
 import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.utility.formatPathFolder
+import com.greybot.mycosts.present.folder.preview.formatPathFolder
 
 
 //TODO init with hilt
 class ExploreViewModel : CompositeViewModel() {
 
     private val folderDataSource by lazy { FolderDataSource() }
-    private val rowDataSource by lazy { RowDataSource() }
 
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
@@ -37,12 +35,6 @@ class ExploreViewModel : CompositeViewModel() {
             }
         } ?: emptyList()
         _state.postValue(list)
-    }
-
-    private suspend fun findRows(list: MutableList<AdapterItems.FolderItem>) {
-        list.map {
-            rowDataSource.findByPath(it.path)
-        }
     }
 
     fun addFolder(name: String?, path: String?) {
