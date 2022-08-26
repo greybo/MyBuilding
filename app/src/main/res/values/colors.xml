@@ -8,4 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FA2929</color>
+    <color name="hint_color">#636363</color>
+    <color name="text_body">#373737</color>
+    <color name="onboard_gradient_start">#968756</color>
+    <color name="black_disable">#61000000</color>
+    <color name="black_opacity_35">#59000000</color>
+    <color name="black_grey">#CCCCCC</color>
+    <color name="text_high">#000000</color>
+    <color name="text_medium">#E7382B</color>
+    <color name="tint_primary">#968756</color>
+
 </resources>

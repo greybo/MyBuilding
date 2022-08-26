@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainFragment">
+    <!--    <action-->
+    <!--        android:id="@+id/"-->
+    <!--        app:destination="@+id/"-->
+    <!--        app:enterAnim="@anim/slide_in_right"-->
+    <!--        app:exitAnim="@anim/slide_out_left"-->
+    <!--        app:popEnterAnim="@anim/slide_in_left"-->
+    <!--        app:popExitAnim="@anim/slide_out_right" />-->
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.greybot.mycosts.present.explore.ExploreFragment"
+        android:label="MainFragment" />
+
+    <action
+        android:id="@+id/toFolderPreviewFragment"
+        app:destination="@+id/folderPreviewFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/folderPreviewFragment"
+        android:name="com.greybot.mycosts.present.folder.preview.FolderPreviewFragment"
+        android:label="FolderPreviewFragment">
+
+        <argument
+            android:name="pathName"
+            android:defaultValue=""
+            app:argType="string" />
+
+    </fragment>
+
+    <action
+        android:id="@+id/toFolderAddFragment"
+        app:destination="@+id/folderAddFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/folderAddFragment"
+        android:name="com.greybot.mycosts.present.folder.add.FolderAddFragment"
+        android:label="FolderAddFragment">
+
+        <argument
+            android:name="path"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <action
+        android:id="@+id/toRowAddFragment"
+        app:destination="@+id/RowAddFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/RowAddFragment"
+        android:name="com.greybot.mycosts.present.file.add.RowAddFragment"
+        android:label="RowAddFragment">
+
+        <argument
+            android:name="path"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+
+    <action
+        android:id="@+id/toRowEditFragment"
+        app:destination="@+id/RowEditFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/RowEditFragment"
+        android:name="com.greybot.mycosts.present.file.edit.RowEditFragment"
+        android:label="RowEditFragment" >
+
+        <argument
+            android:name="objectId"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+
+</navigation>
