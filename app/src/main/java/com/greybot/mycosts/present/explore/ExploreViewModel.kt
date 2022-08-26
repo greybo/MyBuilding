@@ -26,14 +26,14 @@ class ExploreViewModel : CompositeViewModel() {
     private fun findItems(path: String) {
         launchOnDefault {
             val folders = folderDataSource.findFolder(path)
-            makeFolderItems(folders)
+            makeFolderItems(path, folders)
         }
     }
 
-    private fun makeFolderItems(map: Map<String?, List<FolderDTO>>?) {
+    private fun makeFolderItems(path: String, map: Map<String?, List<FolderDTO>>?) {
         val list = map?.mapNotNull { entry ->
-            entry.key?.let {
-                AdapterItems.FolderItem(name = it, path = it.formatPathFolder(), countInner = entry.value.size)
+            entry.key?.let {name->
+                AdapterItems.FolderItem(name = name, path = formatPathFolder(path, name), countInner = entry.value.size)
             }
         } ?: emptyList()
         _state.postValue(list)

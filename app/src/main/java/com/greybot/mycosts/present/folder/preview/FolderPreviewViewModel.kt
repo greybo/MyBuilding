@@ -24,9 +24,10 @@ class FolderPreviewViewModel : CompositeViewModel() {
     val state: LiveData<List<AdapterItems>> = _state
 
     private val rowListBackup = mutableListOf<RowDto>()
+    private var currentPath = ""
 
     fun fetchData(path: String?) {
-        path ?: return
+        currentPath = path ?: return
         launchOnIO {
             val folderSet = async { folderFindUseCase.findFolder(path) }
             val rowSet = async { rowFindUseCase.findByPath(path) }
@@ -83,7 +84,7 @@ class FolderPreviewViewModel : CompositeViewModel() {
 
     private fun makeFolderList(groups: Map<String?, List<FolderDTO>>?) {
         val folderItems = groups?.mapNotNull { entry ->
-            entry.key?.let { folderCardMake(it, entry.value) }
+            entry.key?.let { folderCardMake(it, currentPath, entry.value) }
         } ?: emptyList()
 
         _state.postValue(folderItems)
