@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.models.AdapterItems
+import com.greybot.mycosts.present.adapter.ExploreAdapter
 import com.greybot.mycosts.utility.*
 
 
@@ -32,7 +33,9 @@ class ExploreFragment :
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
-
+        binding.toolbar.getBuilder()
+            .title("My costs")
+            .create()
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }

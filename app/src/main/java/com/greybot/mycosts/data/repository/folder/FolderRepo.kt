@@ -1,4 +1,4 @@
-package com.greybot.mycosts.data.repository
+package com.greybot.mycosts.data.repository.folder
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -8,13 +8,8 @@ import com.google.firebase.ktx.Firebase
 import com.greybot.mycosts.data.dto.FolderDTO
 import com.greybot.mycosts.utility.LogApp
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.CoroutineScope
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
-class FolderDataSource(coroutineContext: CoroutineContext = EmptyCoroutineContext) {
-
-    private val scope = CoroutineScope(coroutineContext)
+class FolderRepo {
 
     private val uid: String = "123456"
     private val path: String = "explore"
@@ -51,5 +46,4 @@ class FolderDataSource(coroutineContext: CoroutineContext = EmptyCoroutineContex
             LogApp.i("ExploreFragment", ref.toString())
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.explore
+package com.greybot.mycosts.present.adapter
 
 import android.view.View
 import android.view.ViewGroup
@@ -96,7 +96,7 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
         Holder(binding.root) {
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.RowItem
-            binding.rowItemCheckDone.isChecked = item.check
+            binding.rowItemCheckDone.isChecked = item.isBought
             binding.rowItemTitle.text = item.name
             binding.rowItemBody.text = item.price.toString()
             binding.rowItemTitle.setOnClickListener {

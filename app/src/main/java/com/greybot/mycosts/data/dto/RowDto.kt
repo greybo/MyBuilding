@@ -6,6 +6,7 @@ data class RowDto(
     var objectId: String? = null,
     val path: String = "",
     val title: String = "",
+    val measure: String = "",
     val count: Int = 1,
     val price: Float = 0F,
     val isBought: Boolean = false,

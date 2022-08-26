@@ -1,4 +1,4 @@
-package com.greybot.mycosts.data.repository
+package com.greybot.mycosts.data.repository.row
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -9,7 +9,8 @@ import com.greybot.mycosts.data.dto.RowDto
 import com.greybot.mycosts.utility.LogApp
 import kotlinx.coroutines.CompletableDeferred
 
-class RowDataSource {
+//TODO init with HILT
+class RowRepo() {
     private val uid: String = "123456"
     private val path: String = "rows"
     private val myRef = Firebase.database.reference.child(path).child(uid)

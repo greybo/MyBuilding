@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.explore
+package com.greybot.mycosts.present.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.greybot.mycosts.models.AdapterItems
@@ -28,7 +28,7 @@ class DiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
     override fun areContentsTheSame(oldItem: AdapterItems, newItem: AdapterItems) =
         when {
             oldItem is AdapterItems.RowItem && newItem is AdapterItems.RowItem -> {
-                oldItem.check == newItem.check &&
+                oldItem.isBought == newItem.isBought &&
                         oldItem.name == newItem.name &&
                         oldItem.path == newItem.path &&
                         oldItem.price == newItem.price

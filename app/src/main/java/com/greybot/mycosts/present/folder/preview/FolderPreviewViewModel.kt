@@ -3,17 +3,19 @@ package com.greybot.mycosts.present.folder.preview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
-import com.greybot.mycosts.base.FindFolderUseCases
-import com.greybot.mycosts.base.RowFolderUseCases
+import com.greybot.mycosts.data.dto.FolderDTO
+import com.greybot.mycosts.data.dto.RowDto
+import com.greybot.mycosts.data.repository.folder.FolderDataSource
+import com.greybot.mycosts.data.repository.row.RowDataSource
 import com.greybot.mycosts.models.AdapterItems
+import com.greybot.mycosts.present.file.addRowItems
 import com.greybot.mycosts.utility.Event
 import kotlinx.coroutines.async
 
 class FolderPreviewViewModel : CompositeViewModel() {
 
-    //    private val folderAddUseCase get() = AddFolderUseCases()
-    private val folderFindUseCase get() = FindFolderUseCases()
-    private val rowFindUseCase get() = RowFolderUseCases()
+    private val folderFindUseCase by lazy { FolderDataSource() }
+    private val rowFindUseCase by lazy { RowDataSource() }
 
     private val _stateButton = MutableLiveData<Event<ButtonType>>()
     val stateButton: LiveData<Event<ButtonType>> = _stateButton
@@ -21,28 +23,28 @@ class FolderPreviewViewModel : CompositeViewModel() {
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
 
-    private val rowListBackup = mutableListOf<AdapterItems.RowItem>()
+    private val rowListBackup = mutableListOf<RowDto>()
 
     fun fetchData(path: String?) {
         path ?: return
         launchOnIO {
-            val folderSet = async { folderFindUseCase.invoke(path) }
-            val rowSet = async { rowFindUseCase.invoke(path) }
-            handleResult(folderSet.await()?.toMutableList(), rowSet.await()?.toMutableList())
+            val folderSet = async { folderFindUseCase.findFolder(path) }
+            val rowSet = async { rowFindUseCase.findByPath(path) }
+            handleResult(folderSet.await(), rowSet.await())
         }
     }
 
-    fun changeRowBuy(item: AdapterItems.RowItem) {
+    fun changeRowBuy(objectId: String) {
         makeRowList(rowListBackup.map {
-            if (it.objectId == item.objectId) {
-                it.copy(check = !it.check)
+            if (it.objectId == objectId) {
+                it.copy(isBought = !it.isBought)
             } else it
         })
     }
 
     private fun handleResult(
-        folderList: MutableList<AdapterItems.FolderItem>?,
-        rowList: MutableList<AdapterItems.RowItem>?
+        folderList: Map<String?, List<FolderDTO>>?,
+        rowList: List<RowDto>?
     ) {
         var type = ButtonType.None
         if (!folderList.isNullOrEmpty()) {
@@ -50,15 +52,14 @@ class FolderPreviewViewModel : CompositeViewModel() {
             makeFolderList(folderList)
         } else if (!rowList.isNullOrEmpty()) {
             type = ButtonType.Row
-
             makeRowList(rowList)
         } else {
-            makeButtonsList()
+            makeButtonList()
         }
         _stateButton.postValue(Event(type))
     }
 
-    private fun makeButtonsList() {
+    private fun makeButtonList() {
         val itemList = listOf(
             AdapterItems.ButtonAddItem(ButtonType.Folder),
             AdapterItems.ButtonAddItem(ButtonType.Row)
@@ -66,49 +67,38 @@ class FolderPreviewViewModel : CompositeViewModel() {
         _state.postValue(itemList)
     }
 
-    private fun makeRowList(rowList: List<AdapterItems.RowItem>) {
-        val itemList = mutableListOf<AdapterItems>()
+    private fun makeRowList(rowList: List<RowDto>?) {
         rowListBackup.clear()
-        rowListBackup.addAll(rowList)
+        rowListBackup.addAll(rowList ?: emptyList())
+        rowList ?: return
 
-        val todoList = rowList.filter { !it.check }
-        if (todoList.isNotEmpty()) {
-            val todoTotal = getTotalPrice(todoList)
+        val groups = rowList.groupBy { it.isBought }
 
-            itemList.addAll(todoList)
-            itemList.add(AdapterItems.TotalItem(todoTotal))
-        }
-
-        val boughtList = rowList.filter { it.check }
-        if (boughtList.isNotEmpty()) {
-            val boughtTotal = getTotalPrice(boughtList)
-
-            itemList.addAll(boughtList)
-            itemList.add(AdapterItems.TotalItem(boughtTotal))
-        }
+        val itemList = mutableListOf<AdapterItems>()
+        itemList.addRowItems(groups[false])
+        itemList.addRowItems(groups[true])
 
         _state.postValue(itemList)
     }
 
-    private fun makeFolderList(folderList: MutableList<AdapterItems.FolderItem>) {
-        _state.postValue(folderList)
+    private fun makeFolderList(groups: Map<String?, List<FolderDTO>>?) {
+        val folderItems = groups?.mapNotNull { entry ->
+            entry.key?.let { folderCardMake(it, entry.value) }
+        } ?: emptyList()
+
+        _state.postValue(folderItems)
     }
 
-    private fun getTotalPrice(itemList: List<AdapterItems.RowItem>) =
-        itemList.fold(0F) { t, item ->
-            t + item.price
-        }
-
-    private fun MutableList<AdapterItems>.buttonState(): ButtonType {
-        val type = when (this.getOrNull(0)) {
-            is AdapterItems.FolderItem -> ButtonType.Folder
-            is AdapterItems.RowItem -> ButtonType.Row
-            else -> ButtonType.None
-        }
-
-        _stateButton.postValue(Event(type))
-        return type
-    }
+//    private fun MutableList<AdapterItems>.buttonState(): ButtonType {
+//        val type = when (this.getOrNull(0)) {
+//            is AdapterItems.FolderItem -> ButtonType.Folder
+//            is AdapterItems.RowItem -> ButtonType.Row
+//            else -> ButtonType.None
+//        }
+//
+//        _stateButton.postValue(Event(type))
+//        return type
+//    }
 
 }
 

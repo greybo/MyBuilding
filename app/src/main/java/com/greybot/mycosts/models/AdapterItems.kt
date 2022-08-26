@@ -3,7 +3,7 @@ package com.greybot.mycosts.models
 import com.greybot.mycosts.present.folder.preview.ButtonType
 
 sealed class AdapterItems {
-    class FolderItem(val name: String, val path: String, val description: String? = null) :
+    class FolderItem(val name: String, val path: String, val countInner: Int, val description: String? = null) :
         AdapterItems() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -26,11 +26,13 @@ sealed class AdapterItems {
         }
     }
 
-  data  class RowItem(
+    data class RowItem(
         val name: String,
         val path: String,
+        val measure: MeasureType,
+        val count: Int = 0,
         val price: Float = 0F,
-        val check: Boolean = false,
+        val isBought: Boolean = false,
         val objectId: String,
     ) : AdapterItems() {
 
@@ -44,4 +46,15 @@ sealed class AdapterItems {
 
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
     class TotalItem(val value: Float, val name: String = "Total") : AdapterItems()
+}
+
+enum class MeasureType(val rowValue: String) {
+    KG("kg"), PCS("pcs"), None("");
+
+    companion object {
+        fun toType(measure: String?): MeasureType {
+            return values().find { it.name == measure } ?: None
+        }
+    }
+
 }
