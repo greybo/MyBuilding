@@ -3,7 +3,7 @@ package com.greybot.mycosts.models
 import com.greybot.mycosts.present.folder.preview.ButtonType
 
 sealed class AdapterItems {
-    class FolderItem(val name: String, val path: String, val countInner: Int, val description: String? = null) :
+    class FolderItem(val name: String, val path: String, val countInner: Int, val description: String? = null, val objectId: String) :
         AdapterItems() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

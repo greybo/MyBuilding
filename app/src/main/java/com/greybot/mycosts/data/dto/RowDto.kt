@@ -1,5 +1,6 @@
 package com.greybot.mycosts.data.dto
 
+import com.google.firebase.database.Exclude
 import java.util.*
 
 data class RowDto(
@@ -12,4 +13,20 @@ data class RowDto(
     val isBought: Boolean = false,
     val currency: CurrencyDto? = CurrencyDto(),
     val data: Long = Date().time
-)
+) {
+
+    @Exclude
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "objectId" to objectId,
+            "path" to path,
+            "title" to title,
+            "measure" to measure,
+            "count" to count,
+            "price" to price,
+            "isBought" to isBought,
+            "currency" to currency,
+            "data" to data,
+        )
+    }
+}

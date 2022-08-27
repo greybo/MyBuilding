@@ -83,9 +83,11 @@ class FolderPreviewFragment :
                 handleButtonClick(buttonType)
             }
 
-            adapter = ExploreAdapter {
+            adapter = ExploreAdapter({
                 handleAdapterClick(it)
-            }
+            }, {
+                TODO()
+            })
             folderPreviewRecyclerView.setHasFixedSize(true)
             folderPreviewRecyclerView.adapter = adapter
         }

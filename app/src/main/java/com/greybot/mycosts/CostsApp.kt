@@ -3,6 +3,7 @@ package com.greybot.mycosts
 import android.app.Application
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.greybot.mycosts.analytics.AnalyticsManager
+import com.greybot.mycosts.views.AppCoordinator
 
 
 class CostsApp : Application() {
@@ -16,8 +17,9 @@ class CostsApp : Application() {
         super.onCreate()
         // Obtain the FirebaseAnalytics instance.
         share = this
+        AppCoordinator.create()
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
-        AnalyticsManager().sendAnalytics(BuildConfig.APPLICATION_ID,"test")
+        AnalyticsManager().sendAnalytics(BuildConfig.APPLICATION_ID, "test")
     }
 }

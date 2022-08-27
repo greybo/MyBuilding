@@ -27,10 +27,14 @@ class FolderDataSource(coroutineContext: CoroutineContext = EmptyCoroutineContex
         return filter { it.path.startsWith(_findPath) }
     }
 
-    fun addFolder(name: String?, path: String?) {
+    fun addFolder(name: String?, path: String?, time: Long) {
         if (!name.isNullOrBlank()) {
-            val item = FolderDTO(name = name, path = path.addToPath(name))
+            val item = FolderDTO(name = name, path = path.addToPath(name), date = time)
             repo.addFolder(item)
         } else toast("name null")
+    }
+
+    fun update(objectId: String, name: String, path: String) {
+        repo.update(FolderDTO(objectId = objectId, path = path, name = name))
     }
 }

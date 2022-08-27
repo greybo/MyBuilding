@@ -12,7 +12,7 @@ import com.greybot.mycosts.databinding.TotalAdapterItemBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.utility.inflateAdapter
 
-class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
+class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (AdapterItems) -> Unit) :
 //    ListAdapter<AdapterItems,ExploreAdapter.Holder>(DiffCallback()){
     ListAdapter<AdapterItems, ExploreAdapter.Holder>(
         AsyncDifferConfig.Builder(DiffCallback()).build()
@@ -48,7 +48,7 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return when (viewType) {
-            EXPLORE_ITEM -> ExploreHolder(parent.inflateAdapter(ExploreAdapterItemBinding::inflate))
+            EXPLORE_ITEM -> FolderHolder(parent.inflateAdapter(ExploreAdapterItemBinding::inflate))
             ADD_CONTENT_ITEM -> ButtonAddHolder(parent.inflateAdapter(ButtonAddAdapterItemBinding::inflate))
             ROW_ITEM -> RowHolder(parent.inflateAdapter(RowAdapterItemBinding::inflate))
             TOTAL_ITEM -> TotalHolder(parent.inflateAdapter(TotalAdapterItemBinding::inflate))
@@ -68,7 +68,7 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
         abstract fun onBind(item: AdapterItems)
     }
 
-    inner class ExploreHolder(private val binding: ExploreAdapterItemBinding) :
+    inner class FolderHolder(private val binding: ExploreAdapterItemBinding) :
         Holder(binding.root) {
 
         override fun onBind(item: AdapterItems) {
@@ -76,7 +76,11 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
             binding.exploreItemTitle.text = item.name
             binding.exploreItemBody.text = item.description
             itemView.setOnClickListener {
-                callback.invoke(item)
+                onClick.invoke(item)
+            }
+            itemView.setOnLongClickListener {
+                onLongClick.invoke(item)
+                false
             }
         }
     }
@@ -87,7 +91,7 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
             item as AdapterItems.ButtonAddItem
             binding.buttonAddItemName.text = item.type.row
             itemView.setOnClickListener {
-                callback.invoke(item)
+                onClick.invoke(item)
             }
         }
     }
@@ -100,10 +104,10 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
             binding.rowItemTitle.text = item.name
             binding.rowItemBody.text = item.price.toString()
             binding.rowItemTitle.setOnClickListener {
-                callback.invoke(item)
+                onClick.invoke(item)
             }
             binding.rowItemCheckDone.setOnClickListener {
-                callback.invoke(item.changeBuy())
+                onClick.invoke(item.changeBuy())
             }
         }
     }
@@ -115,7 +119,7 @@ class ExploreAdapter(val callback: (AdapterItems) -> Unit) :
             binding.totalItemTitle.text = item.name
             binding.totalItemValue.text = item.value.toString()
             itemView.setOnClickListener {
-                callback.invoke(item)
+                onClick.invoke(item)
             }
         }
     }

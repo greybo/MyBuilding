@@ -5,16 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.FolderDTO
 import com.greybot.mycosts.data.dto.RowDto
-import com.greybot.mycosts.data.repository.folder.FolderDataSource
 import com.greybot.mycosts.data.repository.row.RowDataSource
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.file.RowHandler
 import com.greybot.mycosts.utility.Event
+import com.greybot.mycosts.views.AppCoordinator
 import kotlinx.coroutines.async
 
 class FolderPreviewViewModel : CompositeViewModel() {
 
-    private val folderDataSource by lazy { FolderDataSource() }
+    private val folderDataSource get() = AppCoordinator.shared.folderDataSource
     private val rowDataSource by lazy { RowDataSource() }
     private val rowHandler by lazy { RowHandler() }
     private val folderHandler by lazy { FolderHandler() }

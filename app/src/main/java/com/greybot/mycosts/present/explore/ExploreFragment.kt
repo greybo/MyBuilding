@@ -2,13 +2,14 @@ package com.greybot.mycosts.present.explore
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.adapter.ExploreAdapter
-import com.greybot.mycosts.utility.*
+import com.greybot.mycosts.utility.animateFabHide
+import com.greybot.mycosts.utility.animateShowFab
+import com.greybot.mycosts.utility.getRouter
 
 
 class ExploreFragment :
@@ -20,13 +21,13 @@ class ExploreFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(FRAGMENT_RESULT_ADD_FOLDER) { key, bundle ->
-            if (FRAGMENT_RESULT_ADD_FOLDER == key) {
-                val name = (bundle.get(ARG_FOLDER_NAME) as? String)
-                val path = (bundle.get(ARG_FOLDER_PATH) as? String)
-                viewModel.addFolder(name, path)
-            }
-        }
+//        setFragmentResultListener(FRAGMENT_RESULT_ADD_FOLDER) { key, bundle ->
+//            if (FRAGMENT_RESULT_ADD_FOLDER == key) {
+//                val name = (bundle.get(ARG_FOLDER_NAME) as? String)
+//                val path = (bundle.get(ARG_FOLDER_PATH) as? String)
+//                viewModel.addFolder(name, path)
+//            }
+//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,6 +43,23 @@ class ExploreFragment :
         viewModel.fetchData()
     }
 
+    private fun initViews() {
+        with(binding) {
+            exploreFloatButton.setOnClickListener {
+                binding.exploreFloatButton.animateFabHide {
+                    router.fromExploreToAddFolder("")
+                }
+            }
+            adapter = ExploreAdapter({
+                handleOnClick(it)
+            }, {
+                handleOnLongClick(it)
+            })
+            mainRecyclerViewX.setHasFixedSize(true)
+            mainRecyclerViewX.adapter = adapter
+        }
+    }
+
     private fun handleOnClick(item: AdapterItems) {
         when (item) {
             is AdapterItems.FolderItem -> {
@@ -53,18 +71,14 @@ class ExploreFragment :
         }
     }
 
-    private fun initViews() {
-        with(binding) {
-            exploreFloatButton.setOnClickListener {
+    private fun handleOnLongClick(item: AdapterItems) {
+        when (item) {
+            is AdapterItems.FolderItem -> {
                 binding.exploreFloatButton.animateFabHide {
-                    router.fromExploreToAddFolder()
+                    router.fromExploreToFolder(item.path)
                 }
             }
-            adapter = ExploreAdapter {
-                handleOnClick(it)
-            }
-            mainRecyclerViewX.setHasFixedSize(true)
-            mainRecyclerViewX.adapter = adapter
+            else -> TODO()
         }
     }
 

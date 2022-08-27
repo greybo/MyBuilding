@@ -1,13 +1,14 @@
 package com.greybot.mycosts.present.folder.add
 
 import com.greybot.mycosts.base.CompositeViewModel
-import com.greybot.mycosts.data.repository.folder.FolderDataSource
+import com.greybot.mycosts.views.AppCoordinator
 
 class FolderAddViewModel : CompositeViewModel() {
 
-    private val dataSource get() = FolderDataSource()
+    private val dataSource get() = AppCoordinator.shared.folderDataSource
 
-    fun addFolder(name: String?, path: String?) {
-        dataSource.addFolder(name, path)
+    fun addFolder(name: String?, path: String?, time: Long) {
+        if (name != null)
+            dataSource.addFolder(name, path, time)
     }
 }

@@ -56,6 +56,25 @@
     </fragment>
 
     <action
+        android:id="@+id/toFolderEditFragment"
+        app:destination="@+id/FolderEditFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/FolderEditFragment"
+        android:name="com.greybot.mycosts.present.folder.add.FolderEditFragment"
+        android:label="FolderAddFragment">
+
+        <argument
+            android:name="objectId"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+
+    <action
         android:id="@+id/toRowAddFragment"
         app:destination="@+id/RowAddFragment"
         app:enterAnim="@anim/slide_in_right"
