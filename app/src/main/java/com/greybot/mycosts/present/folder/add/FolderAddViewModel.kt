@@ -5,9 +5,9 @@ import com.greybot.mycosts.data.repository.folder.FolderDataSource
 
 class FolderAddViewModel : CompositeViewModel() {
 
-    private val folderAddUseCase get() = FolderDataSource()
+    private val dataSource get() = FolderDataSource()
 
     fun addFolder(name: String?, path: String?) {
-        folderAddUseCase.addFolder(name, path)
+        dataSource.addFolder(name, path)
     }
 }

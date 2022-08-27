@@ -8,13 +8,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import au.com.crownresorts.crma.extensions.gone
 import com.greybot.mycosts.base.BaseBindingFragment
+import com.greybot.mycosts.base.getEndSegment
 import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.adapter.ExploreAdapter
 import com.greybot.mycosts.utility.animateFabHide
 import com.greybot.mycosts.utility.animateShowFab
-import com.greybot.mycosts.utility.getEndSegment
 import com.greybot.mycosts.utility.getRouter
 
 class FolderPreviewFragment :

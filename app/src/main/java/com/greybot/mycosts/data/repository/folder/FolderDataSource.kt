@@ -1,7 +1,8 @@
 package com.greybot.mycosts.data.repository.folder
 
+import com.greybot.mycosts.base.addToPath
+import com.greybot.mycosts.base.findName
 import com.greybot.mycosts.data.dto.FolderDTO
-import com.greybot.mycosts.utility.addToPath
 import com.greybot.mycosts.utility.toast
 import kotlinx.coroutines.CoroutineScope
 import kotlin.coroutines.CoroutineContext
@@ -13,20 +14,17 @@ class FolderDataSource(coroutineContext: CoroutineContext = EmptyCoroutineContex
     private val repo: FolderRepo = FolderRepo()
 
     suspend fun findFolder(
-        path: String
+        pathFind: String
     ): Map<String?, List<FolderDTO>>? {
-        val findPath = "$path/"
-        return repo.getFolderAll()?.filter { it.path.startsWith(findPath) }
+        val _findPath = "$pathFind/"
+        return repo.getFolderAll()?.findByPath(_findPath)
             ?.groupBy {
-                it.path.substring(findPath.length, it.path.length).split("/").getOrNull(0)
+                findName(_findPath, it.path)
             }
+    }
 
-//        return list?.mapNotNull { item ->
-//            if (item.path.startsWith(findPath)) {
-//                val name = getNameFromPath(findPath, item.path)
-//                AdapterItems.FolderItem(name, "$findPath$name")
-//            } else null
-//        }?.toMutableSet()
+    private fun List<FolderDTO>.findByPath(_findPath: String): List<FolderDTO> {
+        return filter { it.path.startsWith(_findPath) }
     }
 
     fun addFolder(name: String?, path: String?) {

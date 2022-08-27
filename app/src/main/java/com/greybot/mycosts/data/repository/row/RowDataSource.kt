@@ -5,6 +5,13 @@ import com.greybot.mycosts.data.dto.RowDto
 
 class RowDataSource {
     private val repo: RowRepo = RowRepo()
+    val list = mutableListOf<RowDto>()
+
+    fun getAll() {
+        buildList<RowDto> {
+            add(RowDto())
+        }
+    }
 
     suspend fun findByPath(
         findPath: String
@@ -29,6 +36,7 @@ class RowDataSource {
             price = price,
             currency = currency
         )
+        list.add(row)
         repo.addRow(row)
     }
 }
