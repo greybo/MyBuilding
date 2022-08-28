@@ -43,9 +43,9 @@ fun String?.splitPath(): List<String> {
     return list ?: emptyList()
 }
 
-fun findName(pathFind: String, pathLocal: String): String? {
+fun findName(pathFind: String, pathFolder: String): String? {
     val layer = pathFind.splitPath().size
-    return pathLocal.splitPath().getOrNull(layer)
+    return pathFolder.splitPath().getOrNull(layer)
 }
 
 fun String?.addToPath(text: String?): String {

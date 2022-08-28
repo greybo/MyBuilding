@@ -14,6 +14,7 @@ import kotlinx.coroutines.async
 
 class FolderPreviewViewModel : CompositeViewModel() {
 
+    var objectId: String? = null
     private val folderDataSource get() = AppCoordinator.shared.folderDataSource
     private val rowDataSource by lazy { RowDataSource() }
     private val rowHandler by lazy { RowHandler() }
@@ -57,9 +58,8 @@ class FolderPreviewViewModel : CompositeViewModel() {
         rowList: List<RowDto>?
     ) {
         var type = ButtonType.None
-        if (!folderList.isNullOrEmpty()) {
+        if (makeFolderList(folderList)) {
             type = ButtonType.Folder
-            makeFolderList(folderList)
         } else if (!rowList.isNullOrEmpty()) {
             type = ButtonType.Row
             makeRowList(rowList)
@@ -83,9 +83,13 @@ class FolderPreviewViewModel : CompositeViewModel() {
         _state.postValue(itemList)
     }
 
-    private fun makeFolderList(list: Map<String?, List<FolderDTO>>?) {
-        val folderItems = folderHandler.makeFolderItems(currentPath, list)
-        _state.postValue(folderItems)
+    private fun makeFolderList(map: Map<String?, List<FolderDTO>>?): Boolean {
+        objectId = map?.getOrDefault(null, null)?.getOrNull(0)?.objectId
+        val folderItems = folderHandler.makeFolderItems(currentPath, map)
+        return if (folderItems.isNotEmpty()) {
+            _state.postValue(folderItems)
+            true
+        } else false
     }
 }
 

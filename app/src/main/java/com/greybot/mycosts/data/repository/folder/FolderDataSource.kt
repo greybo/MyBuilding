@@ -17,7 +17,7 @@ class FolderDataSource(coroutineContext: CoroutineContext = EmptyCoroutineContex
         pathFind: String
     ): Map<String?, List<FolderDTO>>? {
         val _findPath = "$pathFind/"
-        return repo.getFolderAll()?.findByPath(_findPath)
+        return repo.getFolderAll()?.findByPath(pathFind)
             ?.groupBy {
                 findName(_findPath, it.path)
             }
