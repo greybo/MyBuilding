@@ -37,11 +37,19 @@ class FolderPreviewViewModel : CompositeViewModel() {
     }
 
     fun changeRowBuy(objectId: String) {
-        makeRowList(rowDataSource.list.map {
-            if (it.objectId == objectId) {
-                it.copy(isBought = !it.isBought)
-            } else it
-        })
+        launchOnIO {
+            makeRowList(rowDataSource.getAll().map { row ->
+                if (row.objectId == objectId) {
+                    row.copy(isBought = !row.isBought).also { changedRow ->
+                        updateDB(changedRow)
+                    }
+                } else row
+            })
+        }
+    }
+
+    private fun updateDB(row: RowDto) {
+        rowDataSource.update(row)
     }
 
     private fun handleResult(
