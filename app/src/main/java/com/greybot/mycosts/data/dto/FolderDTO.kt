@@ -9,6 +9,7 @@ data class FolderDTO(
     var objectId: String? = null,
     val path: String = "",
     var name: String = "",
+    var isArchive: Boolean = false,
     var date: Long = Date().time,
 ) {
     override fun equals(other: Any?): Boolean {

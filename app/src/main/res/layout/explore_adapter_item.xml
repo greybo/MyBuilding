@@ -4,17 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp">
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingTop="8dp">
 
     <TextView
         android:id="@+id/exploreItem_Title"
         style="@style/H6_base"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toStartOf="@+id/exploreItem_body"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toStartOf="@+id/exploreItem_count"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,14 +25,38 @@
         tools:text="Text" />
 
     <TextView
-        android:id="@+id/exploreItem_body"
+        android:id="@+id/exploreItem_count"
         style="@style/Subtitle1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="end|bottom"
+        app:layout_constraintBottom_toBottomOf="@+id/exploreItem_Title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/exploreItem_Title"
-        app:layout_constraintBottom_toBottomOf="@+id/exploreItem_Title"
-        tools:text="Text" />
+        app:layout_constraintTop_toTopOf="@+id/exploreItem_Title"
+        tools:text="count: 0" />
+
+    <TextView
+        android:id="@+id/exploreItem_total"
+        style="@style/Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/exploreItem_count"
+        tools:text="total: 0 uah" />
+
+    <View
+        android:id="@+id/exploreItem_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/divider_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exploreItem_total" />
 </androidx.constraintlayout.widget.ConstraintLayout>

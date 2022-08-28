@@ -74,7 +74,8 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.FolderItem
             binding.exploreItemTitle.text = item.name
-            binding.exploreItemBody.text = item.description
+            binding.exploreItemCount.text = item.countInner
+            binding.exploreItemTotal.text = item.total
             itemView.setOnClickListener {
                 onClick.invoke(item)
             }

@@ -3,7 +3,7 @@ package com.greybot.mycosts.models
 import com.greybot.mycosts.present.folder.preview.ButtonType
 
 sealed class AdapterItems {
-    class FolderItem(val name: String, val path: String, val countInner: Int, val description: String? = null, val objectId: String) :
+    class FolderItem(val name: String, val path: String, val countInner: String, val total: String, val objectId: String? = null) :
         AdapterItems() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -13,7 +13,9 @@ sealed class AdapterItems {
 
             if (name != other.name) return false
             if (path != other.path) return false
-            if (description != other.description) return false
+            if (countInner != other.countInner) return false
+            if (total != other.total) return false
+            if (objectId != other.objectId) return false
 
             return true
         }
@@ -21,7 +23,9 @@ sealed class AdapterItems {
         override fun hashCode(): Int {
             var result = name.hashCode()
             result = 31 * result + path.hashCode()
-            result = 31 * result + (description?.hashCode() ?: 0)
+            result = 31 * result + countInner.hashCode()
+            result = 31 * result + total.hashCode()
+            result = 31 * result + (objectId?.hashCode() ?: 0)
             return result
         }
     }
@@ -46,6 +50,7 @@ sealed class AdapterItems {
 
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
     class TotalItem(val value: Float, val name: String = "Total") : AdapterItems()
+
 }
 
 enum class MeasureType(val rowValue: String) {
