@@ -26,6 +26,7 @@ class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragment
                     rowName = addRowName.text.toString(),
                     count = addRowCount.text.toString(),
                     price = addRowPrice.text.toString().toFloat(),
+                    parentId= args?.objectId
                 )
                 findNavController().popBackStack()
             }

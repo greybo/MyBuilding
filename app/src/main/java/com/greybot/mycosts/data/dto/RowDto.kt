@@ -13,7 +13,7 @@ data class RowDto(
     val measure: String = "",
     val count: Int = 1,
     val price: Float = 0F,
-    val isBought: Boolean = false,
+    val bought: Boolean = false,
     val currency: CurrencyDto? = CurrencyDto(),
     val data: Long = Date().time
 ) {
@@ -28,7 +28,7 @@ data class RowDto(
             "measure" to measure,
             "count" to count,
             "price" to price,
-            "isBought" to isBought,
+            "bought" to bought,
             "currency" to currency,
             "data" to data,
         )
@@ -47,7 +47,7 @@ data class RowDto(
         if (measure != other.measure) return false
         if (count != other.count) return false
         if (price != other.price) return false
-        if (isBought != other.isBought) return false
+        if (bought != other.bought) return false
         if (currency != other.currency) return false
         if (data != other.data) return false
 
@@ -62,7 +62,7 @@ data class RowDto(
         result = 31 * result + measure.hashCode()
         result = 31 * result + count
         result = 31 * result + price.hashCode()
-        result = 31 * result + isBought.hashCode()
+        result = 31 * result + bought.hashCode()
         result = 31 * result + (currency?.hashCode() ?: 0)
         result = 31 * result + data.hashCode()
         return result

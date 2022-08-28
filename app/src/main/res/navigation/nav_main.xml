@@ -92,6 +92,11 @@
             android:defaultValue=""
             app:argType="string"
             app:nullable="false" />
+        <argument
+            android:name="objectId"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="false" />
     </fragment>
 
     <action

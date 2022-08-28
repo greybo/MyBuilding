@@ -102,10 +102,10 @@ class FolderPreviewFragment :
         }
     }
 
-    private fun handleButtonClick(type: ButtonType, path: String = args?.pathName ?: "") {
+    private fun handleButtonClick(type: ButtonType, path: String = args?.pathName ?: "", id: String = viewModel.objectId ?: "") {
         when (type) {
             ButtonType.Folder -> animateFabHide { router.fromFolderToAddFolder(path) }
-            ButtonType.Row -> animateFabHide { router.fromFolderToAddRow(path) }
+            ButtonType.Row -> animateFabHide { router.fromFolderToAddRow(path, id) }
             else -> {}
         }
     }

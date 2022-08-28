@@ -7,7 +7,7 @@ import com.greybot.mycosts.models.MeasureType
 class RowHandler {
 
     fun makeGroupBuy(rowList: List<RowDto>): List<AdapterItems> {
-        val groups = rowList.groupBy { it.isBought }
+        val groups = rowList.groupBy { it.bought }
         return buildList {
             addAll(makeItems(groups[false]))
             addAll(makeItems(groups[true]))
@@ -31,7 +31,7 @@ class RowHandler {
         measure = MeasureType.toType(item.measure),
         price = item.price,
         count = item.count,
-        isBought = item.isBought,
+        isBought = item.bought,
         objectId = item.objectId!!,
     )
 

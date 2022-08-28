@@ -9,9 +9,19 @@ data class FolderDTO(
     var objectId: String? = null,
     val path: String = "",
     var name: String = "",
-    var isArchive: Boolean = false,
+    var archive: Boolean = false,
     var date: Long = Date().time,
 ) {
+
+    @Exclude
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "objectId" to objectId,
+            "path" to path,
+            "name" to name,
+        )
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -21,6 +31,8 @@ data class FolderDTO(
         if (objectId != other.objectId) return false
         if (path != other.path) return false
         if (name != other.name) return false
+        if (archive != other.archive) return false
+        if (date != other.date) return false
 
         return true
     }
@@ -29,15 +41,8 @@ data class FolderDTO(
         var result = objectId?.hashCode() ?: 0
         result = 31 * result + path.hashCode()
         result = 31 * result + name.hashCode()
+        result = 31 * result + archive.hashCode()
+        result = 31 * result + date.hashCode()
         return result
-    }
-
-    @Exclude
-    fun toMap(): Map<String, Any?> {
-        return mapOf(
-            "objectId" to objectId,
-            "path" to path,
-            "name" to name,
-        )
     }
 }

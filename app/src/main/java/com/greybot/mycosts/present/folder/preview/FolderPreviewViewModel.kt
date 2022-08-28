@@ -13,7 +13,6 @@ import kotlinx.coroutines.async
 
 class FolderPreviewViewModel : CompositeViewModel() {
 
-
     private val folderDataSource get() = AppCoordinator.shared.folderDataSource
     private val rowDataSource get() = AppCoordinator.shared.rowDataSource
     private val rowHandler by lazy { RowHandler() }
@@ -38,12 +37,8 @@ class FolderPreviewViewModel : CompositeViewModel() {
     }
 
     fun changeRowBuy(item: AdapterItems.RowItem) {
-            updateDB(item.objectId)
-            makeRowList(rowDataSource.geBackupList())
-    }
-
-    private fun updateDB(objectId: String) {
-        rowDataSource.update(objectId)
+        rowDataSource.update(item.objectId)
+        makeRowList(rowDataSource.geBackupList())
     }
 
     private fun handleResult(

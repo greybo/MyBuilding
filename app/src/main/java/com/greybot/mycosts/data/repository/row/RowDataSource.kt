@@ -22,14 +22,16 @@ class RowDataSource {
         rowName: String,
         count: Int = 0,
         price: Float = 0F,
-        currency: CurrencyDto? = null
+        currency: CurrencyDto? = null,
+        parentId: String?
     ) {
         val row = RowDto(
             path = path,
             title = rowName,
             count = count,
             price = price,
-            currency = currency
+            currency = currency,
+            parentId = parentId
         )
         repo.addRow(row)
     }

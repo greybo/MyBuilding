@@ -1,6 +1,5 @@
 package com.greybot.mycosts.data.repository.row
 
-import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -8,7 +7,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.greybot.mycosts.data.dto.RowDto
-import com.greybot.mycosts.data.repository.getBoolean
 import com.greybot.mycosts.utility.LogApp
 import kotlinx.coroutines.CompletableDeferred
 
@@ -50,16 +48,14 @@ class RowRepo() {
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val itemFolder = snapshot.children.mapNotNull {
-                        val dto = it.getValue(RowDto::class.java)
-                        val isBought = it.getBoolean("isBought")
-                        dto?.copy(isBought = isBought)
+                         it.getValue(RowDto::class.java)
                     }
                     success(itemFolder)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     failed(error.toException())
-                    LogApp.e("getFolderTest", error.toException())
+                    LogApp.e("RowRepo", error.toException())
                 }
             }
         )
@@ -76,7 +72,7 @@ class RowRepo() {
 
                 override fun onCancelled(error: DatabaseError) {
                     deferred.completeExceptionally(error.toException())
-                    LogApp.e("getFolderTest", error.toException())
+                    LogApp.e("RowRepo", error.toException())
                 }
             }
         )
@@ -94,7 +90,7 @@ class RowRepo() {
 
                 override fun onCancelled(error: DatabaseError) {
                     deferred.completeExceptionally(error.toException())
-                    LogApp.e("getFolderTest", error.toException())
+                    LogApp.e("RowRepo", error.toException())
                 }
             }
         )
@@ -108,16 +104,16 @@ class RowRepo() {
 
         myRef.child(key).setValue(dto) { error, ref ->
             if (error != null) {
-                LogApp.e("ExploreFragment", error.toException())
+                LogApp.e("RowRepo", error.toException())
             }
-            LogApp.i("ExploreFragment", ref.toString())
+            LogApp.i("RowRepo", ref.toString())
         }
     }
 
     fun update(objectId: String) {
         val list = backupList.map { row ->
             if (row.objectId == objectId) {
-                val changedRow = row.copy(isBought = !row.isBought)
+                val changedRow = row.copy(bought = !row.bought)
                 update(changedRow)
                 changedRow
             } else row
@@ -126,11 +122,11 @@ class RowRepo() {
         backupList.addAll(list)
     }
 
-    fun update(item: RowDto) {
+    private fun update(item: RowDto) {
         val database: DatabaseReference = Firebase.database.reference
 
         if (item.objectId == null) {
-            Log.w("TAG", "Couldn't get push key for posts")
+            LogApp.w("RowRepo", null,"Couldn't get push key for posts")
             return
         }
 
