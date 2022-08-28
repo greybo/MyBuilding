@@ -144,9 +144,9 @@ class RowRepo() {
         )
 
         database.updateChildren(childUpdates)
-//            .addOnSuccessListener {
-//                LogApp.i("writeNewPost", "success")
-//            }
+            .addOnSuccessListener {
+                LogApp.i("writeNewPost", "success")
+            }
         /*.addOnFailureListener {
                 LogApp.e("writeNewPost", it)
             }*/

@@ -9,7 +9,9 @@ class FolderHandler {
     fun makeFolderItems(path: String, map: Map<String?, List<FolderDTO>>?): List<AdapterItems> {
         return map?.mapNotNull { entry ->
             entry.key?.let { name ->
-                AdapterItems.FolderItem(name, Path(path).addToPath(name), countInner = "count:${entry.value.size}", total = "total: 0")
+                val currentPath = Path(path).addToPath(name)
+                val currentFolder = entry.value.find { it.path == currentPath }
+                AdapterItems.FolderItem(name, currentPath, countInner = "count:${entry.value.size}", total = "total: 0", objectId = currentFolder?.objectId)
             }
         } ?: emptyList()
     }

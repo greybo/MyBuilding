@@ -36,10 +36,10 @@ class FolderPreviewViewModel : CompositeViewModel() {
         }
     }
 
-    fun changeRowBuy(objectId: String) {
+    fun changeRowBuy(item: AdapterItems.RowItem) {
         launchOnIO {
             makeRowList(rowDataSource.getAll().map { row ->
-                if (row.objectId == objectId) {
+                if (row.objectId == item.objectId) {
                     row.copy(isBought = !row.isBought).also { changedRow ->
                         updateDB(changedRow)
                     }

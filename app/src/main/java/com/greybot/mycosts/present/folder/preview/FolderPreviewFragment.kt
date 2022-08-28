@@ -101,7 +101,7 @@ class FolderPreviewFragment :
             }
             is AdapterItems.RowItem -> {
                 if (item.changeBuy)
-                    viewModel.changeRowBuy(item.objectId)
+                    viewModel.changeRowBuy(item)
                 else
                     animateFabHide { router.fromFolderToEditRow(item.objectId) }
             }

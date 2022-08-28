@@ -28,9 +28,4 @@ class ExploreViewModel : CompositeViewModel() {
             _state.postValue(items)
         }
     }
-
-    fun addFolder(name: String?, path: String?,time:Long) {
-        folderDataSource.addFolder(name, path, time)
-    }
-
 }
