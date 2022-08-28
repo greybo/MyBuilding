@@ -1,8 +1,10 @@
 package com.greybot.mycosts.data.dto
 
 import com.google.firebase.database.Exclude
+import com.google.firebase.database.IgnoreExtraProperties
 import java.util.*
 
+@IgnoreExtraProperties
 data class RowDto(
     var objectId: String? = null,
     var parentId: String? = null,
@@ -20,6 +22,7 @@ data class RowDto(
     fun toMap(): Map<String, Any?> {
         return mapOf(
             "objectId" to objectId,
+            "parentId" to parentId,
             "path" to path,
             "title" to title,
             "measure" to measure,

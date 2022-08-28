@@ -104,6 +104,7 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
             binding.rowItemCheckDone.isChecked = item.isBought
             binding.rowItemTitle.text = item.name
             binding.rowItemBody.text = item.price.toString()
+
             binding.rowItemTitle.setOnClickListener {
                 onClick.invoke(item)
             }

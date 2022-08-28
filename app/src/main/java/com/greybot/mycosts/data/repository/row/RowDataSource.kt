@@ -6,18 +6,16 @@ import com.greybot.mycosts.data.dto.RowDto
 class RowDataSource {
     private val repo: RowRepo = RowRepo()
 
-    suspend fun getAll(): List<RowDto> {
-        return repo.getAll()
-    }
+    fun geBackupList() = repo.backupList
 
     suspend fun findByPath(
         findPath: String
-    ) = repo.getAllData()?.filter { it.path.startsWith(findPath) }
+    ) = repo.getAll().filter { it.path.startsWith(findPath) }
 
 
     suspend fun findById(
         objectId: String
-    ) = repo.getAllData()?.find { dto -> dto.objectId == objectId }
+    ) = repo.getAll().find { dto -> dto.objectId == objectId }
 
     fun addRow(
         path: String,
@@ -36,7 +34,7 @@ class RowDataSource {
         repo.addRow(row)
     }
 
-    fun update(row: RowDto) {
-        repo.update(row)
+    fun update(objectId: String) {
+        repo.update(objectId)
     }
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.FolderDTO
 import com.greybot.mycosts.data.dto.RowDto
-import com.greybot.mycosts.data.repository.row.RowDataSource
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.file.RowHandler
 import com.greybot.mycosts.utility.Event
@@ -14,9 +13,9 @@ import kotlinx.coroutines.async
 
 class FolderPreviewViewModel : CompositeViewModel() {
 
-    var objectId: String? = null
+
     private val folderDataSource get() = AppCoordinator.shared.folderDataSource
-    private val rowDataSource by lazy { RowDataSource() }
+    private val rowDataSource get() = AppCoordinator.shared.rowDataSource
     private val rowHandler by lazy { RowHandler() }
     private val folderHandler by lazy { FolderHandler() }
 
@@ -26,6 +25,7 @@ class FolderPreviewViewModel : CompositeViewModel() {
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
 
+    var objectId: String? = null
     private var currentPath = ""
 
     fun fetchData(path: String?) {
@@ -38,19 +38,12 @@ class FolderPreviewViewModel : CompositeViewModel() {
     }
 
     fun changeRowBuy(item: AdapterItems.RowItem) {
-        launchOnIO {
-            makeRowList(rowDataSource.getAll().map { row ->
-                if (row.objectId == item.objectId) {
-                    row.copy(isBought = !row.isBought).also { changedRow ->
-                        updateDB(changedRow)
-                    }
-                } else row
-            })
-        }
+            updateDB(item.objectId)
+            makeRowList(rowDataSource.geBackupList())
     }
 
-    private fun updateDB(row: RowDto) {
-        rowDataSource.update(row)
+    private fun updateDB(objectId: String) {
+        rowDataSource.update(objectId)
     }
 
     private fun handleResult(

@@ -31,13 +31,6 @@ class FolderPreviewFragment :
         arguments?.let {
             args = FolderPreviewFragmentArgs.fromBundle(it)
         }
-//        setFragmentResultListener(FRAGMENT_RESULT_ADD_FOLDER) { key, bundle ->
-//            if (FRAGMENT_RESULT_ADD_FOLDER == key) {
-//                val name = (bundle.get(ARG_FOLDER_NAME) as? String)
-//                val path = (bundle.get(ARG_FOLDER_PATH) as? String)
-//                viewModel.addFolder(name, path)
-//            }
-//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,7 +49,7 @@ class FolderPreviewFragment :
         systemBackPressedCallback { backPress() }
         Handler(Looper.getMainLooper()).postDelayed({
             viewModel.fetchData(args?.pathName)
-        }, 200)
+        }, 300)
     }
 
     private fun backPress() {

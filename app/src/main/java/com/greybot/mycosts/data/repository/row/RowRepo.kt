@@ -8,6 +8,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.greybot.mycosts.data.dto.RowDto
+import com.greybot.mycosts.data.repository.getBoolean
 import com.greybot.mycosts.utility.LogApp
 import kotlinx.coroutines.CompletableDeferred
 
@@ -17,14 +18,14 @@ class RowRepo() {
     private val path: String = "rows"
     private val database = Firebase.database.reference
     private val myRef = database.child(path).child(uid)
-    private val backupList = mutableListOf<RowDto>()
+    val backupList = mutableListOf<RowDto>()
 
     suspend fun getAll(): List<RowDto> {
         val deferred = CompletableDeferred<List<RowDto>>()
         if (backupList.isNotEmpty()) {
             deferred.complete(backupList)
         }
-        getAllData2({
+        getAllData({
             if (!equalsList(it, backupList)) {
                 deferred.complete(it)
             }
@@ -43,12 +44,15 @@ class RowRepo() {
         }
         return true
     }
-    private fun getAllData2(success: (List<RowDto>) -> Unit, failed: (Throwable) -> Unit) {
+
+    private fun getAllData(success: (List<RowDto>) -> Unit, failed: (Throwable) -> Unit) {
         myRef.orderByKey().addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val itemFolder = snapshot.children.mapNotNull {
-                        it.getValue(RowDto::class.java)
+                        val dto = it.getValue(RowDto::class.java)
+                        val isBought = it.getBoolean("isBought")
+                        dto?.copy(isBought = isBought)
                     }
                     success(itemFolder)
                 }
@@ -59,26 +63,6 @@ class RowRepo() {
                 }
             }
         )
-    }
-
-    suspend fun getAllData(): List<RowDto>? {
-        val deferred = CompletableDeferred<List<RowDto>?>()
-        myRef.orderByKey().addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val itemFolder = snapshot.children.mapNotNull {
-                        it.getValue(RowDto::class.java)
-                    }
-                    deferred.complete(itemFolder)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    deferred.completeExceptionally(error.toException())
-                    LogApp.e("getFolderTest", error.toException())
-                }
-            }
-        )
-        return deferred.await()
     }
 
     suspend fun getById(objectId: String): RowDto? {
@@ -98,6 +82,7 @@ class RowRepo() {
         )
         return deferred.await()
     }
+
     suspend fun getByParentId(objectId: String): RowDto? {
         val deferred = CompletableDeferred<RowDto?>()
         myRef.child(objectId).addListenerForSingleValueEvent(
@@ -129,6 +114,18 @@ class RowRepo() {
         }
     }
 
+    fun update(objectId: String) {
+        val list = backupList.map { row ->
+            if (row.objectId == objectId) {
+                val changedRow = row.copy(isBought = !row.isBought)
+                update(changedRow)
+                changedRow
+            } else row
+        }
+        backupList.clear()
+        backupList.addAll(list)
+    }
+
     fun update(item: RowDto) {
         val database: DatabaseReference = Firebase.database.reference
 
@@ -144,9 +141,9 @@ class RowRepo() {
         )
 
         database.updateChildren(childUpdates)
-            .addOnSuccessListener {
-                LogApp.i("writeNewPost", "success")
-            }
+//            .addOnSuccessListener {
+//                LogApp.i("writeNewPost", "success")
+//            }
         /*.addOnFailureListener {
                 LogApp.e("writeNewPost", it)
             }*/

@@ -1,6 +1,7 @@
 package com.greybot.mycosts.views
 
 import com.greybot.mycosts.data.repository.folder.FolderDataSource
+import com.greybot.mycosts.data.repository.row.RowDataSource
 
 class AppCoordinator private constructor(){
 
@@ -12,4 +13,5 @@ class AppCoordinator private constructor(){
     }
 
     val folderDataSource by lazy { FolderDataSource() }
+    val rowDataSource by lazy { RowDataSource() }
 }
