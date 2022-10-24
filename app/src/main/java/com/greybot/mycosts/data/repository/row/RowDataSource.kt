@@ -36,7 +36,18 @@ class RowDataSource {
         repo.addRow(row)
     }
 
-    fun update(objectId: String) {
-        repo.update(objectId)
+    fun changeBuyStatus(objectId: String) {
+        val list = geBackupList().map { row ->
+            if (row.objectId == objectId) {
+                val changedRow = row.copy(bought = !row.bought)
+                repo.saveModel(changedRow)
+                changedRow
+            } else row
+        }
+        repo.saveBackupList(list)
+    }
+
+    fun save(model: RowDto?) {
+        model?.let { repo.saveModel(it) }
     }
 }

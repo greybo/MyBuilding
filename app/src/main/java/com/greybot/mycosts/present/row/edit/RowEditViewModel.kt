@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.file.edit
+package com.greybot.mycosts.present.row.edit
 
 import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
@@ -18,6 +18,10 @@ class RowEditViewModel : CompositeViewModel() {
     }
     private fun makeItems(model: RowDto?) {
         status.postValue(model)
+    }
+
+    fun editRow(editModel: RowDto?) {
+        dataSource.save(editModel)
     }
 }
 

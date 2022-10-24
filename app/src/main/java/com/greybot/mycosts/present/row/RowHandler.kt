@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.file
+package com.greybot.mycosts.present.row
 
 import com.greybot.mycosts.data.dto.RowDto
 import com.greybot.mycosts.models.AdapterItems

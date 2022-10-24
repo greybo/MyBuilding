@@ -48,7 +48,7 @@ class RowRepo() {
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val itemFolder = snapshot.children.mapNotNull {
-                         it.getValue(RowDto::class.java)
+                        it.getValue(RowDto::class.java)
                     }
                     success(itemFolder)
                 }
@@ -110,23 +110,12 @@ class RowRepo() {
         }
     }
 
-    fun update(objectId: String) {
-        val list = backupList.map { row ->
-            if (row.objectId == objectId) {
-                val changedRow = row.copy(bought = !row.bought)
-                update(changedRow)
-                changedRow
-            } else row
-        }
-        backupList.clear()
-        backupList.addAll(list)
-    }
 
-    private fun update(item: RowDto) {
+    fun saveModel(item: RowDto) {
         val database: DatabaseReference = Firebase.database.reference
 
         if (item.objectId == null) {
-            LogApp.w("RowRepo", null,"Couldn't get push key for posts")
+            LogApp.w("RowRepo", null, "Couldn't get push key for posts")
             return
         }
 
@@ -143,5 +132,10 @@ class RowRepo() {
         /*.addOnFailureListener {
                 LogApp.e("writeNewPost", it)
             }*/
+    }
+
+    fun saveBackupList(list: List<RowDto>) {
+        backupList.clear()
+        backupList.addAll(list)
     }
 }

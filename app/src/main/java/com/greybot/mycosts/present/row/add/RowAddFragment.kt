@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.file.add
+package com.greybot.mycosts.present.row.add
 
 import android.os.Bundle
 import android.view.View

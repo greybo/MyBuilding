@@ -4,45 +4,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/addRowName"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addRowNameLayout"
+        style="@style/InputLayoutDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:hint="name"
+        android:layout_marginEnd="16dp"
+        android:hint="Row name"
+        android:imeOptions="actionDone"
+        android:inputType="textVisiblePassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.6" />
+        app:layout_constraintWidth_percent="0.6">
 
-    <EditText
-        android:id="@+id/addRowCount"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addRowName"
+            style="@style/TextInputEditTextDefault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textVisiblePassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addRowCountLayout"
+        style="@style/InputLayoutDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:hint="count"
+        android:layout_marginEnd="16dp"
+        android:hint="Count name"
+        android:imeOptions="actionDone"
+        android:inputType="textVisiblePassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addRowName"
-        app:layout_constraintWidth_percent="0.45" />
+        app:layout_constraintTop_toBottomOf="@+id/addRowNameLayout"
+        app:layout_constraintWidth_percent="0.6">
 
-    <EditText
-        android:id="@+id/addRowPrice"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addRowCount"
+            style="@style/TextInputEditTextDefault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textVisiblePassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addRowPriceLayout"
+        style="@style/InputLayoutDefault"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:gravity="end"
-        android:inputType="numberDecimal"
-        android:hint="price"
-        app:layout_constraintBottom_toBottomOf="@+id/addRowCount"
+        android:layout_marginEnd="16dp"
+        android:hint="Price name"
+        android:imeOptions="actionDone"
+        android:inputType="textVisiblePassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintWidth_percent="0.45" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addRowCountLayout"
+        app:layout_constraintWidth_percent="0.6">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addRowPrice"
+            style="@style/TextInputEditTextDefault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textVisiblePassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/addRowButton"
@@ -54,5 +92,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addRowCount" />
+        app:layout_constraintTop_toBottomOf="@+id/addRowPriceLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

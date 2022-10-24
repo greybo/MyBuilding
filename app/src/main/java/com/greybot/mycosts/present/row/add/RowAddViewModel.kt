@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.file.add
+package com.greybot.mycosts.present.row.add
 
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.CurrencyDto
