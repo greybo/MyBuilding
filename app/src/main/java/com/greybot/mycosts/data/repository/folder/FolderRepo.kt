@@ -9,6 +9,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.greybot.mycosts.data.dto.FolderDTO
 import com.greybot.mycosts.utility.LogApp
+import com.greybot.mycosts.utility.toastDebug
 import kotlinx.coroutines.CompletableDeferred
 
 class FolderRepo {
@@ -56,6 +57,7 @@ class FolderRepo {
                 override fun onCancelled(error: DatabaseError) {
                     failed.invoke(error.toException())
                     LogApp.e("getFolderTest", error.toException())
+                    toastDebug = error.message
                 }
             }
         )
