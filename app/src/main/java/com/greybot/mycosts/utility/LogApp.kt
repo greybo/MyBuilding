@@ -2,7 +2,6 @@ package com.greybot.mycosts.utility
 
 import android.annotation.SuppressLint
 import android.util.Log
-import com.greybot.mycosts.BuildConfig
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*

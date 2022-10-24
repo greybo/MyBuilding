@@ -12,8 +12,9 @@ class CoroutinesViewModel : CompositeViewModel() {
     private val tag = "coroutine_test"
     private val log = LogApp2(tag)
     private var counter = 0
+    @OptIn(DelicateCoroutinesApi::class)
     private val singleThreadContext = newSingleThreadContext("Counter")
-    var actorExample = CoroutineActorExample(Dispatchers.Default)
+    private var actorExample = CoroutineActorExample(Dispatchers.Default)
 
     fun newSingleThreadTest() {
         viewModelScope.launch {
