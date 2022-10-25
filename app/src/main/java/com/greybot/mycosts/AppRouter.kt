@@ -1,12 +1,12 @@
 package com.greybot.mycosts
 
 import androidx.navigation.NavController
-import com.greybot.mycosts.present.explore.ExploreFragmentDirections
-import com.greybot.mycosts.present.explore.IExploreRouter
-import com.greybot.mycosts.present.folder.preview.FolderPreviewFragmentDirections
-import com.greybot.mycosts.present.folder.preview.IFolderPreviewRouter
+import com.greybot.mycosts.present.main.IMainExploreRouter
+import com.greybot.mycosts.present.main.MainExploreFragmentDirections
+import com.greybot.mycosts.present.second.preview.FolderPreviewFragmentDirections
+import com.greybot.mycosts.present.second.preview.IFolderPreviewRouter
 
-class AppRouter(private val navController: NavController) : IExploreRouter, IFolderPreviewRouter {
+class AppRouter(private val navController: NavController) : IMainExploreRouter, IFolderPreviewRouter {
 
     override fun fromFolderToFolder(pathName: String) {
         val direction = FolderPreviewFragmentDirections.toFolderPreviewFragment(pathName)
@@ -29,17 +29,17 @@ class AppRouter(private val navController: NavController) : IExploreRouter, IFol
     }
 
     override fun fromExploreToFolder(pathName: String) {
-        val direction = ExploreFragmentDirections.toFolderPreviewFragment(pathName)
+        val direction = MainExploreFragmentDirections.toFolderPreviewFragment(pathName)
         navController.navigate(direction)
     }
 
     override fun fromExploreToAddFolder(path: String?) {
-        val direction = ExploreFragmentDirections.toFolderAddFragment(path)
+        val direction = MainExploreFragmentDirections.toFolderAddFragment(path)
         navController.navigate(direction)
     }
 
     override fun fromExploreToEditFolder(objectId: String) {
-        val direction = ExploreFragmentDirections.toFolderEditFragment(objectId)
+        val direction = MainExploreFragmentDirections.toFolderEditFragment(objectId)
         navController.navigate(direction)
     }
 }

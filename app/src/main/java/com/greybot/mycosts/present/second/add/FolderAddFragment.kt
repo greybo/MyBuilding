@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.folder.add
+package com.greybot.mycosts.present.second.add
 
 import android.os.Bundle
 import android.view.KeyEvent
@@ -13,7 +13,7 @@ import com.greybot.mycosts.utility.showKeyboard
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FolderEditFragment :
+class FolderAddFragment :
     BaseBindingFragment<FolderAddFragmentBinding>(FolderAddFragmentBinding::inflate) {
 
     private val viewModel by viewModels<FolderAddViewModel>()
@@ -32,7 +32,17 @@ class FolderEditFragment :
 
     private fun initViews() {
         with(binding) {
-            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+//            addFolderSaveButton.setOnClickListener {
+////                setFragmentResult(
+////                    FRAGMENT_RESULT_ADD_FOLDER,
+////                    bundleOf(
+////                        ARG_FOLDER_NAME to addFolderName.text.toString(),
+////                        ARG_FOLDER_PATH to args?.path
+////                    )
+////                )
+//                saveFolder(addFolderName.text.toString())
+//            }
+            val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
             addFolderDate.text = sdf.format(Date())
             addFolderName.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                 override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
@@ -50,7 +60,7 @@ class FolderEditFragment :
     }
 
     private fun saveFolder(name: String) {
-        viewModel.addFolder(name, args?.path, Date().time)
+        viewModel.addFolder(name, args?.path,Date().time)
         findNavController().popBackStack()
     }
 }

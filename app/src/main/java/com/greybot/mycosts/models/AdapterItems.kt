@@ -1,6 +1,6 @@
 package com.greybot.mycosts.models
 
-import com.greybot.mycosts.present.folder.preview.ButtonType
+import com.greybot.mycosts.present.second.preview.ButtonType
 
 sealed class AdapterItems {
     class FolderItem(val name: String, val path: String, val countInner: String, val total: String, val objectId: String? = null) :

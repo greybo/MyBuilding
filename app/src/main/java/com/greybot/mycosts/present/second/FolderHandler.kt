@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.folder.preview
+package com.greybot.mycosts.present.second
 
 import com.greybot.mycosts.base.Path
 import com.greybot.mycosts.data.dto.FolderDTO

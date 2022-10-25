@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.explore
+package com.greybot.mycosts.present.main
 
 import android.os.Bundle
 import android.view.View
@@ -12,12 +12,12 @@ import com.greybot.mycosts.utility.animateShowFab
 import com.greybot.mycosts.utility.getRouter
 
 
-class ExploreFragment :
+class MainExploreFragment :
     BaseBindingFragment<ExploreFragmentBinding>(ExploreFragmentBinding::inflate) {
 
-    private val viewModel by viewModels<ExploreViewModel>()
+    private val viewModel by viewModels<MainExploreViewModel>()
     private var adapter: ExploreAdapter? = null
-    private val router: IExploreRouter by getRouter()
+    private val router: IMainExploreRouter by getRouter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,6 +1,6 @@
-package com.greybot.mycosts.present.explore
+package com.greybot.mycosts.present.main
 
-interface IExploreRouter {
+interface IMainExploreRouter {
     fun fromExploreToFolder(pathName: String)
     fun fromExploreToAddFolder(path: String?)
     fun fromExploreToEditFolder(objectId: String)

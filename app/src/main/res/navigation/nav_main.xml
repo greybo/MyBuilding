@@ -12,7 +12,7 @@
     <!--        app:popExitAnim="@anim/slide_out_right" />-->
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.greybot.mycosts.present.explore.ExploreFragment"
+        android:name="com.greybot.mycosts.present.main.MainExploreFragment"
         android:label="MainFragment" />
 
     <action
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/folderPreviewFragment"
-        android:name="com.greybot.mycosts.present.folder.preview.FolderPreviewFragment"
+        android:name="com.greybot.mycosts.present.second.preview.FolderPreviewFragment"
         android:label="FolderPreviewFragment">
 
         <argument
@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/folderAddFragment"
-        android:name="com.greybot.mycosts.present.folder.add.FolderAddFragment"
+        android:name="com.greybot.mycosts.present.second.add.FolderAddFragment"
         android:label="FolderAddFragment">
 
         <argument
@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/FolderEditFragment"
-        android:name="com.greybot.mycosts.present.folder.add.FolderEditFragment"
+        android:name="com.greybot.mycosts.present.second.add.FolderEditFragment"
         android:label="FolderAddFragment">
 
         <argument
