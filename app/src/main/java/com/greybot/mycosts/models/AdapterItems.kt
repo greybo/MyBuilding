@@ -1,9 +1,16 @@
 package com.greybot.mycosts.models
 
+import com.greybot.mycosts.R
 import com.greybot.mycosts.present.second.preview.ButtonType
 
 sealed class AdapterItems {
-    class FolderItem(val name: String, val path: String, val countInner: String, val total: String, val objectId: String? = null) :
+    class FolderItem(
+        val name: String,
+        val path: String,
+        val countInner: String,
+        val total: String,
+        val objectId: String? = null
+    ) :
         AdapterItems() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -50,7 +57,7 @@ sealed class AdapterItems {
 
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
     class TotalItem(val value: Float, val name: String = "Total") : AdapterItems()
-
+    data class SpaceItem(val heightRes: Int = R.dimen.height_margin_84) : AdapterItems()
 }
 
 enum class MeasureType(val rowValue: String) {

@@ -5,10 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.greybot.mycosts.databinding.ButtonAddAdapterItemBinding
-import com.greybot.mycosts.databinding.ExploreAdapterItemBinding
-import com.greybot.mycosts.databinding.RowAdapterItemBinding
-import com.greybot.mycosts.databinding.TotalAdapterItemBinding
+import com.greybot.mycosts.databinding.*
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.utility.inflateAdapter
 
@@ -24,6 +21,7 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
         const val ADD_CONTENT_ITEM = 1
         const val ROW_ITEM = 2
         const val TOTAL_ITEM = 3
+        const val SPACE_ITEM = 4
     }
 
     //    private val list = mutableListOf<AdapterItems>()
@@ -43,6 +41,7 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
             is AdapterItems.ButtonAddItem -> ADD_CONTENT_ITEM
             is AdapterItems.RowItem -> ROW_ITEM
             is AdapterItems.TotalItem -> TOTAL_ITEM
+            is AdapterItems.SpaceItem -> SPACE_ITEM
         }
     }
 
@@ -52,6 +51,7 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
             ADD_CONTENT_ITEM -> ButtonAddHolder(parent.inflateAdapter(ButtonAddAdapterItemBinding::inflate))
             ROW_ITEM -> RowHolder(parent.inflateAdapter(RowAdapterItemBinding::inflate))
             TOTAL_ITEM -> TotalHolder(parent.inflateAdapter(TotalAdapterItemBinding::inflate))
+            SPACE_ITEM -> SpaceHolder(parent.inflateAdapter(SpaceAdapterItemBinding::inflate))
             else -> throw Throwable()
         }
     }
@@ -122,6 +122,16 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
             binding.totalItemValue.text = item.value.toString()
             itemView.setOnClickListener {
                 onClick.invoke(item)
+            }
+        }
+    }
+
+    inner class SpaceHolder(private val binding: SpaceAdapterItemBinding) : Holder(binding.root) {
+        override fun onBind(item: AdapterItems) {
+            item as AdapterItems.SpaceItem
+            binding.spaceView.post {
+                binding.spaceView.layoutParams.height = itemView.resources.getDimension(item.heightRes).toInt()
+                binding.spaceView.requestLayout()
             }
         }
     }

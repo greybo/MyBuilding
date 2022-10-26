@@ -11,6 +11,7 @@ class RowHandler {
         return buildList {
             addAll(makeItems(groups[false]))
             addAll(makeItems(groups[true]))
+            add(AdapterItems.SpaceItem())
         }
     }
 
