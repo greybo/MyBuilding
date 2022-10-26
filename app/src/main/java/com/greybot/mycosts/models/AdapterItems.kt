@@ -45,15 +45,7 @@ sealed class AdapterItems {
         val price: Float = 0F,
         val isBought: Boolean = false,
         val objectId: String,
-    ) : AdapterItems() {
-
-        var changeBuy: Boolean = false
-
-        fun changeBuy(): RowItem {
-            changeBuy = true
-            return this
-        }
-    }
+    ) : AdapterItems()
 
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
     class TotalItem(val value: Float, val name: String = "Total") : AdapterItems()

@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
-import com.greybot.mycosts.models.AdapterItems
+import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.ExploreAdapter
 import com.greybot.mycosts.utility.animateFabHide
 import com.greybot.mycosts.utility.animateShowFab
@@ -46,36 +46,34 @@ class MainExploreFragment :
     private fun initViews() {
         with(binding) {
             exploreFloatButton.setOnClickListener {
-                binding.exploreFloatButton.animateFabHide {
+                exploreFloatButton.animateFabHide {
                     router.fromExploreToAddFolder("")
                 }
             }
-            adapter = ExploreAdapter({
+        }
+        initAdapter()
+    }
+
+    private fun initAdapter() {
+        with(binding) {
+            adapter = ExploreAdapter {
                 handleOnClick(it)
-            }, {
-                handleOnLongClick(it)
-            })
+            }
             mainRecyclerViewX.setHasFixedSize(true)
             mainRecyclerViewX.adapter = adapter
         }
     }
 
-    private fun handleOnClick(item: AdapterItems) {
-        when (item) {
-            is AdapterItems.FolderItem -> {
+    private fun handleOnClick(callback: AdapterCallback) {
+        when (callback) {
+            is AdapterCallback.FolderOpen -> {
                 binding.exploreFloatButton.animateFabHide {
-                    router.fromExploreToFolder(item.path)
+                    router.fromExploreToFolder(callback.value.path)
                 }
             }
-            else -> TODO()
-        }
-    }
-
-    private fun handleOnLongClick(item: AdapterItems) {
-        when (item) {
-            is AdapterItems.FolderItem -> {
+            is AdapterCallback.FolderLong -> {
                 binding.exploreFloatButton.animateFabHide {
-                    router.fromExploreToFolder(item.path)
+                    router.fromExploreToFolder(callback.value.path)
                 }
             }
             else -> TODO()

@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/rowItem_body"
+        app:layout_constraintEnd_toStartOf="@+id/rowItemBody"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toEndOf="@+id/rowItemCheckDone"
@@ -32,7 +32,7 @@
         tools:text="Text" />
 
     <TextView
-        android:id="@+id/rowItem_body"
+        android:id="@+id/rowItemBody"
         style="@style/Body_base"
         android:layout_width="0dp"
         android:layout_height="0dp"

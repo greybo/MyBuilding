@@ -9,11 +9,12 @@ import com.greybot.mycosts.databinding.*
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.utility.inflateAdapter
 
-class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (AdapterItems) -> Unit) :
+class ExploreAdapter(
+    val onClick: (AdapterCallback) -> Unit
+) : ListAdapter<AdapterItems, ExploreAdapter.Holder>(
+    AsyncDifferConfig.Builder(DiffCallback()).build()
+) {
 //    ListAdapter<AdapterItems,ExploreAdapter.Holder>(DiffCallback()){
-    ListAdapter<AdapterItems, ExploreAdapter.Holder>(
-        AsyncDifferConfig.Builder(DiffCallback()).build()
-    ) {
 //    RecyclerView.Adapter<ExploreAdapter.Holder>() {
 
     companion object {
@@ -24,15 +25,10 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
         const val SPACE_ITEM = 4
     }
 
-    //    private val list = mutableListOf<AdapterItems>()
     private val list get() = currentList
 
     fun updateAdapter(newList: List<AdapterItems>) {
         submitList(newList)
-//        list.clear()
-//        list.addAll(newList)
-//        notifyDataSetChanged()
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -77,10 +73,10 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
             binding.exploreItemCount.text = item.countInner
             binding.exploreItemTotal.text = item.total
             itemView.setOnClickListener {
-                onClick.invoke(item)
+                onClick.invoke(AdapterCallback.FolderOpen(item))
             }
             itemView.setOnLongClickListener {
-                onLongClick.invoke(item)
+                onClick.invoke(AdapterCallback.FolderLong(item))
                 false
             }
         }
@@ -92,7 +88,7 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
             item as AdapterItems.ButtonAddItem
             binding.buttonAddItemName.text = item.type.row
             itemView.setOnClickListener {
-                onClick.invoke(item)
+                onClick.invoke(AdapterCallback.Append(item))
             }
         }
     }
@@ -106,10 +102,13 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
             binding.rowItemBody.text = item.price.toString()
 
             binding.rowItemTitle.setOnClickListener {
-                onClick.invoke(item)
+                onClick.invoke(AdapterCallback.Name(item))
+            }
+            binding.rowItemBody.setOnClickListener {
+                onClick.invoke(AdapterCallback.Price(item))
             }
             binding.rowItemCheckDone.setOnClickListener {
-                onClick.invoke(item.changeBuy())
+                onClick.invoke(AdapterCallback.Buy(item))//item.changeBuy()
             }
         }
     }
@@ -121,7 +120,7 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
             binding.totalItemTitle.text = item.name
             binding.totalItemValue.text = item.value.toString()
             itemView.setOnClickListener {
-                onClick.invoke(item)
+                onClick.invoke(AdapterCallback.Total(item))
             }
         }
     }
@@ -130,7 +129,8 @@ class ExploreAdapter(val onClick: (AdapterItems) -> Unit, val onLongClick: (Adap
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.SpaceItem
             binding.spaceView.post {
-                binding.spaceView.layoutParams.height = itemView.resources.getDimension(item.heightRes).toInt()
+                binding.spaceView.layoutParams.height =
+                    itemView.resources.getDimension(item.heightRes).toInt()
                 binding.spaceView.requestLayout()
             }
         }
