@@ -5,7 +5,9 @@ import androidx.activity.viewModels
 import com.greybot.mycosts.base.AbstractActivity
 import com.greybot.mycosts.base.CoroutinesViewModel
 import com.greybot.mycosts.utility.LogApp
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AbstractActivity<AppRouter>() {
 
     private val viewModel by viewModels<CoroutinesViewModel>()

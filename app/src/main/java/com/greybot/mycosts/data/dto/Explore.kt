@@ -10,6 +10,7 @@ data class Folder(
     val files: List<File> = emptyList(),
     var objectId: String? = null,
 ) {
+
     fun toMap(): Map<String, Any> {
         TODO("Not yet implemented")
     }

@@ -10,9 +10,11 @@ import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.FolderAddFragmentBinding
 import com.greybot.mycosts.utility.showKeyboard
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class FolderAddFragment :
     BaseBindingFragment<FolderAddFragmentBinding>(FolderAddFragmentBinding::inflate) {
 
@@ -65,7 +67,7 @@ class FolderAddFragment :
 
     private fun saveFolder(name: String) {
 //        viewModel.addFolder(name, args?.path,Date().time)
-        viewModel.addFolderNew(name,  Date().time)
+        viewModel.addFolderNew(name, Date().time)
         findNavController().popBackStack()
     }
 }

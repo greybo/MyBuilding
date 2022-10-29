@@ -7,11 +7,12 @@ import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.repository.ExploreRepository
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.second.FolderHandler
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 
-//TODO init with hilt
-class MainExploreViewModel @Inject constructor(val exploreRepo: ExploreRepository) :
+@HiltViewModel
+class MainExploreViewModel @Inject constructor(private val exploreRepo: ExploreRepository) :
     CompositeViewModel() {
 
     private val folderDataSource get() = AppCoordinator.shared.folderDataSource
@@ -21,13 +22,22 @@ class MainExploreViewModel @Inject constructor(val exploreRepo: ExploreRepositor
     val state: LiveData<List<AdapterItems>> = _state
 
     fun fetchData(path: String = "") {
-        findItems(path)
+//        findItems(path)
+        getAllItems()
     }
 
     private fun findItems(path: String) {
         launchOnDefault {
             val folders = folderDataSource.findFolder(path)
             val items = folderHandler.makeFolderItems(path, folders)
+            _state.postValue(items)
+        }
+    }
+
+    private fun getAllItems() {
+        launchOnDefault {
+            val folders = exploreRepo.getAll()
+            val items = folderHandler.makeFolderItems(folders)
             _state.postValue(items)
         }
     }

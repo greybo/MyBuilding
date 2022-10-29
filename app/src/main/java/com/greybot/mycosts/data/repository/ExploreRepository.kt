@@ -5,22 +5,25 @@ package com.greybot.mycosts.data.repository
 //import com.google.firebase.database.DatabaseError
 //import com.google.firebase.database.DatabaseReference
 //import com.google.firebase.database.ValueEventListener
+//import com.greybot.mycosts.data.dto.Explore
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-//import com.greybot.mycosts.data.dto.Explore
 import com.greybot.mycosts.data.dto.Folder
 import com.greybot.mycosts.utility.LogApp
 import com.greybot.mycosts.utility.toastDebug
 import kotlinx.coroutines.CompletableDeferred
+import javax.inject.Inject
+import javax.inject.Singleton
 
 //import com.greybot.mycosts.utility.toastDebug
 //import kotlinx.coroutines.CompletableDeferred
 
-class ExploreRepository {
+@Singleton
+class ExploreRepository @Inject constructor() {
 
     private val uid: String = "654321"
     private val path: String = "exploreNew"

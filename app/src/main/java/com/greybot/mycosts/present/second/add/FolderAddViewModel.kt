@@ -4,8 +4,9 @@ import com.greybot.mycosts.AppCoordinator
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.Folder
 import com.greybot.mycosts.data.repository.ExploreRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-
+@HiltViewModel
 class FolderAddViewModel  @Inject constructor(private val exploreRepo: ExploreRepository): CompositeViewModel() {
 
     private val dataSource get() = AppCoordinator.shared.folderDataSource

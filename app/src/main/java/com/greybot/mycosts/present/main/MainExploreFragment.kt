@@ -10,8 +10,9 @@ import com.greybot.mycosts.present.adapter.ExploreAdapter
 import com.greybot.mycosts.utility.animateFabHide
 import com.greybot.mycosts.utility.animateShowFab
 import com.greybot.mycosts.utility.getRouter
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainExploreFragment :
     BaseBindingFragment<ExploreFragmentBinding>(ExploreFragmentBinding::inflate) {
 
