@@ -8,8 +8,12 @@ data class Explore(val folderRoot: List<Folder>)
 data class Folder(
     val name: String? = null,
     val files: List<File> = emptyList(),
-    var objectId: String
-)
+    var objectId: String? = null,
+) {
+    fun toMap(): Map<String, Any> {
+        TODO("Not yet implemented")
+    }
+}
 
 data class File(
     @PropertyName("Name")

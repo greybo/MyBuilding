@@ -1,10 +1,10 @@
 package com.greybot.mycosts.present.row.add
 
+import com.greybot.mycosts.AppCoordinator
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.CurrencyDto
 import com.greybot.mycosts.data.repository.row.RowDataSource
 import com.greybot.mycosts.utility.LogApp
-import com.greybot.mycosts.views.AppCoordinator
 
 class RowAddViewModel : CompositeViewModel() {
 

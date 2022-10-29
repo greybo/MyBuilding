@@ -1,4 +1,4 @@
-package com.greybot.mycosts.views
+package com.greybot.mycosts
 
 import com.greybot.mycosts.data.repository.folder.FolderDataSource
 import com.greybot.mycosts.data.repository.row.RowDataSource

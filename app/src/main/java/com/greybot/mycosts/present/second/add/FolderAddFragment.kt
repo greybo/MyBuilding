@@ -45,7 +45,11 @@ class FolderAddFragment :
             val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
             addFolderDate.text = sdf.format(Date())
             addFolderName.setOnEditorActionListener(object : TextView.OnEditorActionListener {
-                override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                override fun onEditorAction(
+                    v: TextView?,
+                    actionId: Int,
+                    event: KeyEvent?
+                ): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
                         // Do whatever you want here
                         saveFolder(addFolderName.text.toString())
@@ -60,7 +64,8 @@ class FolderAddFragment :
     }
 
     private fun saveFolder(name: String) {
-        viewModel.addFolder(name, args?.path,Date().time)
+//        viewModel.addFolder(name, args?.path,Date().time)
+        viewModel.addFolderNew(name,  Date().time)
         findNavController().popBackStack()
     }
 }

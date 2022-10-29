@@ -2,14 +2,17 @@ package com.greybot.mycosts.present.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.greybot.mycosts.AppCoordinator
 import com.greybot.mycosts.base.CompositeViewModel
+import com.greybot.mycosts.data.repository.ExploreRepository
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.second.FolderHandler
-import com.greybot.mycosts.views.AppCoordinator
+import javax.inject.Inject
 
 
 //TODO init with hilt
-class MainExploreViewModel : CompositeViewModel() {
+class MainExploreViewModel @Inject constructor(val exploreRepo: ExploreRepository) :
+    CompositeViewModel() {
 
     private val folderDataSource get() = AppCoordinator.shared.folderDataSource
     private val folderHandler by lazy { FolderHandler() }

@@ -3,9 +3,9 @@ package com.greybot.mycosts
 import android.app.Application
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.greybot.mycosts.analytics.AnalyticsManager
-import com.greybot.mycosts.views.AppCoordinator
+import dagger.hilt.android.HiltAndroidApp
 
-
+@HiltAndroidApp
 class CostsApp : Application() {
     var mFirebaseAnalytics: FirebaseAnalytics? = null
 
