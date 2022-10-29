@@ -6,13 +6,18 @@ import com.greybot.mycosts.AppCoordinator
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.FolderDTO
 import com.greybot.mycosts.data.dto.RowDto
+import com.greybot.mycosts.data.repository.ExploreRepository
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.row.RowHandler
 import com.greybot.mycosts.present.second.FolderHandler
 import com.greybot.mycosts.utility.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
+import javax.inject.Inject
 
-class FolderPreviewViewModel : CompositeViewModel() {
+@HiltViewModel
+class FolderPreviewViewModel @Inject constructor(private val exploreRepo: ExploreRepository) :
+    CompositeViewModel() {
 
     private val folderDataSource get() = AppCoordinator.shared.folderDataSource
     private val rowDataSource get() = AppCoordinator.shared.rowDataSource

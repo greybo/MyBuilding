@@ -125,4 +125,8 @@ class ExploreRepository @Inject constructor() {
                 LogApp.e("writeNewPost", it)
             }*/
     }
+
+    fun findFolder(objectId: String): Folder {
+        TODO("Not yet implemented")
+    }
 }

@@ -10,13 +10,15 @@ import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.FolderAddFragmentBinding
 import com.greybot.mycosts.utility.showKeyboard
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class FolderEditFragment :
     BaseBindingFragment<FolderAddFragmentBinding>(FolderAddFragmentBinding::inflate) {
 
-    private val viewModel by viewModels<FolderAddViewModel>()
+    private val viewModel by viewModels<FolderEditViewModel>()
     private val args: FolderAddFragmentArgs? by lazy {
         arguments?.let {
             FolderAddFragmentArgs.fromBundle(
@@ -50,7 +52,7 @@ class FolderEditFragment :
     }
 
     private fun saveFolder(name: String) {
-        viewModel.addFolder(name, args?.path, Date().time)
+        viewModel.updateFolderNew(name/*, args?.path, Date().time*/)
         findNavController().popBackStack()
     }
 }

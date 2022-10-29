@@ -11,8 +11,12 @@ data class Folder(
     var objectId: String? = null,
 ) {
 
-    fun toMap(): Map<String, Any> {
-        TODO("Not yet implemented")
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "objectId" to objectId,
+            "name" to name,
+            "files" to files
+        )
     }
 }
 
