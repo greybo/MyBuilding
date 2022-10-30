@@ -18,7 +18,7 @@ class FolderAddViewModel  @Inject constructor(private val exploreRepo: ExploreRe
     fun addFolderNew(name: String?,  time: Long) {
         if (name != null){
             val explore = Explore(name)
-            exploreRepo.addFolder(explore)
+            exploreRepo.addFolderRoot(explore)
         }
     }
 }

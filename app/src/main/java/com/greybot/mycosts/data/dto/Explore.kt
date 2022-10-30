@@ -5,6 +5,7 @@ import java.util.*
 
 data class Explore(
     val name: String? = null,
+    var date: Long? = null,
     val fileRows: List<FileRow> = emptyList(),
     var objectId: String? = null,
 ) {

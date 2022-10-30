@@ -17,11 +17,12 @@ import com.greybot.mycosts.utility.LogApp
 import com.greybot.mycosts.utility.toastDebug
 import kotlinx.coroutines.CompletableDeferred
 import javax.inject.Inject
+import javax.inject.Singleton
 
 //import com.greybot.mycosts.utility.toastDebug
 //import kotlinx.coroutines.CompletableDeferred
 
-//@Singleton
+@Singleton
 class ExploreRepository @Inject constructor() {
 
     private val uid: String = "654321"
@@ -90,7 +91,7 @@ class ExploreRepository @Inject constructor() {
         )
     }
 
-    fun addFolder(item: Explore) {
+    fun addFolderRoot(item: Explore) {
         val key = myRef.push().key ?: return
         item.objectId = key
         backupList.add(item)
