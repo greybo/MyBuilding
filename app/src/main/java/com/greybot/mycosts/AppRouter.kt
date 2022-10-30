@@ -29,8 +29,8 @@ class AppRouter(private val navController: NavController) : IMainExploreRouter,
         navController.navigate(direction)
     }
 
-    override fun fromExploreToFolder(pathName: String) {
-        val direction = MainExploreFragmentDirections.toFolderPreviewFragment(pathName)
+    override fun fromExploreToFolder(objectId: String, pathName: String) {
+        val direction = MainExploreFragmentDirections.toFolderPreviewFragment(objectId, pathName)
         navController.navigate(direction)
     }
 

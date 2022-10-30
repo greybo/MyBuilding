@@ -40,24 +40,16 @@ class FolderPreviewViewModel @Inject constructor(private val exploreRepo: Explor
         val groupedByFile = list?.groupBy { it.isFile }
         val file = groupedByFile?.get(true)
         val folder = groupedByFile?.get(false)
-        if (!folder.isNullOrEmpty()) {
+
+        val items = if (!folder.isNullOrEmpty()) {
             makeFolderList(folder)
         } else if (!file.isNullOrEmpty()) {
             makeFileList(file)
-        } else makeButtonList()
+        } else {
+            makeButtonList()
+        }
 
-//        state.postValue(items)
-
-//        var type = ButtonType.None
-//        if (makeFolderList(list)) {
-//            type = ButtonType.Folder
-//        } else if (!rowList.isNullOrEmpty()) {
-//            type = ButtonType.Row
-//            makeRowList(rowList)
-//        } else {
-//            makeButtonList()
-//        }
-//        _stateButton.postValue(Event(type))
+        state.postValue(items)
     }
 
     private fun makeButtonList(): List<AdapterItems> {
@@ -67,18 +59,13 @@ class FolderPreviewViewModel @Inject constructor(private val exploreRepo: Explor
         )
     }
 
-    private fun makeFileList(rowList: List<FileRow>?) {
-        rowList ?: return
-        val itemList = rowHandler.makeGroupBuy(rowList)
-        state.postValue(itemList)
+    private fun makeFileList(rowList: List<FileRow>?): List<AdapterItems> {
+        rowList ?: return emptyList()
+        return rowHandler.makeGroupBuy(rowList)
     }
 
-    private fun makeFolderList(list: List<FileRow>): Boolean {
-        val folderItems = folderHandler.makeFolderItems(list)
-        return if (folderItems.isNotEmpty()) {
-            state.postValue(folderItems)
-            true
-        } else false
+    private fun makeFolderList(list: List<FileRow>): List<AdapterItems> {
+        return folderHandler.makeFolderItems(list)
     }
 }
 

@@ -1,8 +1,6 @@
 package com.greybot.mycosts.present.second.preview
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -37,9 +35,7 @@ class FolderPreviewFragment :
         }
         systemBackPressedCallback { backPress() }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            viewModel.fetchData(args?.objectId, args?.pathName)
-        }, 300)
+        viewModel.fetchData(args?.objectId, args?.pathName)
     }
 
     private fun backPress() {
@@ -85,7 +81,7 @@ class FolderPreviewFragment :
     private fun handleButtonClick(
         type: ButtonType,
         path: String = args?.pathName ?: "",
-        id: String = viewModel.objectId ?: ""
+        id: String = viewModel.objectId
     ) {
         when (type) {
             ButtonType.Folder -> router.fromFolderToAddFolder(id, path)

@@ -29,16 +29,17 @@
         android:label="FolderPreviewFragment">
 
         <argument
-            android:name="pathName"
+            android:name="objectId"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
 
         <argument
-            android:name="objectId"
+            android:name="pathName"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+
 
     </fragment>
 

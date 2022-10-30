@@ -10,7 +10,6 @@ fun <T> myLiveData(): MyLiveData<T> {
 
 class MyLiveData<T> {
     private val _state = MutableLiveData<T>()
-//    val state: LiveData<T> = _state
 
     var values: T
         get() = _state.value as T
