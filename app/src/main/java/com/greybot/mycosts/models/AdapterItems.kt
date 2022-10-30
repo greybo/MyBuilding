@@ -44,7 +44,6 @@ sealed class AdapterItems {
         val count: Int = 0,
         val price: Float = 0F,
         val isBought: Boolean = false,
-        val objectId: String,
     ) : AdapterItems()
 
     class ButtonAddItem(val type: ButtonType) : AdapterItems()

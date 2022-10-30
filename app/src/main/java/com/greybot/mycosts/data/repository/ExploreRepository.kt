@@ -12,26 +12,25 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.greybot.mycosts.data.dto.Folder
+import com.greybot.mycosts.data.dto.Explore
 import com.greybot.mycosts.utility.LogApp
 import com.greybot.mycosts.utility.toastDebug
 import kotlinx.coroutines.CompletableDeferred
 import javax.inject.Inject
-import javax.inject.Singleton
 
 //import com.greybot.mycosts.utility.toastDebug
 //import kotlinx.coroutines.CompletableDeferred
 
-@Singleton
+//@Singleton
 class ExploreRepository @Inject constructor() {
 
     private val uid: String = "654321"
     private val path: String = "exploreNew"
     private val myRef = Firebase.database.reference.child(uid).child(path)
-    private val backupList = mutableListOf<Folder>()
+    private val backupList = mutableListOf<Explore>()
 
-    suspend fun getAll(): List<Folder>? {
-        val deferred = CompletableDeferred<List<Folder>?>()
+    suspend fun getAll(): List<Explore>? {
+        val deferred = CompletableDeferred<List<Explore>?>()
         if (backupList.isNotEmpty()) {
             deferred.complete(backupList)
         }
@@ -64,7 +63,7 @@ class ExploreRepository @Inject constructor() {
 //        return deferred.await()
 //    }
 
-    private fun equalsList(newList: List<Folder>, backupList: MutableList<Folder>): Boolean {
+    private fun equalsList(newList: List<Explore>, backupList: MutableList<Explore>): Boolean {
         if (newList.size != backupList.size) return false
         newList.forEachIndexed { index, dto ->
             if (dto != backupList.getOrNull(index)) return false
@@ -72,14 +71,14 @@ class ExploreRepository @Inject constructor() {
         return true
     }
 
-    private fun getRemoteAll(success: (List<Folder>) -> Unit, failed: (Throwable) -> Unit) {
+    private fun getRemoteAll(success: (List<Explore>) -> Unit, failed: (Throwable) -> Unit) {
         myRef.orderByKey().addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val itemFolder = snapshot.children.mapNotNull {
-                        it.getValue(Folder::class.java)
+                    val itemExplore = snapshot.children.mapNotNull {
+                        it.getValue(Explore::class.java)
                     }
-                    success.invoke(itemFolder)
+                    success.invoke(itemExplore)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -91,7 +90,7 @@ class ExploreRepository @Inject constructor() {
         )
     }
 
-    fun addFolder(item: Folder) {
+    fun addFolder(item: Explore) {
         val key = myRef.push().key ?: return
         item.objectId = key
         backupList.add(item)
@@ -103,7 +102,7 @@ class ExploreRepository @Inject constructor() {
         }
     }
 
-    fun update(item: Folder) {
+    fun update(item: Explore) {
         val database: DatabaseReference = Firebase.database.reference
 
         if (item.objectId == null) {
@@ -126,7 +125,7 @@ class ExploreRepository @Inject constructor() {
             }*/
     }
 
-    fun findFolder(objectId: String): Folder {
-        TODO("Not yet implemented")
+    suspend fun findById(objectId: String): Explore? {
+        return getAll()?.find { it.objectId == objectId }
     }
 }

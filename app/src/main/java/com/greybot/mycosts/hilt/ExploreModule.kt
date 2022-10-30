@@ -1,12 +1,19 @@
 package com.greybot.mycosts.hilt
 
-//@Module
-//@InstallIn(ActivityComponent::class)
-//object ExploreModule {
-//
-//    @Singleton
-//    @Provides
-//    fun provideExploreRepo(): ExploreRepository {
-//        return ExploreRepository()
-//    }
-//}
+import com.greybot.mycosts.data.repository.ExploreRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(ActivityComponent::class)
+object ExploreModule {
+
+    @Singleton
+    @Provides
+    fun provideExploreRepo(): ExploreRepository {
+        return ExploreRepository()
+    }
+}

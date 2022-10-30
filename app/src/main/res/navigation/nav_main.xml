@@ -30,8 +30,15 @@
 
         <argument
             android:name="pathName"
-            android:defaultValue=""
-            app:argType="string" />
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="objectId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
     </fragment>
 
@@ -110,10 +117,16 @@
     <fragment
         android:id="@+id/RowEditFragment"
         android:name="com.greybot.mycosts.present.row.edit.RowEditFragment"
-        android:label="RowEditFragment" >
+        android:label="RowEditFragment">
 
         <argument
             android:name="objectId"
+            android:defaultValue=""
+            app:argType="string"
+            app:nullable="false" />
+
+        <argument
+            android:name="path"
             android:defaultValue=""
             app:argType="string"
             app:nullable="false" />

@@ -7,7 +7,7 @@ sealed class AdapterCallback {
     class Price(val value: AdapterItems.RowItem) : AdapterCallback()
     class Buy(val value: AdapterItems.RowItem) : AdapterCallback()
     class Total(val value: AdapterItems.TotalItem) : AdapterCallback()
-    class Append(val value: AdapterItems.ButtonAddItem) : AdapterCallback()
+    class AddButton(val value: AdapterItems.ButtonAddItem) : AdapterCallback()
     class FolderOpen(val value: AdapterItems.FolderItem) : AdapterCallback()
     class FolderLong(val value: AdapterItems.FolderItem) : AdapterCallback()
 }

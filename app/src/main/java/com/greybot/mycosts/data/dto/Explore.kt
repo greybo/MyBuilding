@@ -3,11 +3,9 @@ package com.greybot.mycosts.data.dto
 import com.google.firebase.database.PropertyName
 import java.util.*
 
-data class Explore(val folderRoot: List<Folder>)
-
-data class Folder(
+data class Explore(
     val name: String? = null,
-    val files: List<File> = emptyList(),
+    val fileRows: List<FileRow> = emptyList(),
     var objectId: String? = null,
 ) {
 
@@ -15,12 +13,12 @@ data class Folder(
         return mapOf(
             "objectId" to objectId,
             "name" to name,
-            "files" to files
+            "files" to fileRows
         )
     }
 }
 
-data class File(
+data class FileRow(
     @PropertyName("Name")
     private val _name: String? = null,
     override val path: String? = null,

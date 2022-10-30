@@ -9,7 +9,7 @@ class DiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
     override fun areItemsTheSame(oldItem: AdapterItems, newItem: AdapterItems) =
         when {
             oldItem is AdapterItems.RowItem && newItem is AdapterItems.RowItem -> {
-                oldItem.objectId == newItem.objectId
+                oldItem.path == newItem.path
             }
             oldItem is AdapterItems.TotalItem && newItem is AdapterItems.TotalItem -> {
                 true

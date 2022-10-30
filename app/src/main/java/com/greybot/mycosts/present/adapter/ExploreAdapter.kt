@@ -88,7 +88,7 @@ class ExploreAdapter(
             item as AdapterItems.ButtonAddItem
             binding.buttonAddItemName.text = item.type.row
             itemView.setOnClickListener {
-                onClick.invoke(AdapterCallback.Append(item))
+                onClick.invoke(AdapterCallback.AddButton(item))
             }
         }
     }

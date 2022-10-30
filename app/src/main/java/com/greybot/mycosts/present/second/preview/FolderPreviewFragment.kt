@@ -6,15 +6,12 @@ import android.os.Looper
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import au.com.crownresorts.crma.extensions.gone
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.base.getEndSegment
 import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.ExploreAdapter
-import com.greybot.mycosts.utility.animateFabHide
-import com.greybot.mycosts.utility.animateShowFab
 import com.greybot.mycosts.utility.getRouter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,16 +21,9 @@ class FolderPreviewFragment :
 
     private val viewModel by viewModels<FolderPreviewViewModel>()
     private var adapter: ExploreAdapter? = null
-    private var args: FolderPreviewFragmentArgs? = null
+    private val args by lazy { arguments?.let { FolderPreviewFragmentArgs.fromBundle(it) } }
     private val router: IFolderPreviewRouter by getRouter()
     private var buttonType: ButtonType = ButtonType.None
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            args = FolderPreviewFragmentArgs.fromBundle(it)
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,31 +35,15 @@ class FolderPreviewFragment :
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
-        viewModel.stateButton.observe(viewLifecycleOwner) { event ->
-            setStateButton(event.getContentIfNotHandled())
-        }
         systemBackPressedCallback { backPress() }
+
         Handler(Looper.getMainLooper()).postDelayed({
-            viewModel.fetchData(args?.pathName)
+            viewModel.fetchData(args?.objectId, args?.pathName)
         }, 300)
     }
 
     private fun backPress() {
-        animateFabHide { findNavController().popBackStack() }
-    }
-
-    private fun animateFabHide(callback: (() -> Unit)? = null) {
-        binding.folderPreviewFloatButton.animateFabHide(callback)
-    }
-
-    private fun setStateButton(type: ButtonType?) {
-        type ?: return
-        when (type) {
-            ButtonType.Folder,
-            ButtonType.Row -> binding.folderPreviewFloatButton.animateShowFab()
-            else -> binding.folderPreviewFloatButton.gone()
-        }
-        buttonType = type
+        findNavController().popBackStack()
     }
 
     private fun initViews() {
@@ -92,11 +66,17 @@ class FolderPreviewFragment :
     private fun handleAdapterClick(callback: AdapterCallback) {
         with(callback) {
             when (this) {
-                is AdapterCallback.Name -> animateFabHide { router.fromFolderToEditRow(this.value.objectId) }
+                is AdapterCallback.Name -> router.fromFolderToEditRow(
+                    viewModel.objectId,
+                    this.value.path
+                )
                 is AdapterCallback.Price -> {}
                 is AdapterCallback.Buy -> viewModel.changeRowBuy(this.value)
-                is AdapterCallback.Append -> handleButtonClick(this.value.type)
-                is AdapterCallback.FolderOpen -> animateFabHide { router.fromFolderToFolder(this.value.path) }
+                is AdapterCallback.AddButton -> handleButtonClick(this.value.type)
+                is AdapterCallback.FolderOpen -> router.fromFolderToFolder(
+                    viewModel.objectId,
+                    this.value.path
+                )
                 else -> {}
             }
         }
@@ -108,8 +88,8 @@ class FolderPreviewFragment :
         id: String = viewModel.objectId ?: ""
     ) {
         when (type) {
-            ButtonType.Folder -> animateFabHide { router.fromFolderToAddFolder(path) }
-            ButtonType.Row -> animateFabHide { router.fromFolderToAddRow(path, id) }
+            ButtonType.Folder -> router.fromFolderToAddFolder(id, path)
+            ButtonType.Row -> router.fromFolderToAddRow(id, path)
             else -> {}
         }
     }
