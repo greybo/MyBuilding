@@ -30,6 +30,7 @@ class FolderAddFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        viewModel.fetchData(args?.objectId, args?.path)
     }
 
     private fun initViews() {
@@ -67,7 +68,7 @@ class FolderAddFragment :
 
     private fun saveFolder(name: String) {
 //        viewModel.addFolder(name, args?.path,Date().time)
-        viewModel.addFolderNew(name, Date().time)
+        viewModel.addFolderNew(name)
         findNavController().popBackStack()
     }
 }

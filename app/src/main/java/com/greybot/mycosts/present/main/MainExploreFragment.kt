@@ -48,7 +48,7 @@ class MainExploreFragment :
         with(binding) {
             exploreFloatButton.setOnClickListener {
                 exploreFloatButton.animateFabHide {
-                    router.fromExploreToAddFolder("")
+                    router.fromExploreToAddFolder()
                 }
             }
         }

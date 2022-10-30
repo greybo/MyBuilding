@@ -6,7 +6,7 @@ import java.util.*
 data class Explore(
     val name: String? = null,
     var date: Long? = null,
-    val fileRows: List<FileRow> = emptyList(),
+    val files: List<FileRow> = emptyList(),
     var objectId: String? = null,
 ) {
 
@@ -14,7 +14,7 @@ data class Explore(
         return mapOf(
             "objectId" to objectId,
             "name" to name,
-            "files" to fileRows
+            "files" to files
         )
     }
 }
@@ -28,7 +28,7 @@ data class FileRow(
     override val price: Float = 0F,
     override val bought: Boolean = false,
     override val currency: CurrencyDto? = CurrencyDto(),
-    override val data: Long = Date().time,
+    override val date: Long = Date().time,
     override val isFile: Boolean = false,
     override val isDelete: Boolean = false,
     override val isArchive: Boolean = false,
@@ -44,7 +44,7 @@ interface IFile {
     val price: Float
     val bought: Boolean
     val currency: CurrencyDto?
-    val data: Long
+    val date: Long
     val isFile: Boolean
     val isDelete: Boolean
     val isArchive: Boolean

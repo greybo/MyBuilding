@@ -16,7 +16,7 @@ class FolderEditViewModel @Inject constructor(private val exploreRepo: ExploreRe
 
     fun fetchData(objectId: String, path: String) {
         launchOnDefault {
-            val model = exploreRepo.findById(objectId)?.fileRows?.find { it.path == path }
+            val model = exploreRepo.findById(objectId)?.files?.find { it.path == path }
             state.values = model ?: FileRow()
         }
     }

@@ -57,6 +57,12 @@
         android:label="FolderAddFragment">
 
         <argument
+            android:name="objectId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
             android:name="path"
             android:defaultValue="@null"
             app:argType="string"

@@ -26,7 +26,7 @@ class FolderPreviewViewModel @Inject constructor(private val exploreRepo: Explor
         this.path = path
         launchOnDefault {
             val folder = exploreRepo.findById(this@FolderPreviewViewModel.objectId)
-            val rows = folder?.fileRows?.filter { it.path?.startsWith(path ?: "") == true }
+            val rows = folder?.files?.filter { it.path?.startsWith(path ?: "") == true }
             handleResult(rows)
         }
     }
