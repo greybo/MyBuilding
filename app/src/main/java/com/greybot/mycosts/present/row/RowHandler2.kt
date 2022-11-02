@@ -28,7 +28,7 @@ class RowHandler2 {
 
     private fun mapToRowItem(item: FileRow) = AdapterItems.RowItem(
         name = item.name,
-        path = item.path ?: "",
+        path = "",
         measure = MeasureType.toType(item.measure),
         price = item.price,
         count = item.count,

@@ -3,27 +3,25 @@ package com.greybot.mycosts.data.dto
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-data class Explore(
-    val name: String? = null,
-    var date: Long? = null,
-    val files: List<FileRow> = emptyList(),
-    var objectId: String? = null,
-) {
-
-    fun toMap(): Map<String, Any?> {
-        return mapOf(
-            "objectId" to objectId,
-            "name" to name,
-            "files" to files
-        )
-    }
-}
+//data class Explore(
+//    val name: String? = null,
+//    var date: Long? = null,
+//    val files: List<FileRow> = emptyList(),
+//    var objectId: String? = null,
+//) {
+//
+//    fun toMap(): Map<String, Any?> {
+//        return mapOf(
+//            "objectId" to objectId,
+//            "name" to name,
+//            "files" to files
+//        )
+//    }
+//}
 
 data class ExploreRow(
     @SerializedName("Name")
     val name: String? = null,
-    @SerializedName("Date")
-    var date: Long? = null,
     @SerializedName("ObjectId")
     var objectId: String? = null,
     @SerializedName("ParentObjectId")
@@ -34,6 +32,8 @@ data class ExploreRow(
     val isDelete: Boolean = false,
     @SerializedName("Archive_is")
     val isArchive: Boolean = false,
+    @SerializedName("Date")
+    var date: Long = Date().time,
 ) {
 
     fun toMap(): Map<String, Any?> {
