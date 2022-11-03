@@ -1,16 +1,16 @@
 package com.greybot.mycosts.data.repository.row
 
 import com.greybot.mycosts.data.dto.CurrencyDto
-import com.greybot.mycosts.data.dto.RowDto
+import com.greybot.mycosts.data.dto.FileRow
+import javax.inject.Inject
 
-class RowDataSource {
-    private val repo: RowRepo = RowRepo()
+class RowDataSource @Inject constructor(private val repo: RowRepo) {
 
     fun geBackupList() = repo.backupList
 
-    suspend fun findByPath(
-        findPath: String
-    ) = repo.getAll().filter { it.path.startsWith(findPath) }
+    suspend fun getAllByParent(
+        parentObjectId: String
+    ) = repo.getAll().filter { it.parentObjectId == parentObjectId }
 
 
     suspend fun findById(
@@ -25,13 +25,12 @@ class RowDataSource {
         currency: CurrencyDto? = null,
         parentId: String?
     ) {
-        val row = RowDto(
-            path = path,
-            title = rowName,
+        val row = FileRow(
+            name = rowName,
             count = count,
             price = price,
             currency = currency,
-            parentId = parentId
+            parentObjectId = parentId
         )
         repo.addRow(row)
     }
@@ -47,7 +46,7 @@ class RowDataSource {
         repo.saveBackupList(list)
     }
 
-    fun save(model: RowDto?) {
+    fun save(model: FileRow?) {
         model?.let { repo.saveModel(it) }
     }
 }

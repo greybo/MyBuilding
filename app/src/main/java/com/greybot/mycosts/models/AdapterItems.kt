@@ -38,6 +38,7 @@ sealed class AdapterItems {
     }
 
     data class RowItem(
+        val objectId: String,
         val name: String,
         val path: String,
         val measure: MeasureType,

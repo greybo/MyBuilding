@@ -48,30 +48,3 @@ data class ExploreRow(
         )
     }
 }
-
-data class FileRow(
-    @SerializedName("Name")
-    override val name: String = "",
-    override val measure: String? = null,
-    override val count: Int = 1,
-    override val price: Float = 0F,
-    override val bought: Boolean = false,
-    override val currency: CurrencyDto? = CurrencyDto(),
-    override val date: Long = Date().time,
-    @SerializedName("ParentObjectId")
-    var parentObjectId: String? = null,
-) : IFile, IFolder
-
-interface IFile {
-    val name: String
-    val measure: String?
-    val count: Int
-    val price: Float
-    val bought: Boolean
-    val currency: CurrencyDto?
-    val date: Long
-}
-
-interface IFolder {
-
-}

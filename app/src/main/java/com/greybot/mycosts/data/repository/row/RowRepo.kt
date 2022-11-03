@@ -6,20 +6,22 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.greybot.mycosts.data.dto.RowDto
+import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.utility.LogApp
 import kotlinx.coroutines.CompletableDeferred
+import javax.inject.Inject
+import javax.inject.Singleton
 
-//TODO init with HILT
-class RowRepo() {
+@Singleton
+class RowRepo @Inject constructor() {
     private val uid: String = "123456"
     private val path: String = "rows"
     private val database = Firebase.database.reference
     private val myRef = database.child(path).child(uid)
-    val backupList = mutableListOf<RowDto>()
+    val backupList = mutableListOf<FileRow>()
 
-    suspend fun getAll(): List<RowDto> {
-        val deferred = CompletableDeferred<List<RowDto>>()
+    suspend fun getAll(): List<FileRow> {
+        val deferred = CompletableDeferred<List<FileRow>>()
         if (backupList.isNotEmpty()) {
             deferred.complete(backupList)
         }
@@ -35,7 +37,7 @@ class RowRepo() {
         return deferred.await()
     }
 
-    private fun equalsList(newList: List<RowDto>, backupList: List<RowDto>): Boolean {
+    private fun equalsList(newList: List<FileRow>, backupList: List<FileRow>): Boolean {
         if (newList.size != backupList.size) return false
         newList.forEachIndexed { index, dto ->
             if (dto != backupList.getOrNull(index)) return false
@@ -43,12 +45,12 @@ class RowRepo() {
         return true
     }
 
-    private fun getAllData(success: (List<RowDto>) -> Unit, failed: (Throwable) -> Unit) {
+    private fun getAllData(success: (List<FileRow>) -> Unit, failed: (Throwable) -> Unit) {
         myRef.orderByKey().addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val itemFolder = snapshot.children.mapNotNull {
-                        it.getValue(RowDto::class.java)
+                        it.getValue(FileRow::class.java)
                     }
                     success(itemFolder)
                 }
@@ -61,12 +63,12 @@ class RowRepo() {
         )
     }
 
-    suspend fun getById(objectId: String): RowDto? {
-        val deferred = CompletableDeferred<RowDto?>()
+    suspend fun getById(objectId: String): FileRow? {
+        val deferred = CompletableDeferred<FileRow?>()
         myRef.child(objectId).addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val itemRow = snapshot.getValue(RowDto::class.java)
+                    val itemRow = snapshot.getValue(FileRow::class.java)
                     deferred.complete(itemRow)
                 }
 
@@ -79,12 +81,12 @@ class RowRepo() {
         return deferred.await()
     }
 
-    suspend fun getByParentId(objectId: String): RowDto? {
-        val deferred = CompletableDeferred<RowDto?>()
+    suspend fun getByParentId(objectId: String): FileRow? {
+        val deferred = CompletableDeferred<FileRow?>()
         myRef.child(objectId).addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val itemRow = snapshot.getValue(RowDto::class.java)
+                    val itemRow = snapshot.getValue(FileRow::class.java)
                     deferred.complete(itemRow)
                 }
 
@@ -97,9 +99,9 @@ class RowRepo() {
         return deferred.await()
     }
 
-    fun addRow(dto: RowDto) {
+    fun addRow(dto: FileRow) {
         val key = myRef.push().key ?: return
-        dto.objectId = key
+        dto.parentObjectId = key
         backupList.add(dto)
 
         myRef.child(key).setValue(dto) { error, ref ->
@@ -111,7 +113,7 @@ class RowRepo() {
     }
 
 
-    fun saveModel(item: RowDto) {
+    fun saveModel(item: FileRow) {
         val database: DatabaseReference = Firebase.database.reference
 
         if (item.objectId == null) {
@@ -134,7 +136,7 @@ class RowRepo() {
             }*/
     }
 
-    fun saveBackupList(list: List<RowDto>) {
+    fun saveBackupList(list: List<FileRow>) {
         backupList.clear()
         backupList.addAll(list)
     }

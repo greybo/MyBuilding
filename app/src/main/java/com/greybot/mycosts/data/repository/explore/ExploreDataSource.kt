@@ -47,4 +47,25 @@ class ExploreDataSource @Inject constructor(private val repo: ExploreRepository)
     fun findParent(objectId: String): ExploreRow? {
         return repo.backupList.find { it.objectId == objectId }
     }
+
+    fun findFolderModels(objectId: String): FolderModels {
+        val parent = findParent(objectId)
+        val children = if (parent.isFolder) {
+            findChildren(objectId)
+        } else emptyList()
+        return FolderModels(parent, children)
+    }
+
+    private val ExploreRow?.isFolder: Boolean
+        get() = !(this?.isFiles ?: true)
 }
+
+data class FolderModels(val parent: ExploreRow?, val children: List<ExploreRow>) {
+    fun ifFiles(): Boolean {
+        return parent?.isFiles ?: false
+    }
+}
+
+
+
+
