@@ -61,12 +61,6 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
-
-        <argument
-            android:name="path"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
     </fragment>
 
     <action
@@ -101,11 +95,6 @@
         android:name="com.greybot.mycosts.present.row.add.RowAddFragment"
         android:label="RowAddFragment">
 
-        <argument
-            android:name="path"
-            android:defaultValue=""
-            app:argType="string"
-            app:nullable="false" />
         <argument
             android:name="objectId"
             android:defaultValue=""
@@ -149,7 +138,7 @@
 
     <fragment
         android:id="@+id/ExploreAddRootFragment"
-        android:name="com.greybot.mycosts.present.main.add.ExploreAddRootFragment"
+        android:name="com.greybot.mycosts.present.second.add.FolderAddFragment"
         android:label="ExploreAddRootFragment" />
 
 </navigation>

@@ -23,7 +23,7 @@ class FolderEditViewModel @Inject constructor(private val source: ExploreDataSou
     fun updateFolderNew(name: String?) {
         if (name != null) {
             val explore = ExploreRow(name)
-            source.update(explore)
+            source.updateFolder(explore)
         }
     }
 }

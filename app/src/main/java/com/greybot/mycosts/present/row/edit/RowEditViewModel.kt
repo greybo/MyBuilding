@@ -2,13 +2,15 @@ package com.greybot.mycosts.present.row.edit
 
 import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
-import com.greybot.mycosts.data.dto.RowDto
-import com.greybot.mycosts.data.repository.row.RowDataSource
+import com.greybot.mycosts.data.dto.FileRow
+import com.greybot.mycosts.data.repository.row.FileDataSource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RowEditViewModel : CompositeViewModel() {
+@HiltViewModel
+class RowEditViewModel @Inject constructor(private val dataSource: FileDataSource) : CompositeViewModel() {
 
-    private val dataSource = RowDataSource()
-    val status = MutableLiveData<RowDto?>()
+    val status = MutableLiveData<FileRow?>()
     fun fetchData(objectId: String?) {
         objectId ?: throw Throwable()
         launchOnDefault {
@@ -16,11 +18,12 @@ class RowEditViewModel : CompositeViewModel() {
             makeItems(model)
         }
     }
-    private fun makeItems(model: RowDto?) {
+
+    private fun makeItems(model: FileRow?) {
         status.postValue(model)
     }
 
-    fun editRow(editModel: RowDto?) {
+    fun editRow(editModel: FileRow?) {
         dataSource.save(editModel)
     }
 }

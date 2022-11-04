@@ -4,7 +4,7 @@ import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.data.repository.explore.ExploreDataSource
-import com.greybot.mycosts.data.repository.row.RowDataSource
+import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.row.RowHandler2
 import com.greybot.mycosts.present.second.FolderHandler2
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FolderPreviewViewModel @Inject constructor(
     private val exploreSource: ExploreDataSource,
-    private val rowSource: RowDataSource
+    private val rowSource: FileDataSource
 ) : CompositeViewModel() {
 
     private var parentFolder: ExploreRow? = null
@@ -32,8 +32,8 @@ class FolderPreviewViewModel @Inject constructor(
             if (folder.children.isNotEmpty()) {
                 makeFolderList(folder.children)
             } else if (folder.ifFiles()) {
-                val file = rowSource.getAllByParent(objectId)
-                makeFileList(file)
+                val files = rowSource.getAllByParent(objectId)
+                makeFileList(files)
             } else {
                 makeButtonList()
             }

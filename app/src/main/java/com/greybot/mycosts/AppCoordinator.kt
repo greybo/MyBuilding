@@ -1,8 +1,5 @@
 package com.greybot.mycosts
 
-import com.greybot.mycosts.data.repository.folder.FolderDataSource
-import com.greybot.mycosts.data.repository.row.RowDataSource
-
 class AppCoordinator private constructor(){
 
     companion object {
@@ -12,6 +9,6 @@ class AppCoordinator private constructor(){
         }
     }
 
-    val folderDataSource by lazy { FolderDataSource() }
-    val rowDataSource by lazy { RowDataSource() }
+//    val folderDataSource by lazy { FolderDataSource() }
+//    val rowDataSource by lazy { RowDataSource() }
 }

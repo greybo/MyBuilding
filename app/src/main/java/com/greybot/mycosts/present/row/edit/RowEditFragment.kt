@@ -6,7 +6,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.BaseBindingFragment
-import com.greybot.mycosts.data.dto.RowDto
+import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.databinding.RowEditFragmentBinding
 
 class RowEditFragment :
@@ -23,12 +23,12 @@ class RowEditFragment :
         viewModel.fetchData(args?.objectId)
     }
 
-    private fun initView(rowDto: RowDto?) {
+    private fun initView(rowDto: FileRow?) {
         with(binding) {
-            editRowName.setText(rowDto?.title)
+            editRowName.setText(rowDto?.name)
             editRowName.setOnEditorActionListener { textView, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    val editModel = rowDto?.copy(title = editRowName.text.toString())
+                    val editModel = rowDto?.copy(name = editRowName.text.toString())
                     viewModel.editRow(editModel)
                     findNavController().popBackStack()
                     true

@@ -34,8 +34,9 @@ class FolderPreviewFragment :
             adapter?.updateAdapter(it)
         }
         systemBackPressedCallback { backPress() }
-
-        viewModel.fetchData(args?.objectId, args?.pathName)
+        args?.objectId?.let {
+            viewModel.fetchData(it)
+        } ?: throw  Throwable()
     }
 
     private fun backPress() {
@@ -43,9 +44,9 @@ class FolderPreviewFragment :
     }
 
     private fun initViews() {
-        binding.folderPreviewFloatButton.setOnClickListener {
-            handleButtonClick(buttonType)
-        }
+//        binding.folderPreviewFloatButton.setOnClickListener {
+//            handleButtonClick(buttonType)
+//        }
         initAdapter()
     }
 
@@ -84,8 +85,8 @@ class FolderPreviewFragment :
         id: String = viewModel.objectId
     ) {
         when (type) {
-            ButtonType.Folder -> router.fromFolderToAddFolder(id, path)
-            ButtonType.Row -> router.fromFolderToAddRow(id, path)
+            ButtonType.Folder -> router.fromFolderToAddFolder(id)
+            ButtonType.Row -> router.fromFolderToAddRow(id)
             else -> {}
         }
     }

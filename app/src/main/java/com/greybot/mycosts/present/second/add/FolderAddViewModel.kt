@@ -12,8 +12,9 @@ class FolderAddViewModel @Inject constructor(private val source: ExploreDataSour
     var explore: ExploreRow? = null
 
     fun fetchData(objectId: String?) {
+        objectId ?: return
         launchOnDefault {
-            val folder = source.findParent(objectId ?: "")
+            val folder = source.findParent(objectId)
             withMain { explore = folder }
         }
     }
@@ -26,7 +27,7 @@ class FolderAddViewModel @Inject constructor(private val source: ExploreDataSour
             )
 
             exploreNew.let {
-                source.updateFolder(it)
+                source.addFolder(it)
             }
         }
     }

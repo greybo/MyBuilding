@@ -30,9 +30,10 @@ class RowHandler2 {
         name = item.name,
         path = "",
         measure = MeasureType.toType(item.measure),
-        price = item.price,
         count = item.count,
+        price = item.price,
         isBought = item.bought,
+        objectId = item.objectId ?: ""
     )
 
 }

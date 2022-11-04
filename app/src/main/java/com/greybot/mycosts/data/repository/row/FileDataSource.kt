@@ -4,7 +4,7 @@ import com.greybot.mycosts.data.dto.CurrencyDto
 import com.greybot.mycosts.data.dto.FileRow
 import javax.inject.Inject
 
-class RowDataSource @Inject constructor(private val repo: RowRepo) {
+class FileDataSource @Inject constructor(private val repo: RowRepo) {
 
     fun geBackupList() = repo.backupList
 
