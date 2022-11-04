@@ -40,7 +40,7 @@ class RowAddViewModel @Inject constructor(
         }
         fileSource.addFile(path, rowName, _count, price, currency, parentId)
         exploreRow?.let {
-            exploreSource.updateFolder(it.copy(isFiles = true))
+            exploreSource.updateFolder(it.copy(files = true))
         } ?: throw Throwable()
     }
 }

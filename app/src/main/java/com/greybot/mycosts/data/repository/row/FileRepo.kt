@@ -14,8 +14,8 @@ import javax.inject.Singleton
 
 @Singleton
 class FileRepo @Inject constructor() {
-    private val uid: String = "123456"
-    private val path: String = "rows"
+    private val uid: String = "654321"
+    private val path: String = "file"
     private val database = Firebase.database.reference
     private val myRef = database.child(uid).child(path)
     val backupList = mutableListOf<FileRow>()
@@ -101,7 +101,7 @@ class FileRepo @Inject constructor() {
 
     fun addFile(dto: FileRow) {
         val key = myRef.push().key ?: return
-        dto.parentObjectId = key
+        dto.objectId = key
         backupList.add(dto)
 
         myRef.child(key).setValue(dto) { error, ref ->
@@ -113,7 +113,7 @@ class FileRepo @Inject constructor() {
     }
 
 
-    fun saveModel(item: FileRow) {
+    fun update(item: FileRow) {
         val database: DatabaseReference = Firebase.database.reference
 
         if (item.objectId == null) {
@@ -121,7 +121,7 @@ class FileRepo @Inject constructor() {
             return
         }
 
-        val dtoMap = item.toMap()
+        val dtoMap = item.copy(objectId = item.objectId).toMap()
 
         val childUpdates = hashMapOf<String, Any>(
             "/$uid/$path/${item.objectId}" to dtoMap
@@ -136,7 +136,7 @@ class FileRepo @Inject constructor() {
             }*/
     }
 
-    fun saveBackupList(list: List<FileRow>) {
+    fun updateBackupList(list: List<FileRow>) {
         backupList.clear()
         backupList.addAll(list)
     }

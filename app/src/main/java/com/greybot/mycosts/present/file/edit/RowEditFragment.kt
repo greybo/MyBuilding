@@ -8,7 +8,9 @@ import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.databinding.RowEditFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RowEditFragment :
     BaseBindingFragment<RowEditFragmentBinding>(RowEditFragmentBinding::inflate) {
 

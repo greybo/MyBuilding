@@ -57,12 +57,12 @@ class ExploreDataSource @Inject constructor(private val repo: ExploreRepository)
     }
 
     private val ExploreRow?.isFolder: Boolean
-        get() = !(this?.isFiles ?: true)
+        get() = !(this?.files ?: true)
 }
 
 data class FolderModels(val parent: ExploreRow?, val children: List<ExploreRow>) {
     fun ifFiles(): Boolean {
-        return parent?.isFiles ?: false
+        return parent?.files ?: false
     }
 }
 

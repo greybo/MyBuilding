@@ -39,14 +39,14 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
         val list = geBackupList().map { row ->
             if (row.objectId == objectId) {
                 val changedRow = row.copy(bought = !row.bought)
-                repo.saveModel(changedRow)
+                repo.update(changedRow)
                 changedRow
             } else row
         }
-        repo.saveBackupList(list)
+        repo.updateBackupList(list)
     }
 
     fun save(model: FileRow?) {
-        model?.let { repo.saveModel(it) }
+        model?.let { repo.update(it) }
     }
 }
