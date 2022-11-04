@@ -6,7 +6,7 @@ import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.data.repository.explore.ExploreDataSource
 import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.present.row.RowHandler2
+import com.greybot.mycosts.present.file.RowHandler2
 import com.greybot.mycosts.present.second.FolderHandler2
 import com.greybot.mycosts.utility.myLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel

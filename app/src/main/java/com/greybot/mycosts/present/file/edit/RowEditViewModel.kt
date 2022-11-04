@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.row.edit
+package com.greybot.mycosts.present.file.edit
 
 import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel

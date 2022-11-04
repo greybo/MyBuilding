@@ -13,11 +13,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RowRepo @Inject constructor() {
+class FileRepo @Inject constructor() {
     private val uid: String = "123456"
     private val path: String = "rows"
     private val database = Firebase.database.reference
-    private val myRef = database.child(path).child(uid)
+    private val myRef = database.child(uid).child(path)
     val backupList = mutableListOf<FileRow>()
 
     suspend fun getAll(): List<FileRow> {
@@ -99,7 +99,7 @@ class RowRepo @Inject constructor() {
         return deferred.await()
     }
 
-    fun addRow(dto: FileRow) {
+    fun addFile(dto: FileRow) {
         val key = myRef.push().key ?: return
         dto.parentObjectId = key
         backupList.add(dto)
@@ -124,7 +124,7 @@ class RowRepo @Inject constructor() {
         val dtoMap = item.toMap()
 
         val childUpdates = hashMapOf<String, Any>(
-            "/$path/$uid/${item.objectId}" to dtoMap
+            "/$uid/$path/${item.objectId}" to dtoMap
         )
 
         database.updateChildren(childUpdates)

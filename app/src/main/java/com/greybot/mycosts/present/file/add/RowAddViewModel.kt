@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.row.add
+package com.greybot.mycosts.present.file.add
 
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.CurrencyDto
@@ -38,7 +38,7 @@ class RowAddViewModel @Inject constructor(
         if (_count == 0) {
             _count = 1
         }
-        fileSource.addRow(path, rowName, _count, price, currency, parentId)
+        fileSource.addFile(path, rowName, _count, price, currency, parentId)
         exploreRow?.let {
             exploreSource.updateFolder(it.copy(isFiles = true))
         } ?: throw Throwable()

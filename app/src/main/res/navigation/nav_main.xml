@@ -92,7 +92,7 @@
 
     <fragment
         android:id="@+id/RowAddFragment"
-        android:name="com.greybot.mycosts.present.row.add.RowAddFragment"
+        android:name="com.greybot.mycosts.present.file.add.RowAddFragment"
         android:label="RowAddFragment">
 
         <argument
@@ -112,7 +112,7 @@
 
     <fragment
         android:id="@+id/RowEditFragment"
-        android:name="com.greybot.mycosts.present.row.edit.RowEditFragment"
+        android:name="com.greybot.mycosts.present.file.edit.RowEditFragment"
         android:label="RowEditFragment">
 
         <argument
