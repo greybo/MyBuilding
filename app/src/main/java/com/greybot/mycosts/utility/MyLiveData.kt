@@ -1,5 +1,7 @@
 package com.greybot.mycosts.utility
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -18,7 +20,9 @@ class MyLiveData<T> {
         }
 
     fun postValue(v: T) {
-        _state.postValue(v as T)
+        Handler(Looper.getMainLooper()).post {
+            _state.postValue(v as T)
+        }
     }
 
     fun observe(owner: LifecycleOwner, observer: Observer<T>) {

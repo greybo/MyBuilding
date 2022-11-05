@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.BaseBindingFragment
-import com.greybot.mycosts.base.getEndSegment
 import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
 import com.greybot.mycosts.present.adapter.AdapterCallback
@@ -26,12 +25,14 @@ class FolderPreviewFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        binding.folderPreviewToolbar.getBuilder()
+        val toolbar = binding.folderPreviewToolbar.getBuilder()
             .homeCallback { backPress() }
-            .title(getEndSegment(args?.pathName))
             .create()
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
+        }
+        viewModel.title.observe(viewLifecycleOwner) {
+            toolbar.title = it ?: ""
         }
         systemBackPressedCallback { backPress() }
         args?.objectId?.let {
@@ -63,16 +64,14 @@ class FolderPreviewFragment :
     private fun handleAdapterClick(callback: AdapterCallback) {
         with(callback) {
             when (this) {
-                is AdapterCallback.Name -> router.fromFolderToEditRow(
-                    viewModel.objectId,
-                    this.value.path
+                is AdapterCallback.RowName -> router.fromFolderToEditRow(
+                    this.value.objectId
                 )
-                is AdapterCallback.Price -> {}
-                is AdapterCallback.Buy -> viewModel.changeRowBuy(this.value)
+                is AdapterCallback.RowPrice -> {}
+                is AdapterCallback.RowBuy -> viewModel.changeRowBuy(this.value)
                 is AdapterCallback.AddButton -> handleButtonClick(this.value.type)
                 is AdapterCallback.FolderOpen -> router.fromFolderToFolder(
-                    viewModel.objectId,
-                    this.value.path
+                    this.value.objectId ?: ""
                 )
                 else -> {}
             }
@@ -81,7 +80,7 @@ class FolderPreviewFragment :
 
     private fun handleButtonClick(
         type: ButtonType,
-        path: String = args?.pathName ?: "",
+//        path: String = args?.pathName ?: "",
         id: String = viewModel.objectId
     ) {
         when (type) {

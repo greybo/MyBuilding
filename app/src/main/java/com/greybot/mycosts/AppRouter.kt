@@ -9,8 +9,9 @@ import com.greybot.mycosts.present.second.preview.IFolderPreviewRouter
 class AppRouter(private val navController: NavController) : IMainExploreRouter,
     IFolderPreviewRouter {
 
-    override fun fromFolderToFolder(id: String, pathName: String) {
-        val direction = FolderPreviewFragmentDirections.toFolderPreviewFragment(pathName)
+    override fun fromFolderToFolder(id: String) {
+        val direction = FolderPreviewFragmentDirections.toFolderPreviewFragment()
+//        direction.
         navController.navigate(direction)
     }
 
@@ -24,13 +25,13 @@ class AppRouter(private val navController: NavController) : IMainExploreRouter,
         navController.navigate(direction)
     }
 
-    override fun fromFolderToEditRow(id: String, path: String) {
-        val direction = FolderPreviewFragmentDirections.toRowEditFragment(id, path)
+    override fun fromFolderToEditRow(id: String) {
+        val direction = FolderPreviewFragmentDirections.toRowEditFragment(id)
         navController.navigate(direction)
     }
 
-    override fun fromExploreToFolder(objectId: String, pathName: String) {
-        val direction = MainExploreFragmentDirections.toFolderPreviewFragment(objectId, pathName)
+    override fun fromExploreToFolder(objectId: String) {
+        val direction = MainExploreFragmentDirections.toFolderPreviewFragment(objectId)
         navController.navigate(direction)
     }
 

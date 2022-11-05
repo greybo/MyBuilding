@@ -22,6 +22,7 @@ class FolderPreviewViewModel @Inject constructor(
     private val rowHandler by lazy { RowHandler2() }
     private val folderHandler by lazy { FolderHandler2() }
     val state = myLiveData<List<AdapterItems>>()
+    val title = myLiveData<String?>()
 
     val objectId: String get() = parentFolder?.objectId ?: ""
 
@@ -29,6 +30,7 @@ class FolderPreviewViewModel @Inject constructor(
         launchOnDefault {
             val folder = exploreSource.findFolderModels(objectId)
             parentFolder = folder.parent
+            title.postValue(parentFolder?.name)
             if (folder.children.isNotEmpty()) {
                 makeFolderList(folder.children)
             } else if (folder.ifFiles()) {

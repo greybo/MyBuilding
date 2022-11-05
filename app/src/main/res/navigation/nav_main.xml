@@ -30,16 +30,9 @@
 
         <argument
             android:name="objectId"
-            android:defaultValue="@null"
+            android:defaultValue=""
             app:argType="string"
-            app:nullable="true" />
-
-        <argument
-            android:name="pathName"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-
+            app:nullable="false" />
 
     </fragment>
 
@@ -117,12 +110,6 @@
 
         <argument
             android:name="objectId"
-            android:defaultValue=""
-            app:argType="string"
-            app:nullable="false" />
-
-        <argument
-            android:name="path"
             android:defaultValue=""
             app:argType="string"
             app:nullable="false" />
