@@ -56,8 +56,8 @@ class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragment
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             // Do whatever you want here
             saveFile()
-            return true;
+            return true
         }
-        return false;
+        return false
     }
 }
