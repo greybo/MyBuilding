@@ -120,8 +120,12 @@ class FileRepo @Inject constructor() {
             LogApp.w("RowRepo", null, "Couldn't get push key for posts")
             return
         }
-
-        val dtoMap = item.copy(objectId = item.objectId).toMap()
+        backupList.mapIndexed { index, fileRow ->
+            if (fileRow.objectId == item.objectId) {
+                backupList[index] = item
+            }
+        }
+        val dtoMap = item.toMap()
 
         val childUpdates = hashMapOf<String, Any>(
             "/$uid/$path/${item.objectId}" to dtoMap

@@ -6,7 +6,9 @@ import javax.inject.Inject
 
 class FileDataSource @Inject constructor(private val repo: FileRepo) {
 
-    fun geBackupList() = repo.backupList
+    fun geBackupList(): List<FileRow> {
+        return repo.backupList
+    }
 
     suspend fun getAllByParent(
         parentObjectId: String
