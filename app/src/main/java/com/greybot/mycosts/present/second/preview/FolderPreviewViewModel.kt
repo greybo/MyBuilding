@@ -6,8 +6,8 @@ import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.data.repository.explore.ExploreDataSource
 import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.present.file.RowHandler2
-import com.greybot.mycosts.present.second.FolderHandler2
+import com.greybot.mycosts.present.file.FileHandler
+import com.greybot.mycosts.present.second.FolderHandler
 import com.greybot.mycosts.utility.myLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -19,8 +19,8 @@ class FolderPreviewViewModel @Inject constructor(
 ) : CompositeViewModel() {
 
     private var parentFolder: ExploreRow? = null
-    private val rowHandler by lazy { RowHandler2() }
-    private val folderHandler by lazy { FolderHandler2() }
+    private val fileHandler by lazy { FileHandler() }
+    private val folderHandler by lazy { FolderHandler() }
     val state = myLiveData<List<AdapterItems>>()
     val title = myLiveData<String?>()
 
@@ -56,7 +56,7 @@ class FolderPreviewViewModel @Inject constructor(
 
     private fun makeFileList(rowList: List<FileRow>?) {
         rowList ?: return
-        setToLiveData = rowHandler.makeGroupBuy(rowList)
+        setToLiveData = fileHandler.makeGroupBuy(rowList)
     }
 
     private fun makeFolderList(list: List<ExploreRow>) {

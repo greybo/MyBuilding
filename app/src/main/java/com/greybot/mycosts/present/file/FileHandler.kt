@@ -3,14 +3,16 @@ package com.greybot.mycosts.present.file
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.models.MeasureType
+import com.greybot.mycosts.present.second.preview.ButtonType
 
-class RowHandler2 {
+class FileHandler {
 
     fun makeGroupBuy(rowList: List<FileRow>): List<AdapterItems> {
         val groups = rowList.groupBy { it.bought }
         return buildList {
             addAll(makeItems(groups[false]))
             addAll(makeItems(groups[true]))
+            add(AdapterItems.ButtonAddItem(ButtonType.Row))
             add(AdapterItems.SpaceItem())
         }
     }
