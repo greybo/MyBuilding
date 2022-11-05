@@ -28,7 +28,7 @@ class RowEditFragment :
     private fun initView(rowDto: FileRow?) {
         with(binding) {
             editRowName.setText(rowDto?.name)
-            editRowName.setOnEditorActionListener { textView, actionId, event ->
+            editRowName.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     val editModel = rowDto?.copy(name = editRowName.text.toString())
                     viewModel.editRow(editModel)

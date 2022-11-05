@@ -1,33 +1,33 @@
 package com.greybot.mycosts.utility
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 
+@Suppress("unused")
 class CustomLiveData<T>(t: T) {
     private val _liveData = MutableLiveData<T>()
-    private val liveData: LiveData<T> = _liveData
 
     init {
         t?.let { _liveData.value = it }
     }
 
-    var value: T = t
+    var values: T = t
         set(v) {
-            value(v)
+            field = v
+            (v).also { _liveData.value = it }
         }
 
-    private fun value(t: T) {
-        _liveData.value = t as T
-    }
-
     fun postValue(t: T) {
-        _liveData.postValue(t as T)
+        Handler(Looper.getMainLooper()).post {
+            with(_liveData) { postValue(t) }
+        }
     }
 
     fun observe(owner: LifecycleOwner, observer: Observer<T>) {
-        liveData.observe(owner, observer)
+        _liveData.observe(owner, observer)
     }
 }
 

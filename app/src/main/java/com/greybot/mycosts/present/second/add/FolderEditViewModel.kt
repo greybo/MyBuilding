@@ -3,7 +3,7 @@ package com.greybot.mycosts.present.second.add
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.repository.explore.ExploreDataSource
-import com.greybot.mycosts.utility.myLiveData
+import com.greybot.mycosts.utility.makeLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -11,7 +11,7 @@ import javax.inject.Inject
 class FolderEditViewModel @Inject constructor(private val source: ExploreDataSource) :
     CompositeViewModel() {
 
-    val state = myLiveData<ExploreRow?>()
+    val state = makeLiveData<ExploreRow?>()
 
     fun fetchData(objectId: String) {
         launchOnDefault {

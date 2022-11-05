@@ -22,7 +22,6 @@ class RowAddViewModel @Inject constructor(
     }
 
     fun addRow(
-        path: String,
         rowName: String,
         count: String = "1",
         price: Float = 0F,
@@ -38,7 +37,7 @@ class RowAddViewModel @Inject constructor(
         if (_count == 0) {
             _count = 1
         }
-        fileSource.addFile(path, rowName, _count, price, currency, parentId)
+        fileSource.addFile(rowName, _count, price, currency, parentId)
         exploreRow?.let {
             exploreSource.updateFolder(it.copy(files = true))
         } ?: throw Throwable()

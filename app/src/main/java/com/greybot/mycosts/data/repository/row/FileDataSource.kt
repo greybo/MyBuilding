@@ -18,7 +18,6 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
     ) = repo.getAll().find { dto -> dto.objectId == objectId }
 
     fun addFile(
-        path: String,
         rowName: String,
         count: Int = 0,
         price: Float = 0F,

@@ -42,7 +42,6 @@ class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragment
                 0F
             }.toString().toFloat()
             viewModel.addRow(
-                path = "",//args!!.path,
                 rowName = addRowName.text.toString(),
                 count = addRowCount.text.toString(),
                 price = _price,
