@@ -1,51 +1,72 @@
 package com.greybot.mycosts.data.repository.explore
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.greybot.mycosts.data.dto.ExploreRow
 import kotlinx.coroutines.CompletableDeferred
 import javax.inject.Inject
+import javax.inject.Singleton
 
-//@Singleton
+@Singleton
 class ExploreDataSource @Inject constructor(private val repo: ExploreRepository) {
 
-    fun groupByParentId(): Map<String?, List<ExploreRow>> {
-        return repo.backupList.groupBy { it.parentObjectId }
+    private val backupList = mutableListOf<ExploreRow>()
+    private val _listLiveData = MutableLiveData<Map<String?, List<ExploreRow>>>()
+    private val actor = ExploreActorCoroutine()
+
+    //    val listLiveData: LiveData<Map<String?, List<ExploreRow>>> = _listLiveData
+    val listLiveData = Transformations.map(_listLiveData) {
+        it
+    }
+
+    fun fetchData() {
+//        actor.add()
     }
 
     suspend fun getRootFolder(): List<ExploreRow>? {
-        return getALLExplore()?.filter { it.parentObjectId.isNullOrEmpty() }
+        return fetch()?.filter { it.parentObjectId.isNullOrEmpty() }
     }
 
-    suspend fun getALLExplore(): List<ExploreRow>? {
+    fun groupByParentId(): Map<String?, List<ExploreRow>> {
+        return backupList.groupBy { it.parentObjectId }
+    }
+
+    suspend fun groupByParentId2() {
+        return _listLiveData.postValue(fetch()?.groupBy { it.parentObjectId ?: "root" }
+            ?: emptyMap())
+    }
+
+    private suspend fun fetch(): List<ExploreRow>? {
         val deferred = CompletableDeferred<List<ExploreRow>?>()
-        if (repo.backupList.isNotEmpty()) {
-            deferred.complete(repo.backupList)
+        if (backupList.isNotEmpty()) {
+            deferred.complete(backupList)
         } else
-            repo.getRemoteAll({
+            repo.getAllData({
+                actor.addAll(it)
                 deferred.complete(it)
-                repo.backupList.clear()
-                repo.backupList.addAll(it)
             }, { error ->
                 deferred.completeExceptionally(error)
             })
         return deferred.await()
     }
 
-    fun findChildren(objectId: String): List<ExploreRow> {
-        return groupByParentId().getOrElse(objectId) {
-            emptyList()
+     fun addFolder(model: ExploreRow) {
+        repo.addFolder(model)?.let {
+            backupList.add(it)
         }
-    }
-
-    fun addFolder(model: ExploreRow) {
-        repo.addFolder(model)
     }
 
     fun updateFolder(model: ExploreRow) {
         repo.update(model)
+        backupList.forEachIndexed { index, item ->
+            if (model.objectId == item.objectId) {
+                backupList[index] = model
+            }
+        }
     }
 
     fun findParent(objectId: String): ExploreRow? {
-        return repo.backupList.find { it.objectId == objectId }
+        return backupList.find { it.objectId == objectId }
     }
 
     fun findFolderModels(objectId: String): FolderModels {
@@ -54,6 +75,12 @@ class ExploreDataSource @Inject constructor(private val repo: ExploreRepository)
             findChildren(objectId)
         } else emptyList()
         return FolderModels(parent, children)
+    }
+
+    private fun findChildren(objectId: String): List<ExploreRow> {
+        return groupByParentId().getOrElse(objectId) {
+            emptyList()
+        }
     }
 
     private val ExploreRow?.isFolder: Boolean

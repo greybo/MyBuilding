@@ -10,17 +10,16 @@ import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.utility.LogApp
 import com.greybot.mycosts.utility.toastDebug
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+//@Singleton
 class ExploreRepository @Inject constructor() {
 
     private val uid: String = "654321"
     private val path: String = "exploreNew"
     private val myRef = Firebase.database.reference.child(uid).child(path)
-    val backupList = mutableListOf<ExploreRow>()
+//    val backupList = mutableListOf<ExploreRow>()
 
-    fun getRemoteAll(success: (List<ExploreRow>) -> Unit, failed: (Throwable) -> Unit) {
+    fun getAllData(success: (List<ExploreRow>) -> Unit, failed: (Throwable) -> Unit) {
         myRef.orderByKey().addListenerForSingleValueEvent(
             object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -39,16 +38,17 @@ class ExploreRepository @Inject constructor() {
         )
     }
 
-    fun addFolder(item: ExploreRow) {
-        val key = myRef.push().key ?: return
+    fun addFolder(item: ExploreRow): ExploreRow? {
+        val key = myRef.push().key ?: return null
         item.objectId = key
-        backupList.add(item)
+//        backupList.add(item)
         myRef.child(key).setValue(item) { error, ref ->
             if (error != null) {
                 LogApp.e("ExploreFragment", error.toException())
             }
             LogApp.i("ExploreFragment", ref.toString())
         }
+        return item
     }
 
     fun update(item: ExploreRow) {
@@ -58,11 +58,11 @@ class ExploreRepository @Inject constructor() {
             LogApp.w("TAG", null, "Couldn't get push key for posts")
             return
         }
-        backupList.forEachIndexed { index, model ->
-            if (model.objectId == item.objectId) {
-                backupList[index] = item
-            }
-        }
+//        backupList.forEachIndexed { index, model ->
+//            if (model.objectId == item.objectId) {
+//                backupList[index] = item
+//            }
+//        }
         val dtoMap = item.toMap()
 
         val childUpdates = hashMapOf<String, Any>(

@@ -3,7 +3,7 @@ package com.greybot.mycosts
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.greybot.mycosts.base.AbstractActivity
-import com.greybot.mycosts.base.CoroutinesViewModel
+import com.greybot.mycosts.example.CoroutinesViewModel
 import com.greybot.mycosts.utility.LogApp
 import dagger.hilt.android.AndroidEntryPoint
 
