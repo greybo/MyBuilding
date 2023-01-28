@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.greybot.mycosts.data.dto.ExploreRow
-import com.greybot.mycosts.present.main.getOrNull
 import com.greybot.mycosts.utility.LogApp
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -59,7 +58,10 @@ class ExploreDataSource @Inject constructor(private val repo: ExploreRepository)
     }
 }
 
-val ExploreRow?.isFolder: Boolean
-    get() = !(this?.files ?: true)
+fun <K, V> Map<K, List<V>>.getOrNull(k: K): List<V>? {
+    return getOrElse(k) {
+        null //emptyList()
+    }
+}
 
 

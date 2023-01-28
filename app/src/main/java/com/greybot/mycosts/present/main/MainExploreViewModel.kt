@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.repository.explore.ExploreDataSource
+import com.greybot.mycosts.data.repository.explore.getOrNull
 import com.greybot.mycosts.models.AdapterItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -54,8 +55,4 @@ class MainExploreViewModel @Inject constructor(private val dataSource: ExploreDa
     }
 }
 
-fun <K, V> Map<K, List<V>>.getOrNull(k: K): List<V>? {
-    return getOrElse(k) {
-        null //emptyList()
-    }
-}
+

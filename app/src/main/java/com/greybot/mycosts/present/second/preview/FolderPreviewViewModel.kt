@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FolderPreviewViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val exploreSource: ExploreDataSource,
     private val rowSource: FileDataSource
 ) : CompositeViewModel() {
@@ -68,7 +68,10 @@ class FolderPreviewViewModel @Inject constructor(
 
     fun changeRowBuy(item: AdapterItems.RowItem) {
         rowSource.changeBuyStatus(item.objectId)
-        makeFileList(rowSource.geBackupList())
+        launchOnDefault {
+            val files = rowSource.findByParentId(parentId)
+            makeFileList(files)
+        }
     }
 
     private fun makeButtonList() {
