@@ -10,7 +10,7 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
         return repo.backupList
     }
 
-    suspend fun getAllByParent(
+    suspend fun findByParentId(
         parentObjectId: String
     ) = repo.getAll().filter { it.parentObjectId == parentObjectId }
 

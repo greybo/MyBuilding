@@ -7,14 +7,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class FolderAddViewModel @Inject constructor(private val source: ExploreDataSource) :
-    CompositeViewModel() {
+class FolderAddViewModel @Inject constructor(
+    private val source: ExploreDataSource
+) : CompositeViewModel() {
+
     var explore: ExploreRow? = null
 
     fun fetchData(objectId: String?) {
         objectId ?: return
         launchOnDefault {
-            val folder = source.findParent(objectId)
+            val folder = source.findByObjectId(objectId)
             withMain { explore = folder }
         }
     }
@@ -27,7 +29,9 @@ class FolderAddViewModel @Inject constructor(private val source: ExploreDataSour
             )
 
             exploreNew.let {
-                source.addFolder(it)
+                launchOnDefault {
+                    source.addFolder(it)
+                }
             }
         }
     }

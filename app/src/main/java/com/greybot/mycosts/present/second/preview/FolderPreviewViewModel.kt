@@ -1,5 +1,7 @@
 package com.greybot.mycosts.present.second.preview
 
+import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.dto.FileRow
@@ -14,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FolderPreviewViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val exploreSource: ExploreDataSource,
     private val rowSource: FileDataSource
 ) : CompositeViewModel() {
@@ -24,22 +27,43 @@ class FolderPreviewViewModel @Inject constructor(
     val state = makeLiveData<List<AdapterItems>>()
     val title = makeLiveData<String?>()
 
-    val objectId: String get() = parentFolder?.objectId ?: ""
+    val parentId = savedStateHandle.get<String>("objectId") ?: ""
+    private val exploreObserver = Observer<Map<String, List<ExploreRow>>> {
+        fetchData()
+    }
 
-    fun fetchData(objectId: String) {
+    init {
+        exploreSource.listLiveData.observeForever(exploreObserver)
         launchOnDefault {
-            val folder = exploreSource.findFolderModels(objectId)
-            parentFolder = folder.parent
+            parentFolder = exploreSource.findByObjectId(parentId)
             title.postValue(parentFolder?.name)
-            if (folder.children.isNotEmpty()) {
-                makeFolderList(folder.children)
-            } else if (folder.ifFiles()) {
-                val files = rowSource.getAllByParent(objectId)
-                makeFileList(files)
-            } else {
-                makeButtonList()
-            }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        exploreSource.listLiveData.removeObserver(exploreObserver)
+    }
+
+    fun fetchData(id: String = parentId) {
+        launchOnDefault {
+            val folderList = exploreSource.findByParentId(id)
+            val files = rowSource.findByParentId(id)
+
+            if (!folderList.isNullOrEmpty()) {
+                makeFolderList(folderList)
+            } else if (files.isNotEmpty()) {
+                makeFileList(files)
+            } else makeButtonList()
+        }
+    }
+
+    private fun makeFolderList(list: List<ExploreRow>) {
+        setToLiveData = folderHandler.makeFolderItems(list)
+    }
+
+    private fun makeFileList(rowList: List<FileRow>) {
+        setToLiveData = fileHandler.makeGroupBuy(rowList)
     }
 
     fun changeRowBuy(item: AdapterItems.RowItem) {
@@ -52,15 +76,6 @@ class FolderPreviewViewModel @Inject constructor(
             AdapterItems.ButtonAddItem(ButtonType.Folder),
             AdapterItems.ButtonAddItem(ButtonType.Row)
         )
-    }
-
-    private fun makeFileList(rowList: List<FileRow>?) {
-        rowList ?: return
-        setToLiveData = fileHandler.makeGroupBuy(rowList)
-    }
-
-    private fun makeFolderList(list: List<ExploreRow>) {
-        setToLiveData = folderHandler.makeFolderItems(list)
     }
 
     private var setToLiveData: List<AdapterItems>

@@ -21,16 +21,25 @@ class ExploreActorCoroutine(coroutineContext: CoroutineContext = EmptyCoroutineC
                     backupList.clear()
                     backupList.addAll(command.list)
                 }
+                is ExploreCommand.Update -> {
+                    backupList.forEachIndexed { index, item ->
+                        if (command.model.objectId == item.objectId) {
+                            backupList[index] = command.model
+                        }
+                    }
+                }
                 is ExploreCommand.Remote -> backupList.remove(command.model)
                 is ExploreCommand.Get -> command.response.complete(backupList)
             }
         }
     }
 
-    suspend fun add(model: ExploreRow) {
+    suspend fun add(model: ExploreRow): List<ExploreRow> {
         coroutineCommand.send(ExploreCommand.Add(model))
+        return getAll()
     }
-     fun addAll(list: List<ExploreRow>) {
+
+    fun addAll(list: List<ExploreRow>) {
         coroutineCommand.trySend(ExploreCommand.AddAll(list))
     }
 
@@ -43,12 +52,18 @@ class ExploreActorCoroutine(coroutineContext: CoroutineContext = EmptyCoroutineC
         coroutineCommand.send(getCounter)
         return getCounter.response.await()
     }
+
+    suspend fun update(model: ExploreRow): List<ExploreRow> {
+        coroutineCommand.send(ExploreCommand.Update(model))
+        return getAll()
+    }
 }
 
 
 sealed class ExploreCommand {
     class Add(val model: ExploreRow) : ExploreCommand()
     class AddAll(val list: List<ExploreRow>) : ExploreCommand()
+    class Update(val model: ExploreRow) : ExploreCommand()
     class Remote(val model: ExploreRow) : ExploreCommand()
     class Get(val response: CompletableDeferred<List<ExploreRow>> = CompletableDeferred()) :
         ExploreCommand()

@@ -18,7 +18,7 @@ class FolderPreviewFragment :
 
     private val viewModel by viewModels<FolderPreviewViewModel>()
     private var adapter: ExploreAdapter? = null
-    private val args by lazy { arguments?.let { FolderPreviewFragmentArgs.fromBundle(it) } }
+
     private val router: IFolderPreviewRouter by getRouter()
     private var buttonType: ButtonType = ButtonType.None
 
@@ -35,9 +35,7 @@ class FolderPreviewFragment :
             toolbar.title = it ?: ""
         }
         systemBackPressedCallback { backPress() }
-        args?.objectId?.let {
-            viewModel.fetchData(it)
-        } ?: throw  Throwable()
+        viewModel.fetchData()
     }
 
     private fun backPress() {
@@ -80,8 +78,7 @@ class FolderPreviewFragment :
 
     private fun handleButtonClick(
         type: ButtonType,
-//        path: String = args?.pathName ?: "",
-        id: String = viewModel.objectId
+        id: String = viewModel.parentId
     ) {
         when (type) {
             ButtonType.Folder -> router.fromFolderToAddFolder(id)

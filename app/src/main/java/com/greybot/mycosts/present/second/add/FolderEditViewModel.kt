@@ -15,15 +15,17 @@ class FolderEditViewModel @Inject constructor(private val source: ExploreDataSou
 
     fun fetchData(objectId: String) {
         launchOnDefault {
-            val model = source.findParent(objectId)
+            val model = source.findByObjectId(objectId)
             state.values = model
         }
     }
 
     fun updateFolderNew(name: String?) {
-        if (name != null) {
-            val explore = ExploreRow(name)
-            source.updateFolder(explore)
+        launchOnDefault {
+            if (name != null) {
+                val explore = ExploreRow(name)
+                source.updateFolder(explore)
+            }
         }
     }
 }
