@@ -2,8 +2,12 @@ package com.greybot.mycosts.present.second.preview
 
 import android.os.Bundle
 import android.view.View
+import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.greybot.mycosts.R
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
@@ -65,7 +69,7 @@ class FolderPreviewFragment :
                 is AdapterCallback.RowName -> router.fromFolderToEditRow(
                     this.value.objectId
                 )
-                is AdapterCallback.RowPrice -> {}
+                is AdapterCallback.RowPrice -> {showDialogOne()}
                 is AdapterCallback.RowBuy -> viewModel.changeRowBuy(this.value)
                 is AdapterCallback.AddButton -> handleButtonClick(this.value.type)
                 is AdapterCallback.FolderOpen -> router.fromFolderToFolder(
@@ -85,5 +89,25 @@ class FolderPreviewFragment :
             ButtonType.Row -> router.fromFolderToAddRow(id)
             else -> {}
         }
+    }
+
+    fun showDialogOne() {
+
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(R.layout.sample_dialog_one)
+        val btnEdit = dialog.findViewById<RelativeLayout>(R.id.rl_edit)
+        val btnDelete = dialog.findViewById<RelativeLayout>(R.id.rl_delete)
+        val btnAdd = dialog.findViewById<RelativeLayout>(R.id.rl_add)
+
+        btnEdit?.setOnClickListener {
+            Toast.makeText(requireContext(), "Clicked on Edit", Toast.LENGTH_SHORT).show()
+        }
+        btnDelete?.setOnClickListener {
+            Toast.makeText(requireContext(), "Clicked on Delete", Toast.LENGTH_SHORT).show()
+        }
+        btnAdd?.setOnClickListener {
+            Toast.makeText(requireContext(), "Clicked on Add", Toast.LENGTH_SHORT).show()
+        }
+        dialog.show()
     }
 }
