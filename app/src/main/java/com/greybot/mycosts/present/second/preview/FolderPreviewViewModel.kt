@@ -21,7 +21,7 @@ class FolderPreviewViewModel @Inject constructor(
     private val rowSource: FileDataSource
 ) : CompositeViewModel() {
 
-    private var parentFolder: ExploreRow? = null
+    var parentFolder: ExploreRow? = null
     private val fileHandler by lazy { FileHandler() }
     private val folderHandler by lazy { FolderHandler() }
     val state = makeLiveData<List<AdapterItems>>()
@@ -69,8 +69,19 @@ class FolderPreviewViewModel @Inject constructor(
     fun changeRowBuy(item: AdapterItems.RowItem) {
         rowSource.changeBuyStatus(item.objectId)
         launchOnDefault {
-            val files = rowSource.findByParentId(parentId)
-            makeFileList(files)
+            updateUIRowList()
+        }
+    }
+
+    private suspend fun updateUIRowList() {
+        val files = rowSource.findByParentId(parentId)
+        makeFileList(files)
+    }
+
+    fun changeRowPrice(id: String, count: Int, price: Float) {
+        launchOnDefault {
+            rowSource.changePrice(id, count, price)
+            updateUIRowList()
         }
     }
 

@@ -50,4 +50,25 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
     fun save(model: FileRow?) {
         model?.let { repo.update(it) }
     }
+
+    suspend fun changePrice(objectId: String, count: Int, price: Float) {
+        findById(objectId)
+            ?.copy(count = count, price = price)
+            ?.let { repo.update(it) }
+    }
+
+//    fun updateBackupList(model: FileRow) {
+//
+//    }
+
+//    fun changePrice(objectId: String, count: Int, price: Float) {
+//        val list = geBackupList().map { row ->
+//            if (row.objectId == objectId) {
+//                val changedRow = row.copy(count = count, price = price)
+//                repo.update(changedRow)
+//                changedRow
+//            } else row
+//        }
+//        repo.updateBackupList(list)
+//    }
 }

@@ -31,6 +31,7 @@ class DiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
                 oldItem.isBought == newItem.isBought &&
                         oldItem.name == newItem.name &&
                         oldItem.path == newItem.path &&
+                        oldItem.count == newItem.count &&
                         oldItem.price == newItem.price
             }
             oldItem is AdapterItems.TotalItem && newItem is AdapterItems.TotalItem -> {

@@ -99,6 +99,7 @@ class ExploreAdapter(
             item as AdapterItems.RowItem
             binding.rowItemCheckDone.isChecked = item.isBought
             binding.rowItemName.text = item.name
+            binding.rowItemCount.text = item.count.toString()
             binding.rowItemPrice.text = item.price.toString()
 
             binding.rowItemName.setOnClickListener {
