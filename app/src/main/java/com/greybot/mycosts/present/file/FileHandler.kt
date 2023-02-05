@@ -9,23 +9,30 @@ class FileHandler {
 
     fun makeGroupBuy(rowList: List<FileRow>): List<AdapterItems> {
         val groups = rowList.groupBy { it.bought }
+        val pairOrder = makeItems(groups[false])
+        val pairCheck = makeItems(groups[true])
         return buildList {
-            addAll(makeItems(groups[false]))
-            addAll(makeItems(groups[true]))
+            addAll(pairOrder.first)
+            add(
+                AdapterItems.TotalItem(
+                    value1 = pairOrder.second,
+                    value2 = pairCheck.second
+                )
+            )
+            addAll(pairCheck.first)
             add(AdapterItems.ButtonAddItem(ButtonType.Row))
             add(AdapterItems.SpaceItem())
         }
     }
 
-    private fun makeItems(list: List<FileRow>?): List<AdapterItems> {
-        list ?: return emptyList()
+    private fun makeItems(list: List<FileRow>?): Pair<List<AdapterItems>, Float> {
+        list ?: return Pair(emptyList(), 0F)
         val items = mutableListOf<AdapterItems>()
-        val todoTotal = list.foldRight(0f) { row, sum ->
+        val total = list.foldRight(0f) { row, sum ->
             items.add(mapToRowItem(row))
             row.count * row.price + sum
         }
-        items.add(AdapterItems.TotalItem(todoTotal))
-        return items
+        return Pair(items, total)
     }
 
     private fun mapToRowItem(item: FileRow) = AdapterItems.RowItem(

@@ -13,10 +13,10 @@
         android:layout_height="1dp"
         android:layout_marginBottom="4dp"
         android:background="@color/divider_color"
-        app:layout_constraintBottom_toTopOf="@+id/totalItemTitle" />
+        app:layout_constraintBottom_toTopOf="@+id/totalItemTitle_2" />
 
     <TextView
-        android:id="@+id/totalItemTitle"
+        android:id="@+id/totalItemTitle_1"
         style="@style/Subtitle2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -24,27 +24,51 @@
         android:layout_marginEnd="4dp"
         android:gravity="bottom"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/totalItemValue"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        tools:text="Total" />
+        app:layout_constraintEnd_toStartOf="@+id/totalItemTitle_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/totalItemTitle_2"
+        tools:text="Total: Check" />
 
     <TextView
-        android:id="@+id/totalItemValue"
+        android:id="@+id/totalItemValue_1"
         style="@style/Body_base"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="bottom"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/totalItemTitle"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintTop_toTopOf="@+id/totalItemTitle"
+        app:layout_constraintStart_toStartOf="@+id/totalItemTitle_1"
+        app:layout_constraintTop_toBottomOf="@+id/totalItemTitle_1"
+        tools:text="123.0 uah" />
+
+    <TextView
+        android:id="@+id/totalItemTitle_2"
+        style="@style/Subtitle2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
+        android:gravity="bottom"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/totalItemTitle_1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Total: Order" />
+
+    <TextView
+        android:id="@+id/totalItemValue_2"
+        style="@style/Body_base"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="bottom"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/totalItemTitle_2"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintTop_toBottomOf="@+id/totalItemTitle_2"
         tools:text="123.0 uah" />
 
     <View
@@ -53,6 +77,6 @@
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
         android:background="@color/divider_color"
-        app:layout_constraintTop_toBottomOf="@+id/totalItemTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/totalItemValue_2" />
     <!--        app:layout_constraintStart_toEndOf="@+id/rowItem_Title"-->
 </androidx.constraintlayout.widget.ConstraintLayout>

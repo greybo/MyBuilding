@@ -118,8 +118,10 @@ class ExploreAdapter(
         Holder(binding.root) {
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.TotalItem
-            binding.totalItemTitle.text = item.name
-            binding.totalItemValue.text = item.value.toString()
+            binding.totalItemTitle1.text = item.name1
+            binding.totalItemValue1.text = item.value1.toString()
+            binding.totalItemTitle2.text = item.name2
+            binding.totalItemValue2.text = item.value2.toString()
             itemView.setOnClickListener {
                 onClick.invoke(AdapterCallback.Total(item))
             }
