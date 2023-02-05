@@ -20,7 +20,7 @@ class AppRouter(private val navController: NavController) : IMainExploreRouter,
     }
 
     override fun fromFolderToAddRow(id: String) {
-        val direction = FolderPreviewFragmentDirections.toRowAddFragment( id)
+        val direction = FolderPreviewFragmentDirections.toRowAddFragment(id)
         navController.navigate(direction)
     }
 

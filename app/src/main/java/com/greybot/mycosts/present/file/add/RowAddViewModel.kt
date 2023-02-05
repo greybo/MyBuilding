@@ -1,5 +1,6 @@
 package com.greybot.mycosts.present.file.add
 
+import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.CurrencyDto
 import com.greybot.mycosts.data.dto.ExploreRow
@@ -11,15 +12,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RowAddViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val fileSource: FileDataSource,
     private val exploreSource: ExploreDataSource
 ) : CompositeViewModel() {
 
     private var exploreRow: ExploreRow? = null
+    private val objectId: String
+        get() = savedStateHandle.get<String>("objectId") ?: throw Throwable()
 
-    fun fetchData(objectId: String) {
-         launchOnDefault {
-            exploreRow =   exploreSource.findByObjectId(objectId)
+    fun fetchData() {
+        launchOnDefault {
+            exploreRow = exploreSource.findByObjectId(objectId)
         }
     }
 
@@ -28,7 +32,7 @@ class RowAddViewModel @Inject constructor(
         count: String = "1",
         price: Float = 0F,
         currency: CurrencyDto? = null,
-        parentId: String?
+        parentId: String? = objectId
     ) {
         launchOnDefault {
             var _count = try {

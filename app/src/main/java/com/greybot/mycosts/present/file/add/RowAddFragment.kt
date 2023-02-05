@@ -15,13 +15,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragmentBinding::inflate),
     TextView.OnEditorActionListener {
 
-    private val args by lazy { arguments?.let { RowAddFragmentArgs.fromBundle(it) } }
     private val viewModel by viewModels<RowAddViewModel>()
-    private val objectId: String get() = args?.objectId ?: throw Throwable()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchData(objectId)
+        viewModel.fetchData()
         initViews()
     }
 
@@ -38,16 +36,14 @@ class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragment
 
     private fun saveFile() {
         with(binding) {
-            val _price = addRowPrice.text.toString().ifBlank {
-                0F
-            }.toString().toFloat()
+            val _price = addRowPrice.text.toString()
+                .ifBlank { 0F }.toString()
+                .toFloat()
             viewModel.addRow(
                 rowName = addRowName.text.toString(),
                 count = addRowCount.text.toString(),
                 price = _price,
-                parentId = args?.objectId
             )
-
         }
         findNavController().popBackStack()
     }
