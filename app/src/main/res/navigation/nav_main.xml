@@ -30,9 +30,7 @@
 
         <argument
             android:name="objectId"
-            android:defaultValue=""
-            app:argType="string"
-            app:nullable="false" />
+            app:argType="string" />
 
     </fragment>
 

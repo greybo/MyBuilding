@@ -1,5 +1,6 @@
 package com.greybot.mycosts.present.second.add
 
+import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.repository.explore.ExploreDataSource
@@ -8,11 +9,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FolderAddViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val source: ExploreDataSource
 ) : CompositeViewModel() {
 
     var explore: ExploreRow? = null
-
+    val objectId by lazy { savedStateHandle.get<String>("objectId") }
     fun fetchData(objectId: String?) {
         objectId ?: return
         launchOnDefault {

@@ -26,9 +26,9 @@ class FileRepo @Inject constructor() {
             deferred.complete(backupList)
         }
         getAllData({
-            if (!equalsList(it, backupList)) {
-                deferred.complete(it)
-            }
+//            if (!equalsList(it, backupList)) {
+//            }
+            deferred.complete(it)
             backupList.clear()
             backupList.addAll(it)
         }, { error ->

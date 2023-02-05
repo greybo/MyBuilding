@@ -76,9 +76,11 @@ class FolderPreviewFragment :
                 }
                 is AdapterCallback.RowBuy -> viewModel.changeRowBuy(this.value)
                 is AdapterCallback.AddButton -> handleButtonClick(this.value.type)
-                is AdapterCallback.FolderOpen -> router.fromFolderToFolder(
-                    this.value.objectId ?: ""
-                )
+                is AdapterCallback.FolderOpen -> {
+                    router.fromFolderToFolder(
+                        this.value.objectId ?: throw Throwable("objectId must not be empty")
+                    )
+                }
                 else -> {}
             }
         }

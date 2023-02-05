@@ -10,8 +10,7 @@ class AppRouter(private val navController: NavController) : IMainExploreRouter,
     IFolderPreviewRouter {
 
     override fun fromFolderToFolder(id: String) {
-        val direction = FolderPreviewFragmentDirections.toFolderPreviewFragment()
-//        direction.
+        val direction = FolderPreviewFragmentDirections.toFolderPreviewFragment(id)
         navController.navigate(direction)
     }
 

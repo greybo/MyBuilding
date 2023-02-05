@@ -16,6 +16,7 @@ class FolderHandler {
                     "",
                     countInner = "count:${111}",
                     total = "total: 0",
+                    objectId = f.objectId
                 )
             })
             add(AdapterItems.ButtonAddItem(ButtonType.Folder))
