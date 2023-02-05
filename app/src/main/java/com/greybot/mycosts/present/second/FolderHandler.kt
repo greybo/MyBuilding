@@ -3,19 +3,19 @@ package com.greybot.mycosts.present.second
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.second.preview.ButtonType
+import com.greybot.mycosts.present.second.preview.ItemTotalHelper
+import com.greybot.mycosts.utility.getTotalString
 
-class FolderHandler {
-
+class FolderHandler(private val total: ItemTotalHelper) {
     fun makeFolderItems(list: List<ExploreRow>): List<AdapterItems> {
         return buildList {
             addAll(list.map { f ->
-//                val currentPath = Path(path).addToPath(name)
-//                val currentFolder = entry.value.find { it.path == currentPath }
+                val total = total.getTotalById(f.objectId ?: "")
                 AdapterItems.FolderItem(
                     f.name ?: "null",
                     "",
-                    countInner = "count:${111}",
-                    total = "total: 0",
+                    countInner = total.totalCount.getTotalString("count"),
+                    total = total.totalPrice.getTotalString("total"),
                     objectId = f.objectId
                 )
             })

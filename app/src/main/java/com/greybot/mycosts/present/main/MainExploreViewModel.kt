@@ -7,16 +7,22 @@ import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.repository.explore.ExploreDataSource
 import com.greybot.mycosts.data.repository.explore.getOrNull
+import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
+import com.greybot.mycosts.present.second.preview.ItemTotalHelper
+import com.greybot.mycosts.utility.getTotalString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 
 @HiltViewModel
-class MainExploreViewModel @Inject constructor(private val dataSource: ExploreDataSource) :
+class MainExploreViewModel @Inject constructor(
+    private val dataSource: ExploreDataSource,
+    private var rowSource: FileDataSource
+) :
     CompositeViewModel() {
 
-//    private val exploreHandler by lazy { ExploreHandler() }
+    private val total: ItemTotalHelper by lazy { ItemTotalHelper(dataSource, rowSource) }
 
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
@@ -42,17 +48,17 @@ class MainExploreViewModel @Inject constructor(private val dataSource: ExploreDa
 
     private fun makeFolderItems(explores: List<ExploreRow>?): List<AdapterItems> {
         return explores?.map { f ->
-//                val currentPath = Path(path).addToPath(name)
-//                val currentFolder = entry.value.find { it.path == currentPath }
+            val total = total.getTotalById(f.objectId ?: "")
             AdapterItems.FolderItem(
-                f.name ?: "2222",
+                f.name ?: "null",
                 "",
-                countInner = "count:${111}",
-                total = "total: 0",
+                countInner = total.totalCount.getTotalString("count"),
+                total = total.totalPrice.getTotalString("total"),
                 objectId = f.objectId
             )
         } ?: emptyList()
     }
+
 }
 
 

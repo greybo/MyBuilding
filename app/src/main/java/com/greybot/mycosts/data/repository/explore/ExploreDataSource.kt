@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class ExploreDataSource @Inject constructor(private val repo: ExploreRepository) {
     private val tag = "ExploreDataSource"
 
-    private val groupMap = mutableMapOf<String, List<ExploreRow>>()
+    val groupMap = mutableMapOf<String, List<ExploreRow>>()
     private val _listLiveData = MutableLiveData<Map<String, List<ExploreRow>>>()
     private val actor = ExploreActorCoroutine()
 

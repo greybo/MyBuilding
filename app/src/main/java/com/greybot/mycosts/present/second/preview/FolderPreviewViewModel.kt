@@ -20,10 +20,11 @@ class FolderPreviewViewModel @Inject constructor(
     private val exploreSource: ExploreDataSource,
     private val rowSource: FileDataSource
 ) : CompositeViewModel() {
+    private val total: ItemTotalHelper by lazy { ItemTotalHelper(exploreSource, rowSource) }
 
     var parentFolder: ExploreRow? = null
     private val fileHandler by lazy { FileHandler() }
-    private val folderHandler by lazy { FolderHandler() }
+    private val folderHandler by lazy { FolderHandler(total) }
     val state = makeLiveData<List<AdapterItems>>()
     val title = makeLiveData<String?>()
 
