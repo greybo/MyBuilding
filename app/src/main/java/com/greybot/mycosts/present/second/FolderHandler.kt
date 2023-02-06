@@ -1,30 +1,31 @@
 package com.greybot.mycosts.present.second
 
-import com.greybot.mycosts.data.dto.FileRow
+import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.second.preview.ButtonType
+import com.greybot.mycosts.present.second.preview.ItemTotalHelper
+import com.greybot.mycosts.utility.getTotalString
 
-class FolderHandler2 {
-
-    fun makeFolderItems(list: List<FileRow>): List<AdapterItems> {
+class FolderHandler(private val total: ItemTotalHelper) {
+    fun makeFolderItems(list: List<ExploreRow>): List<AdapterItems> {
         return buildList {
             addAll(list.map { f ->
-//                val currentPath = Path(path).addToPath(name)
-//                val currentFolder = entry.value.find { it.path == currentPath }
+                val total = total.getTotalById(f.objectId ?: "")
                 AdapterItems.FolderItem(
-                    f.name ?: "2222",
+                    f.name ?: "null",
                     "",
-                    countInner = "count:${111}",
-                    total = "total: 0",
+                    countInner = total.totalCount.getTotalString("count"),
+                    total = total.totalPrice.getTotalString("total"),
+                    objectId = f.objectId
                 )
             })
             add(AdapterItems.ButtonAddItem(ButtonType.Folder))
         }
     }
 
-    private fun List<FileRow>.groupByPath(path: String): List<FileRow> {
-       return this.filter { it.path?.contains(path) == true }
-    }
+//    private fun List<FileRow>.groupByPath(path: String): List<FileRow> {
+//       return this.filter { it.path?.contains(path) == true }
+//    }
 //    fun makeFolderItems(path: String, map: Map<String?, List<FolderDTO>>?): List<AdapterItems> {
 //        return map?.mapNotNull { entry ->
 //            entry.key?.let { name ->

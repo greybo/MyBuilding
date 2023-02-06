@@ -19,18 +19,11 @@ class FolderAddFragment :
     BaseBindingFragment<FolderAddFragmentBinding>(FolderAddFragmentBinding::inflate) {
 
     private val viewModel by viewModels<FolderAddViewModel>()
-    private val args: FolderAddFragmentArgs? by lazy {
-        arguments?.let {
-            FolderAddFragmentArgs.fromBundle(
-                it
-            )
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        viewModel.fetchData(args?.objectId, args?.path)
+        viewModel.fetchData(viewModel.objectId)
     }
 
     private fun initViews() {

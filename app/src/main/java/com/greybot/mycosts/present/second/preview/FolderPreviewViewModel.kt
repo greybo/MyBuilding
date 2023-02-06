@@ -1,72 +1,103 @@
 package com.greybot.mycosts.present.second.preview
 
+import androidx.lifecycle.Observer
+import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
+import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.dto.FileRow
-import com.greybot.mycosts.data.repository.ExploreRepository
+import com.greybot.mycosts.data.repository.explore.ExploreDataSource
+import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.present.row.RowHandler2
-import com.greybot.mycosts.present.second.FolderHandler2
-import com.greybot.mycosts.utility.myLiveData
+import com.greybot.mycosts.present.file.FileHandler
+import com.greybot.mycosts.present.second.FolderHandler
+import com.greybot.mycosts.utility.makeLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class FolderPreviewViewModel @Inject constructor(private val exploreRepo: ExploreRepository) :
-    CompositeViewModel() {
+class FolderPreviewViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val exploreSource: ExploreDataSource,
+    private val rowSource: FileDataSource
+) : CompositeViewModel() {
+    private val total: ItemTotalHelper by lazy { ItemTotalHelper(exploreSource, rowSource) }
 
-    private val rowHandler by lazy { RowHandler2() }
-    private val folderHandler by lazy { FolderHandler2() }
-    val state = myLiveData<List<AdapterItems>>()
+    var parentFolder: ExploreRow? = null
+    private val fileHandler by lazy { FileHandler() }
+    private val folderHandler by lazy { FolderHandler(total) }
+    val state = makeLiveData<List<AdapterItems>>()
+    val title = makeLiveData<String?>()
 
-    var objectId: String = ""
-    var path: String? = null
+    val parentId = savedStateHandle.get<String>("objectId") ?: ""
+    private val exploreObserver = Observer<Map<String, List<ExploreRow>>> {
+        fetchData()
+    }
 
-    fun fetchData(objectId: String?, path: String?) {
-        this.objectId = objectId ?: ""
-        this.path = path
+    init {
+        exploreSource.listLiveData.observeForever(exploreObserver)
         launchOnDefault {
-            val folder = exploreRepo.findById(this@FolderPreviewViewModel.objectId)
-            val rows = folder?.files?.filter { it.path?.startsWith(path ?: "") == true }
-            handleResult(rows)
+            parentFolder = exploreSource.findByObjectId(parentId)
+            title.postValue(parentFolder?.name)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        exploreSource.listLiveData.removeObserver(exploreObserver)
+    }
+
+    fun fetchData(id: String = parentId) {
+        launchOnDefault {
+            val folderList = exploreSource.findByParentId(id)
+            val files = rowSource.findByParentId(id)
+
+            if (!folderList.isNullOrEmpty()) {
+                makeFolderList(folderList)
+            } else if (files.isNotEmpty()) {
+                makeFileList(files)
+            } else makeButtonList()
+        }
+    }
+
+    private fun makeFolderList(list: List<ExploreRow>) {
+        setToLiveData = folderHandler.makeFolderItems(list)
+    }
+
+    private fun makeFileList(rowList: List<FileRow>) {
+        setToLiveData = fileHandler.makeGroupBuy(rowList)
     }
 
     fun changeRowBuy(item: AdapterItems.RowItem) {
-//        rowDataSource.changeBuyStatus(item.objectId)
-//        makeRowList(rowDataSource.geBackupList())
-    }
-
-    private fun handleResult(list: List<FileRow>?) {
-        val groupedByFile = list?.groupBy { it.isFile }
-        val file = groupedByFile?.get(true)
-        val folder = groupedByFile?.get(false)
-
-        val items = if (!folder.isNullOrEmpty()) {
-            makeFolderList(folder)
-        } else if (!file.isNullOrEmpty()) {
-            makeFileList(file)
-        } else {
-            makeButtonList()
+        rowSource.changeBuyStatus(item.objectId)
+        launchOnDefault {
+            updateUIRowList()
         }
-
-        state.postValue(items)
     }
 
-    private fun makeButtonList(): List<AdapterItems> {
-        return listOf(
+    private suspend fun updateUIRowList() {
+        val files = rowSource.findByParentId(parentId)
+        makeFileList(files)
+    }
+
+    fun changeRowPrice(id: String, count: Int, price: Float) {
+        launchOnDefault {
+            rowSource.changePrice(id, count, price)
+            updateUIRowList()
+        }
+    }
+
+    private fun makeButtonList() {
+        setToLiveData = listOf(
             AdapterItems.ButtonAddItem(ButtonType.Folder),
             AdapterItems.ButtonAddItem(ButtonType.Row)
         )
     }
 
-    private fun makeFileList(rowList: List<FileRow>?): List<AdapterItems> {
-        rowList ?: return emptyList()
-        return rowHandler.makeGroupBuy(rowList)
-    }
-
-    private fun makeFolderList(list: List<FileRow>): List<AdapterItems> {
-        return folderHandler.makeFolderItems(list)
-    }
+    private var setToLiveData: List<AdapterItems>
+        get() = state.values
+        set(value) {
+            state.postValue(value)
+        }
 }
 
 enum class ButtonType(val row: String) {

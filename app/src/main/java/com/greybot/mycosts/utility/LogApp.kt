@@ -51,7 +51,7 @@ object LogApp {
     private val log by lazy { LogApp2("") }
 
     fun i(tag: String, vararg message: String?) {
-        if (isDebug) log.tag(tag).i(message.joinToString("/"))
+        if (isDebug) log.tag(tag).i(message.joinToString("/", ": "))
     }
 
     fun e(tag: String, e: Throwable?, message: String? = null) {

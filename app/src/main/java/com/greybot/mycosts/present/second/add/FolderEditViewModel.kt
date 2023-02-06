@@ -1,30 +1,31 @@
 package com.greybot.mycosts.present.second.add
 
 import com.greybot.mycosts.base.CompositeViewModel
-import com.greybot.mycosts.data.dto.Explore
-import com.greybot.mycosts.data.dto.FileRow
-import com.greybot.mycosts.data.repository.ExploreRepository
-import com.greybot.mycosts.utility.myLiveData
+import com.greybot.mycosts.data.dto.ExploreRow
+import com.greybot.mycosts.data.repository.explore.ExploreDataSource
+import com.greybot.mycosts.utility.makeLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class FolderEditViewModel @Inject constructor(private val exploreRepo: ExploreRepository) :
+class FolderEditViewModel @Inject constructor(private val source: ExploreDataSource) :
     CompositeViewModel() {
 
-    val state = myLiveData<FileRow>()
+    val state = makeLiveData<ExploreRow?>()
 
-    fun fetchData(objectId: String, path: String) {
+    fun fetchData(objectId: String) {
         launchOnDefault {
-            val model = exploreRepo.findById(objectId)?.files?.find { it.path == path }
-            state.values = model ?: FileRow()
+            val model = source.findByObjectId(objectId)
+            state.values = model
         }
     }
 
     fun updateFolderNew(name: String?) {
-        if (name != null) {
-            val explore = Explore(name)
-            exploreRepo.update(explore)
+        launchOnDefault {
+            if (name != null) {
+                val explore = ExploreRow(name)
+                source.updateFolder(explore)
+            }
         }
     }
 }

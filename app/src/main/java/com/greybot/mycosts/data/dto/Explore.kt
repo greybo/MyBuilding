@@ -1,56 +1,30 @@
 package com.greybot.mycosts.data.dto
 
-import com.google.firebase.database.PropertyName
+import com.google.firebase.database.Exclude
+import com.google.firebase.database.IgnoreExtraProperties
 import java.util.*
 
-data class Explore(
+@IgnoreExtraProperties
+data class ExploreRow(
     val name: String? = null,
-    var date: Long? = null,
-    val files: List<FileRow> = emptyList(),
     var objectId: String? = null,
+    var parentObjectId: String? = null,
+    val files: Boolean = false,
+    val delete: Boolean = false,
+    val archive: Boolean = false,
+    var date: Long = Date().time,
 ) {
 
+    @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
-            "objectId" to objectId,
             "name" to name,
-            "files" to files
+            "date" to date,
+            "objectId" to objectId,
+            "parentObjectId" to parentObjectId,
+            "files" to files,
+            "delete" to delete,
+            "archive" to archive,
         )
     }
-}
-
-data class FileRow(
-    @PropertyName("Name")
-    private val _name: String? = null,
-    override val path: String? = null,
-    override val measure: String? = null,
-    override val count: Int = 1,
-    override val price: Float = 0F,
-    override val bought: Boolean = false,
-    override val currency: CurrencyDto? = CurrencyDto(),
-    override val date: Long = Date().time,
-    override val isFile: Boolean = false,
-    override val isDelete: Boolean = false,
-    override val isArchive: Boolean = false,
-) : IFile, IFolder {
-    override val name: String = _name ?: ""
-}
-
-interface IFile {
-    val name: String
-    val path: String?
-    val measure: String?
-    val count: Int
-    val price: Float
-    val bought: Boolean
-    val currency: CurrencyDto?
-    val date: Long
-    val isFile: Boolean
-    val isDelete: Boolean
-    val isArchive: Boolean
-}
-
-interface IFolder {
-    val isDelete: Boolean
-    val isArchive: Boolean
 }

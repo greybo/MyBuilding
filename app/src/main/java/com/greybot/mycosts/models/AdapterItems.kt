@@ -38,6 +38,7 @@ sealed class AdapterItems {
     }
 
     data class RowItem(
+        val objectId: String,
         val name: String,
         val path: String,
         val measure: MeasureType,
@@ -47,7 +48,13 @@ sealed class AdapterItems {
     ) : AdapterItems()
 
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
-    class TotalItem(val value: Float, val name: String = "Total") : AdapterItems()
+    class TotalItem(
+        val name1: String = "Total: Order",
+        val value1: Float,
+        val name2: String = "Total: Check",
+        val value2: Float
+    ) : AdapterItems()
+
     data class SpaceItem(val heightRes: Int = R.dimen.height_margin_84) : AdapterItems()
 }
 

@@ -69,7 +69,7 @@ class MainExploreFragment :
         when (callback) {
             is AdapterCallback.FolderOpen -> {
                 binding.exploreFloatButton.animateFabHide {
-                    router.fromExploreToFolder(callback.value.objectId ?: "", callback.value.path)
+                    router.fromExploreToFolder(callback.value.objectId ?: "")
                 }
             }
             is AdapterCallback.FolderLong -> {

@@ -2,40 +2,46 @@ package com.greybot.mycosts.present.second.preview
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.greybot.mycosts.base.BaseBindingFragment
-import com.greybot.mycosts.base.getEndSegment
 import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
+import com.greybot.mycosts.databinding.SampleDialogOneBinding
+import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.ExploreAdapter
+import com.greybot.mycosts.utility.LogApp
+import com.greybot.mycosts.utility.bindingDialog
 import com.greybot.mycosts.utility.getRouter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FolderPreviewFragment :
     BaseBindingFragment<FolderPreviewFragmentBinding>(FolderPreviewFragmentBinding::inflate) {
-
+    private val log_tag = "FolderPreviewFragment"
     private val viewModel by viewModels<FolderPreviewViewModel>()
     private var adapter: ExploreAdapter? = null
-    private val args by lazy { arguments?.let { FolderPreviewFragmentArgs.fromBundle(it) } }
+
     private val router: IFolderPreviewRouter by getRouter()
-    private var buttonType: ButtonType = ButtonType.None
+//    private var buttonType: ButtonType = ButtonType.None
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        binding.folderPreviewToolbar.getBuilder()
+        val toolbar = binding.folderPreviewToolbar.getBuilder()
             .homeCallback { backPress() }
-            .title(getEndSegment(args?.pathName))
             .create()
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
+        viewModel.title.observe(viewLifecycleOwner) {
+            toolbar.title = it ?: ""
+        }
         systemBackPressedCallback { backPress() }
-
-        viewModel.fetchData(args?.objectId, args?.pathName)
+        viewModel.fetchData()
     }
 
     private fun backPress() {
@@ -43,9 +49,9 @@ class FolderPreviewFragment :
     }
 
     private fun initViews() {
-        binding.folderPreviewFloatButton.setOnClickListener {
-            handleButtonClick(buttonType)
-        }
+//        binding.folderPreviewFloatButton.setOnClickListener {
+//            handleButtonClick(buttonType)
+//        }
         initAdapter()
     }
 
@@ -62,17 +68,19 @@ class FolderPreviewFragment :
     private fun handleAdapterClick(callback: AdapterCallback) {
         with(callback) {
             when (this) {
-                is AdapterCallback.Name -> router.fromFolderToEditRow(
-                    viewModel.objectId,
-                    this.value.path
+                is AdapterCallback.RowName -> router.fromFolderToEditRow(
+                    this.value.objectId
                 )
-                is AdapterCallback.Price -> {}
-                is AdapterCallback.Buy -> viewModel.changeRowBuy(this.value)
+                is AdapterCallback.RowPrice -> {
+                    showDialogOne(this.value)
+                }
+                is AdapterCallback.RowBuy -> viewModel.changeRowBuy(this.value)
                 is AdapterCallback.AddButton -> handleButtonClick(this.value.type)
-                is AdapterCallback.FolderOpen -> router.fromFolderToFolder(
-                    viewModel.objectId,
-                    this.value.path
-                )
+                is AdapterCallback.FolderOpen -> {
+                    router.fromFolderToFolder(
+                        this.value.objectId ?: throw Throwable("objectId must not be empty")
+                    )
+                }
                 else -> {}
             }
         }
@@ -80,13 +88,47 @@ class FolderPreviewFragment :
 
     private fun handleButtonClick(
         type: ButtonType,
-        path: String = args?.pathName ?: "",
-        id: String = viewModel.objectId
+        id: String = viewModel.parentId
     ) {
         when (type) {
-            ButtonType.Folder -> router.fromFolderToAddFolder(id, path)
-            ButtonType.Row -> router.fromFolderToAddRow(id, path)
+            ButtonType.Folder -> router.fromFolderToAddFolder(id)
+            ButtonType.Row -> router.fromFolderToAddRow(id)
             else -> {}
         }
     }
+
+    private fun showDialogOne(model: AdapterItems.RowItem) {
+        val dialog = BottomSheetDialog(requireContext())
+        val binding = bindingDialog(requireContext(), SampleDialogOneBinding::inflate)
+
+        dialog.setContentView(binding.root)
+
+        binding.bottomSheetEditCount.hint = "${model.count} шт"
+        binding.bottomSheetEditPrice.hint = "${model.price} грн"
+
+        binding.bottomSheetEditPrice.setOnEditorActionListener { _, editorInfo, _ ->
+            if (editorInfo == EditorInfo.IME_ACTION_DONE) {
+                binding.bottomSheetEditCount.text?.toString()
+                val count = if (binding.bottomSheetEditCount.text.isNotEmpty()) {
+                    binding.bottomSheetEditCount.text.toString().toInt()
+                } else
+                    model.count
+
+                val price = if (binding.bottomSheetEditPrice.text.isNotEmpty()) {
+                    binding.bottomSheetEditPrice.text.toString().toFloat()
+                } else
+                    model.price
+
+//                val price = binding.bottomSheetEditPrice.text?.toString()?.toFloat() ?: model.price
+                LogApp.i(log_tag, "$count | $price")
+
+                viewModel.changeRowPrice(id = model.objectId, count = count, price = price)
+                dialog.dismiss()
+                true
+            } else
+                false
+        }
+        dialog.show()
+    }
+
 }

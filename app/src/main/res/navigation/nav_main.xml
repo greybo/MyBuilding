@@ -30,16 +30,7 @@
 
         <argument
             android:name="objectId"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-
-        <argument
-            android:name="pathName"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-
+            app:argType="string" />
 
     </fragment>
 
@@ -58,12 +49,6 @@
 
         <argument
             android:name="objectId"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-
-        <argument
-            android:name="path"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
@@ -98,14 +83,9 @@
 
     <fragment
         android:id="@+id/RowAddFragment"
-        android:name="com.greybot.mycosts.present.row.add.RowAddFragment"
+        android:name="com.greybot.mycosts.present.file.add.RowAddFragment"
         android:label="RowAddFragment">
 
-        <argument
-            android:name="path"
-            android:defaultValue=""
-            app:argType="string"
-            app:nullable="false" />
         <argument
             android:name="objectId"
             android:defaultValue=""
@@ -123,17 +103,11 @@
 
     <fragment
         android:id="@+id/RowEditFragment"
-        android:name="com.greybot.mycosts.present.row.edit.RowEditFragment"
+        android:name="com.greybot.mycosts.present.file.edit.RowEditFragment"
         android:label="RowEditFragment">
 
         <argument
             android:name="objectId"
-            android:defaultValue=""
-            app:argType="string"
-            app:nullable="false" />
-
-        <argument
-            android:name="path"
             android:defaultValue=""
             app:argType="string"
             app:nullable="false" />
@@ -149,7 +123,7 @@
 
     <fragment
         android:id="@+id/ExploreAddRootFragment"
-        android:name="com.greybot.mycosts.present.main.add.ExploreAddRootFragment"
+        android:name="com.greybot.mycosts.present.second.add.FolderAddFragment"
         android:label="ExploreAddRootFragment" />
 
 </navigation>

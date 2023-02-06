@@ -1,6 +1,7 @@
-package com.greybot.mycosts.base
+package com.greybot.mycosts.example
 
 import androidx.lifecycle.viewModelScope
+import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.utility.LogApp2
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody

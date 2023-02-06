@@ -12,18 +12,19 @@
         android:id="@+id/rowItemCheckDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/rowItem_Title"
+        app:layout_constraintEnd_toStartOf="@+id/row_item_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/rowItem_Title"
+        android:id="@+id/row_item_name"
         style="@style/Subtitle1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/rowItemBody"
+        app:layout_constraintEnd_toStartOf="@+id/row_item_count"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toEndOf="@+id/rowItemCheckDone"
@@ -32,16 +33,31 @@
         tools:text="Text" />
 
     <TextView
-        android:id="@+id/rowItemBody"
+        android:id="@+id/row_item_count"
         style="@style/Body_base"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
         android:gravity="end|bottom"
-        app:layout_constraintBottom_toBottomOf="@+id/rowItem_Title"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/row_item_name"
+        app:layout_constraintStart_toEndOf="@+id/row_item_name"
+        app:layout_constraintTop_toTopOf="@+id/row_item_name"
+        app:layout_constraintWidth_percent="0.1"
+        tools:text="Text" />
+
+    <TextView
+        android:id="@+id/row_item_price"
+        style="@style/Body_base"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:gravity="end|bottom"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/row_item_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/rowItem_Title"
-        app:layout_constraintTop_toTopOf="@+id/rowItem_Title"
+        app:layout_constraintStart_toEndOf="@+id/row_item_count"
+        app:layout_constraintTop_toTopOf="@+id/row_item_name"
         app:layout_constraintWidth_percent="0.2"
         tools:text="Text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

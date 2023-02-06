@@ -1,6 +1,6 @@
-package com.greybot.mycosts.base
+package com.greybot.mycosts.example
 
-import com.greybot.mycosts.base.CounterCommand.*
+import com.greybot.mycosts.example.CounterCommand.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel

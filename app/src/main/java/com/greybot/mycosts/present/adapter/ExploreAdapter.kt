@@ -98,17 +98,18 @@ class ExploreAdapter(
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.RowItem
             binding.rowItemCheckDone.isChecked = item.isBought
-            binding.rowItemTitle.text = item.name
-            binding.rowItemBody.text = item.price.toString()
+            binding.rowItemName.text = item.name
+            binding.rowItemCount.text = item.count.toString()
+            binding.rowItemPrice.text = item.price.toString()
 
-            binding.rowItemTitle.setOnClickListener {
-                onClick.invoke(AdapterCallback.Name(item))
+            binding.rowItemName.setOnClickListener {
+                onClick.invoke(AdapterCallback.RowName(item))
             }
-            binding.rowItemBody.setOnClickListener {
-                onClick.invoke(AdapterCallback.Price(item))
+            binding.rowItemPrice.setOnClickListener {
+                onClick.invoke(AdapterCallback.RowPrice(item))
             }
             binding.rowItemCheckDone.setOnClickListener {
-                onClick.invoke(AdapterCallback.Buy(item))//item.changeBuy()
+                onClick.invoke(AdapterCallback.RowBuy(item))//item.changeBuy()
             }
         }
     }
@@ -117,8 +118,10 @@ class ExploreAdapter(
         Holder(binding.root) {
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.TotalItem
-            binding.totalItemTitle.text = item.name
-            binding.totalItemValue.text = item.value.toString()
+            binding.totalItemTitle1.text = item.name1
+            binding.totalItemValue1.text = item.value1.toString()
+            binding.totalItemTitle2.text = item.name2
+            binding.totalItemValue2.text = item.value2.toString()
             itemView.setOnClickListener {
                 onClick.invoke(AdapterCallback.Total(item))
             }
