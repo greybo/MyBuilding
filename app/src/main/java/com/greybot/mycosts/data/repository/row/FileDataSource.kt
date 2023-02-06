@@ -5,24 +5,22 @@ import com.greybot.mycosts.data.dto.FileRow
 import javax.inject.Inject
 
 class FileDataSource @Inject constructor(private val repo: FileRepo) {
-    suspend fun fetch() {
-        repo.getAll()
+
+    suspend fun fetch(force: Boolean = false): Map<String?, List<FileRow>>? {
+        return fileGroup(repo.getAll(force))
     }
 
-    fun geBackupList(): List<FileRow> {
-        return repo.backupList
-    }
+    private fun fileGroup(list: List<FileRow>?) = list?.groupBy { it.parentObjectId }
 
     suspend fun findByParentId(
         parentObjectId: String
     ) = repo.getAll().filter { it.parentObjectId == parentObjectId }
 
-
     suspend fun findById(
         objectId: String
     ) = repo.getAll().find { dto -> dto.objectId == objectId }
 
-    fun addFile(
+    suspend fun addFile(
         rowName: String,
         count: Int = 0,
         price: Float = 0F,
@@ -39,39 +37,21 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
         repo.addFile(row)
     }
 
-    fun changeBuyStatus(objectId: String) {
-        val list = geBackupList().map { row ->
-            if (row.objectId == objectId) {
-                val changedRow = row.copy(bought = !row.bought)
-                repo.update(changedRow)
-                changedRow
-            } else row
-        }
-        repo.updateBackupList(list)
+    suspend fun changeBuyStatus(objectId: String): Boolean {
+        val model = findById(objectId) ?: return false
+        val changedRow = model.copy(bought = !model.bought)
+        return update(changedRow)
     }
 
-    fun save(model: FileRow?) {
-        model?.let { repo.update(it) }
+    suspend fun update(model: FileRow?): Boolean {
+        return model?.let {
+            repo.update(it)
+        } ?: false
     }
 
     suspend fun changePrice(objectId: String, count: Int, price: Float) {
         findById(objectId)
             ?.copy(count = count, price = price)
-            ?.let { repo.update(it) }
+            ?.let { update(it) }
     }
-
-//    fun updateBackupList(model: FileRow) {
-//
-//    }
-
-//    fun changePrice(objectId: String, count: Int, price: Float) {
-//        val list = geBackupList().map { row ->
-//            if (row.objectId == objectId) {
-//                val changedRow = row.copy(count = count, price = price)
-//                repo.update(changedRow)
-//                changedRow
-//            } else row
-//        }
-//        repo.updateBackupList(list)
-//    }
 }

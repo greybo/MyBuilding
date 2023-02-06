@@ -26,7 +26,9 @@ class RowEditViewModel @Inject constructor(private val dataSource: FileDataSourc
     }
 
     fun editRow(editModel: FileRow?) {
-        dataSource.save(editModel)
+        launchOnDefault {
+            dataSource.update(editModel)
+        }
     }
 
     fun update(rowName: String, count: String, price: String) {
@@ -38,7 +40,9 @@ class RowEditViewModel @Inject constructor(private val dataSource: FileDataSourc
             count = _count,
             price = _price,
         )
-        dataSource.save(editModel)
+        launchOnDefault {
+            dataSource.update(editModel)
+        }
     }
 }
 

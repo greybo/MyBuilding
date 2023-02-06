@@ -11,60 +11,56 @@ import com.greybot.mycosts.utility.LogApp
 import kotlinx.coroutines.CompletableDeferred
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @Singleton
 class FileRepo @Inject constructor() {
+
+    private val actor = FileActorCoroutine()
     private val uid: String = "654321"
     private val path: String = "file"
     private val database = Firebase.database.reference
     private val myRef = database.child(uid).child(path)
-    val backupList = mutableListOf<FileRow>()
 
-    suspend fun getAll(): List<FileRow> {
+    suspend fun getAll(force: Boolean = false): List<FileRow> {
         val deferred = CompletableDeferred<List<FileRow>>()
-//        if (backupList.isNotEmpty()) {
-//            deferred.complete(backupList)
-//        }
-        getAllData({
-            deferred.complete(it)
-            backupList.clear()
-            backupList.addAll(it)
-        }, { error ->
-            deferred.completeExceptionally(error)
-        })
+        val list = actor.getAll()
+        if (!force && list.isNotEmpty()) {
+            deferred.complete(list)
+        } else {
+            val listRemote = getAllData()?.also {
+                actor.addAll(it)
+            }
+            deferred.complete(listRemote ?: emptyList())
+        }
         return deferred.await()
     }
 
-//    private fun equalsList(newList: List<FileRow>, backupList: List<FileRow>): Boolean {
-//        if (newList.size != backupList.size) return false
-//        newList.forEachIndexed { index, dto ->
-//            if (dto != backupList.getOrNull(index)) return false
-//        }
-//        return true
-//    }
-
-    private fun getAllData(success: (List<FileRow>) -> Unit, failed: (Throwable) -> Unit) {
-        myRef.orderByKey().addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val itemFolder = snapshot.children.mapNotNull {
-                        it.getValue(FileRow::class.java)
+    private suspend fun getAllData(): List<FileRow>? {
+        return suspendCoroutine { continuation ->
+            myRef.orderByKey().addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val itemFolder = snapshot.children.mapNotNull {
+                            it.getValue(FileRow::class.java)
+                        }
+                        continuation.resume(itemFolder)
                     }
-                    success(itemFolder)
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    failed(error.toException())
-                    LogApp.e("RowRepo", error.toException())
+                    override fun onCancelled(error: DatabaseError) {
+                        continuation.resume(null)
+                        LogApp.e("RowRepo", error.toException())
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
-    fun addFile(dto: FileRow) {
+    suspend fun addFile(dto: FileRow) {
         val key = myRef.push().key ?: return
         dto.objectId = key
-        backupList.add(dto)
+        actor.add(dto)
 
         myRef.child(key).setValue(dto) { error, ref ->
             if (error != null) {
@@ -75,18 +71,15 @@ class FileRepo @Inject constructor() {
     }
 
 
-    fun update(item: FileRow) {
+    suspend fun update(item: FileRow): Boolean {
         val database: DatabaseReference = Firebase.database.reference
 
         if (item.objectId == null) {
             LogApp.w("RowRepo", null, "Couldn't get push key for posts")
-            return
+            return false
         }
-        backupList.mapIndexed { index, fileRow ->
-            if (fileRow.objectId == item.objectId) {
-                backupList[index] = item
-            }
-        }
+        actor.update(item)
+
         val dtoMap = item.toMap()
 
         val childUpdates = hashMapOf<String, Any>(
@@ -100,12 +93,21 @@ class FileRepo @Inject constructor() {
         /*.addOnFailureListener {
                 LogApp.e("writeNewPost", it)
             }*/
+        return true
     }
 
-    fun updateBackupList(list: List<FileRow>) {
-        backupList.clear()
-        backupList.addAll(list)
-    }
+//    private fun equalsList(newList: List<FileRow>, backupList: List<FileRow>): Boolean {
+//        if (newList.size != backupList.size) return false
+//        newList.forEachIndexed { index, dto ->
+//            if (dto != backupList.getOrNull(index)) return false
+//        }
+//        return true
+//    }
+
+//    fun updateBackupList(list: List<FileRow>) {
+//        backupList.clear()
+//        backupList.addAll(list)
+//    }
 
 //    suspend fun getById(objectId: String): FileRow? {
 //        val deferred = CompletableDeferred<FileRow?>()

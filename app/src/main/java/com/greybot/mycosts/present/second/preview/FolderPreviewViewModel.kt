@@ -1,6 +1,5 @@
 package com.greybot.mycosts.present.second.preview
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
@@ -20,46 +19,38 @@ class FolderPreviewViewModel @Inject constructor(
     private val exploreSource: ExploreDataSource,
     private val rowSource: FileDataSource
 ) : CompositeViewModel() {
-    private val total: ItemTotalHelper by lazy { ItemTotalHelper(exploreSource, rowSource) }
 
-    var parentFolder: ExploreRow? = null
     private val fileHandler by lazy { FileHandler() }
-    private val folderHandler by lazy { FolderHandler(total) }
+    private var folderHandler: FolderHandler? = null
+    var parentFolder: ExploreRow? = null
     val state = makeLiveData<List<AdapterItems>>()
     val title = makeLiveData<String?>()
 
     val parentId = savedStateHandle.get<String>("objectId") ?: ""
-    private val exploreObserver = Observer<Map<String, List<ExploreRow>>> {
-        fetchData()
-    }
 
     init {
-        exploreSource.listLiveData.observeForever(exploreObserver)
         launchOnDefault {
             parentFolder = exploreSource.findByObjectId(parentId)
             title.postValue(parentFolder?.name)
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        exploreSource.listLiveData.removeObserver(exploreObserver)
-    }
-
     fun fetchData(id: String = parentId) {
         launchOnDefault {
+            val total = ItemTotalHelper(exploreSource.fetchData(), rowSource.fetch())
+
             val folderList = exploreSource.findByParentId(id)
             val files = rowSource.findByParentId(id)
-
             if (!folderList.isNullOrEmpty()) {
-                makeFolderList(folderList)
+                makeFolderList(folderList, total)
             } else if (files.isNotEmpty()) {
                 makeFileList(files)
             } else makeButtonList()
         }
     }
 
-    private fun makeFolderList(list: List<ExploreRow>) {
+    private fun makeFolderList(list: List<ExploreRow>, total: ItemTotalHelper) {
+        val folderHandler = FolderHandler(total)
         setToLiveData = folderHandler.makeFolderItems(list)
     }
 
@@ -68,8 +59,8 @@ class FolderPreviewViewModel @Inject constructor(
     }
 
     fun changeRowBuy(item: AdapterItems.RowItem) {
-        rowSource.changeBuyStatus(item.objectId)
         launchOnDefault {
+            rowSource.changeBuyStatus(item.objectId)
             updateUIRowList()
         }
     }

@@ -2,7 +2,6 @@ package com.greybot.mycosts.present.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.repository.explore.ExploreDataSource
@@ -19,36 +18,25 @@ import javax.inject.Inject
 class MainExploreViewModel @Inject constructor(
     private val dataSource: ExploreDataSource,
     private var rowSource: FileDataSource
-) :
-    CompositeViewModel() {
-
-    private val total: ItemTotalHelper by lazy { ItemTotalHelper(dataSource, rowSource) }
+) : CompositeViewModel() {
 
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
-
-    private val observer = Observer<Map<String, List<ExploreRow>>> {
-        val folders = it.getOrNull("root")
-        val items = makeFolderItems(folders)
-        _state.postValue(items)
-    }
-
-    init {
-        dataSource.listLiveData.observeForever(observer)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        dataSource.listLiveData.removeObserver(observer)
-    }
-
+    var force = true
     fun fetchData() {
-        dataSource.fetchData()
+        launchOnDefault {
+            val rowGrouts = rowSource.fetch(force)
+            val folders = dataSource.fetchData(force)
+            force = false
+            val totalHandler = ItemTotalHelper(folders, rowGrouts)
+            makeFolderItems(folders.getOrNull("root"), totalHandler)
+        }
     }
 
-    private fun makeFolderItems(explores: List<ExploreRow>?): List<AdapterItems> {
-        return explores?.map { f ->
-            val total = total.getTotalById(f.objectId ?: "")
+    private fun makeFolderItems(explores: List<ExploreRow>?, totalHandler: ItemTotalHelper) {
+        val items = explores?.map { f ->
+
+            val total = totalHandler.getTotalById(f.objectId ?: "")
             AdapterItems.FolderItem(
                 f.name ?: "null",
                 "",
@@ -57,6 +45,7 @@ class MainExploreViewModel @Inject constructor(
                 objectId = f.objectId
             )
         } ?: emptyList()
+        _state.postValue(items)
     }
 
 }

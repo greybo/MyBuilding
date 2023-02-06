@@ -19,25 +19,27 @@ class ExploreRepository @Inject constructor() {
     private val uid: String = "654321"
     private val path: String = "exploreNew"
     private val myRef = Firebase.database.reference.child(uid).child(path)
-//    val backupList = mutableListOf<ExploreRow>()
 
-    fun getAllData(success: (List<ExploreRow>) -> Unit, failed: (Throwable) -> Unit) {
-        myRef.orderByKey().addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val itemExplore = snapshot.children.mapNotNull {
-                        it.getValue(ExploreRow::class.java)
+    suspend fun getAllData(): List<ExploreRow>? {
+        return suspendCoroutine {continuation->
+            myRef.orderByKey().addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val itemExplore = snapshot.children.mapNotNull {
+                            it.getValue(ExploreRow::class.java)
+                        }
+                        continuation.resume(itemExplore)
                     }
-                    success.invoke(itemExplore)
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    failed.invoke(error.toException())
-                    LogApp.e("getFolderTest", error.toException())
-                    toastDebug = error.message
+                    override fun onCancelled(error: DatabaseError) {
+                        continuation.resume(null)
+                        LogApp.e("getFolderTest", error.toException())
+                        toastDebug = error.message
+                    }
                 }
-            }
-        )
+            )
+        }
+
     }
 
     suspend fun addFolder(item: ExploreRow): ExploreRow? {
