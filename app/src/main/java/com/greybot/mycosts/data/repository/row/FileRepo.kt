@@ -22,9 +22,9 @@ class FileRepo @Inject constructor() {
 
     suspend fun getAll(): List<FileRow> {
         val deferred = CompletableDeferred<List<FileRow>>()
-        if (backupList.isNotEmpty()) {
-            deferred.complete(backupList)
-        }
+//        if (backupList.isNotEmpty()) {
+//            deferred.complete(backupList)
+//        }
         getAllData({
             deferred.complete(it)
             backupList.clear()
@@ -35,13 +35,13 @@ class FileRepo @Inject constructor() {
         return deferred.await()
     }
 
-    private fun equalsList(newList: List<FileRow>, backupList: List<FileRow>): Boolean {
-        if (newList.size != backupList.size) return false
-        newList.forEachIndexed { index, dto ->
-            if (dto != backupList.getOrNull(index)) return false
-        }
-        return true
-    }
+//    private fun equalsList(newList: List<FileRow>, backupList: List<FileRow>): Boolean {
+//        if (newList.size != backupList.size) return false
+//        newList.forEachIndexed { index, dto ->
+//            if (dto != backupList.getOrNull(index)) return false
+//        }
+//        return true
+//    }
 
     private fun getAllData(success: (List<FileRow>) -> Unit, failed: (Throwable) -> Unit) {
         myRef.orderByKey().addListenerForSingleValueEvent(
@@ -107,40 +107,40 @@ class FileRepo @Inject constructor() {
         backupList.addAll(list)
     }
 
-    suspend fun getById(objectId: String): FileRow? {
-        val deferred = CompletableDeferred<FileRow?>()
-        myRef.child(objectId).addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val itemRow = snapshot.getValue(FileRow::class.java)
-                    deferred.complete(itemRow)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    deferred.completeExceptionally(error.toException())
-                    LogApp.e("RowRepo", error.toException())
-                }
-            }
-        )
-        return deferred.await()
-    }
-
-    suspend fun getByParentId(objectId: String): FileRow? {
-        val deferred = CompletableDeferred<FileRow?>()
-        myRef.child(objectId).addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val itemRow = snapshot.getValue(FileRow::class.java)
-                    deferred.complete(itemRow)
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    deferred.completeExceptionally(error.toException())
-                    LogApp.e("RowRepo", error.toException())
-                }
-            }
-        )
-        return deferred.await()
-    }
+//    suspend fun getById(objectId: String): FileRow? {
+//        val deferred = CompletableDeferred<FileRow?>()
+//        myRef.child(objectId).addListenerForSingleValueEvent(
+//            object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    val itemRow = snapshot.getValue(FileRow::class.java)
+//                    deferred.complete(itemRow)
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    deferred.completeExceptionally(error.toException())
+//                    LogApp.e("RowRepo", error.toException())
+//                }
+//            }
+//        )
+//        return deferred.await()
+//    }
+//
+//    suspend fun getByParentId(objectId: String): FileRow? {
+//        val deferred = CompletableDeferred<FileRow?>()
+//        myRef.child(objectId).addListenerForSingleValueEvent(
+//            object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    val itemRow = snapshot.getValue(FileRow::class.java)
+//                    deferred.complete(itemRow)
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    deferred.completeExceptionally(error.toException())
+//                    LogApp.e("RowRepo", error.toException())
+//                }
+//            }
+//        )
+//        return deferred.await()
+//    }
 
 }

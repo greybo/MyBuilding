@@ -5,6 +5,9 @@ import com.greybot.mycosts.data.dto.FileRow
 import javax.inject.Inject
 
 class FileDataSource @Inject constructor(private val repo: FileRepo) {
+    suspend fun fetch() {
+        repo.getAll()
+    }
 
     fun geBackupList(): List<FileRow> {
         return repo.backupList

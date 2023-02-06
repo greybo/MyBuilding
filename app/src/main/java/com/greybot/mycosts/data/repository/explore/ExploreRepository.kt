@@ -10,6 +10,8 @@ import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.utility.LogApp
 import com.greybot.mycosts.utility.toastDebug
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 //@Singleton
 class ExploreRepository @Inject constructor() {
@@ -38,17 +40,22 @@ class ExploreRepository @Inject constructor() {
         )
     }
 
-    fun addFolder(item: ExploreRow): ExploreRow? {
-        val key = myRef.push().key ?: return null
-        item.objectId = key
+    suspend fun addFolder(item: ExploreRow): ExploreRow? {
+        return suspendCoroutine {
+            val key = myRef.push().key ?: return@suspendCoroutine it.resume(null)
+            item.objectId = key
 //        backupList.add(item)
-        myRef.child(key).setValue(item) { error, ref ->
-            if (error != null) {
-                LogApp.e("ExploreFragment", error.toException())
+            myRef.child(key).setValue(item) { error, ref ->
+                val result = if (error != null) {
+                    LogApp.e("ExploreFragment", error.toException())
+                    null
+                } else {
+                    LogApp.i("ExploreFragment", ref.toString())
+                    item
+                }
+                it.resume(result)
             }
-            LogApp.i("ExploreFragment", ref.toString())
         }
-        return item
     }
 
     fun update(item: ExploreRow) {
