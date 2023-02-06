@@ -101,5 +101,5 @@ class FolderPreviewViewModel @Inject constructor(
 }
 
 enum class ButtonType(val row: String) {
-    Folder("Folder"), Row("Row"), None("")
+    Folder("Папка"), Row("Товар"), None("")
 }
