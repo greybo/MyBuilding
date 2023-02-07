@@ -21,12 +21,11 @@ class FolderPreviewViewModel @Inject constructor(
 ) : CompositeViewModel() {
 
     private val fileHandler by lazy { FileHandler() }
-    private var folderHandler: FolderHandler? = null
     var parentFolder: ExploreRow? = null
     val state = makeLiveData<List<AdapterItems>>()
     val title = makeLiveData<String?>()
 
-    val parentId = savedStateHandle.get<String>("objectId") ?: ""
+    val parentId by lazy { savedStateHandle.get<String>("objectId") ?: "" }
 
     init {
         launchOnDefault {
@@ -38,19 +37,18 @@ class FolderPreviewViewModel @Inject constructor(
     fun fetchData(id: String = parentId) {
         launchOnDefault {
             val total = ItemTotalHelper(exploreSource.fetchData(), rowSource.fetch())
-
+            val folderHandler = FolderHandler(total)
             val folderList = exploreSource.findByParentId(id)
             val files = rowSource.findByParentId(id)
             if (!folderList.isNullOrEmpty()) {
-                makeFolderList(folderList, total)
+                makeFolderList(folderList, folderHandler)
             } else if (files.isNotEmpty()) {
                 makeFileList(files)
             } else makeButtonList()
         }
     }
 
-    private fun makeFolderList(list: List<ExploreRow>, total: ItemTotalHelper) {
-        val folderHandler = FolderHandler(total)
+    private fun makeFolderList(list: List<ExploreRow>, folderHandler: FolderHandler) {
         setToLiveData = folderHandler.makeFolderItems(list)
     }
 

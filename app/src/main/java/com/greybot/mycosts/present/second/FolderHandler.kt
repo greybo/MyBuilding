@@ -10,12 +10,12 @@ class FolderHandler(private val totalHelper: ItemTotalHelper) {
     fun makeFolderItems(list: List<ExploreRow>): List<AdapterItems> {
         return buildList {
             addAll(list.map { f ->
-                val total = totalHelper.getTotalById(f.objectId ?: "")
+                val totalData = totalHelper.getTotalById(f.objectId ?: "")
                 AdapterItems.FolderItem(
                     f.name ?: "null",
                     "",
-                    countInner = total.totalCount.getTotalString("count"),
-                    total = total.totalPrice.getTotalString("total"),
+                    countInner = totalData.totalCount.getTotalString("count"),
+                    total = totalData.totalPrice.getTotalString("total"),
                     objectId = f.objectId
                 )
             })

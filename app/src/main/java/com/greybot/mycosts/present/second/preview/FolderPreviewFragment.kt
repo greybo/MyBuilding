@@ -21,12 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FolderPreviewFragment :
     BaseBindingFragment<FolderPreviewFragmentBinding>(FolderPreviewFragmentBinding::inflate) {
+
     private val log_tag = "FolderPreviewFragment"
     private val viewModel by viewModels<FolderPreviewViewModel>()
     private var adapter: ExploreAdapter? = null
-
     private val router: IFolderPreviewRouter by getRouter()
-//    private var buttonType: ButtonType = ButtonType.None
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
