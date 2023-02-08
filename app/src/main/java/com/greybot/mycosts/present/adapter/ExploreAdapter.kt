@@ -100,8 +100,7 @@ class ExploreAdapter(
             binding.rowItemCheckDone.isChecked = item.isBought
             binding.rowItemName.text = item.name
             binding.rowItemCount.text = item.count.toString()
-            val price = item.price.toString()
-            binding.rowItemPrice.text = price
+            binding.rowItemPrice.text = item.price.toString()
 
             binding.rowItemName.setOnClickListener {
                 onClick.invoke(AdapterCallback.RowName(item))
