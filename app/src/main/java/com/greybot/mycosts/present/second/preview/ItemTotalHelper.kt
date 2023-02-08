@@ -4,7 +4,7 @@ import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.data.repository.explore.getOrNull
 
-class ItemTotalHelper(private var folderGroup: Map<String, List<ExploreRow>>?, private var fileGroup:  Map<String?, List<FileRow>>?) {
+class ItemTotalHelper(private var folderGroup: Map<String, List<ExploreRow>>?, private var fileGroup:  Map<String, List<FileRow>>?) {
 
 
     fun getTotalById(id: String): ItemTotalModel {

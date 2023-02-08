@@ -6,11 +6,11 @@ import javax.inject.Inject
 
 class FileDataSource @Inject constructor(private val repo: FileRepo) {
 
-    suspend fun fetch(force: Boolean = false): Map<String?, List<FileRow>>? {
+    suspend fun fetch(force: Boolean = false): Map<String, List<FileRow>>? {
         return fileGroup(repo.getAll(force))
     }
 
-    private fun fileGroup(list: List<FileRow>?) = list?.groupBy { it.parentObjectId }
+    private fun fileGroup(list: List<FileRow>?) = list?.groupBy { it.parentObjectId ?: "empty" }
 
     suspend fun findByParentId(
         parentObjectId: String
