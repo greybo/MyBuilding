@@ -1,5 +1,6 @@
 package com.greybot.mycosts.data.repository.row
 
+import com.google.firebase.database.DatabaseReference
 import com.greybot.mycosts.data.dto.FileRow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -29,7 +30,10 @@ class FileActorCoroutine(private val coroutineContext: CoroutineContext = EmptyC
                         }
                     }
                 }
-                is FileActorCommand.Remote -> backupList.remove(command.model)
+                is FileActorCommand.Remote -> {
+                    command.myRef.child(command.id).removeValue()
+                    backupList.remove(backupList.find { it.objectId == command.id })
+                }
                 is FileActorCommand.GetAll -> {
                     val list = backupList.ifEmpty { null }
                     command.response.complete(list)
@@ -47,8 +51,8 @@ class FileActorCoroutine(private val coroutineContext: CoroutineContext = EmptyC
         coroutineCommand.trySend(FileActorCommand.AddAll(list))
     }
 
-    suspend fun remote(model: FileRow) {
-        coroutineCommand.send(FileActorCommand.Remote(model))
+    suspend fun remote(id: String, myRef: DatabaseReference) {
+        coroutineCommand.send(FileActorCommand.Remote(id, myRef))
     }
 
     suspend fun getAll(): List<FileRow>? {

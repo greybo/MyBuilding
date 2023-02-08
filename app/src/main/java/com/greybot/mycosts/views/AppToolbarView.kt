@@ -16,6 +16,7 @@ import com.greybot.mycosts.databinding.ActionBarCustomNewBinding
 interface ToolbarDelegateListener {
     var title: String?
     fun rightButtonEnable(enable: Boolean?, rightTextColor: Int = -1)
+    fun rightButtonShow(enable: Boolean, text: String)
 }
 
 class AppToolbarView @JvmOverloads constructor(
@@ -105,14 +106,13 @@ class AppToolbarView @JvmOverloads constructor(
 
         btnName?.let {
             binding.crownToolbarButtonRight.text = it
-
-            model.rightBtnCallback?.let { callback ->
-                binding.crownToolbarButtonRight.setOnClickListener {
-                    callback(binding.crownToolbarButtonRight)
-                }
-            }
-
         } ?: binding.crownToolbarButtonRight.gone()
+
+        model.rightBtnCallback?.let { callback ->
+            binding.crownToolbarButtonRight.setOnClickListener {
+                callback(binding.crownToolbarButtonRight)
+            }
+        }
 
         rightButtonEnable(model.rightBtnEnabled, model.theme.titleColor)
 
@@ -136,6 +136,17 @@ class AppToolbarView @JvmOverloads constructor(
             else -> ContextCompat.getColor(context, rightTextColor)
         }
         binding.crownToolbarButtonRight.setTextColor(color)
+    }
+
+    override fun rightButtonShow(enable: Boolean, text: String) {
+        binding.crownToolbarButtonRight.setGoneOrVisible(enable)
+        binding.crownToolbarButtonRight.setTextColor(
+            ContextCompat.getColor(
+                context,
+                R.color.red
+            )
+        )
+        binding.crownToolbarButtonRight.text = text
     }
 
     init {

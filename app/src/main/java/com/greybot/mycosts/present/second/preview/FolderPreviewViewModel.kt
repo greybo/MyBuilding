@@ -9,6 +9,7 @@ import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.file.FileHandler
 import com.greybot.mycosts.present.second.FolderHandler
+import com.greybot.mycosts.utility.MyLiveData
 import com.greybot.mycosts.utility.makeLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -21,25 +22,24 @@ class FolderPreviewViewModel @Inject constructor(
 ) : CompositeViewModel() {
 
     private val fileHandler by lazy { FileHandler() }
-    var parentFolder: ExploreRow? = null
+    private val listDelete = mutableListOf<String>()
+    private val deleteIconLiveData = makeLiveData<Boolean>()
+
     val state = makeLiveData<List<AdapterItems>>()
     val title = makeLiveData<String?>()
-
     val parentId by lazy { savedStateHandle.get<String>("objectId") ?: "" }
-
-    init {
-        launchOnDefault {
-            parentFolder = exploreSource.findByObjectId(parentId)
-            title.postValue(parentFolder?.name)
-        }
-    }
 
     fun fetchData(id: String = parentId) {
         launchOnDefault {
             val total = ItemTotalHelper(exploreSource.fetchData(), rowSource.fetchData())
             val folderHandler = FolderHandler(total)
-            val folderList = exploreSource.findByParentId(id)
-            val files = rowSource.findByParentId(id)
+
+            val parentFolder = exploreSource.findByObjectId(parentId)
+            title.postValue(parentFolder?.name)
+
+            val folderList = exploreSource.getCurrentList(id)
+            val files = rowSource.getCurrentList(id)
+
             if (!folderList.isNullOrEmpty()) {
                 makeFolderList(folderList, folderHandler)
             } else if (files.isNotEmpty()) {
@@ -64,7 +64,7 @@ class FolderPreviewViewModel @Inject constructor(
     }
 
     private suspend fun updateUIRowList() {
-        val files = rowSource.findByParentId(parentId)
+        val files = rowSource.getCurrentList(parentId)
         makeFileList(files)
     }
 
@@ -80,6 +80,31 @@ class FolderPreviewViewModel @Inject constructor(
             AdapterItems.ButtonAddItem(ButtonType.Folder),
             AdapterItems.ButtonAddItem(ButtonType.Row)
         )
+    }
+
+    fun deleteIconLiveData(): MyLiveData<Boolean> {
+        deleteIconLiveData.values = false
+        listDelete.clear()
+        return deleteIconLiveData
+    }
+    fun fileHighlight(objectId: String) {
+        if (listDelete.contains(objectId)) {
+            listDelete.remove(objectId)
+        } else {
+            listDelete.add(objectId)
+        }
+        deleteIconLiveData.values = listDelete.isNotEmpty()
+    }
+
+    fun deleteSelectItems() {
+        launchOnDefault {
+            listDelete.map { objectId ->
+                rowSource.delete(objectId)
+            }
+            listDelete.clear()
+            fetchData()
+        }
+        deleteIconLiveData.values = false
     }
 
     private var setToLiveData: List<AdapterItems>

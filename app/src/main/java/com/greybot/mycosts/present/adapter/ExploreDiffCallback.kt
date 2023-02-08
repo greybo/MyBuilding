@@ -3,7 +3,7 @@ package com.greybot.mycosts.present.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.greybot.mycosts.models.AdapterItems
 
-class DiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
+class ExploreDiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
 
     //2
     override fun areItemsTheSame(oldItem: AdapterItems, newItem: AdapterItems) =

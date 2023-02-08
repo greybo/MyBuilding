@@ -12,9 +12,8 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
 
     private fun fileGroup(list: List<FileRow>?) = list?.groupBy { it.parentObjectId ?: "empty" }
 
-    suspend fun findByParentId(
-        parentObjectId: String
-    ) = repo.getAll().filter { it.parentObjectId == parentObjectId }
+    suspend fun getCurrentList(parentId: String) =
+        repo.getAll().filter { it.parentObjectId == parentId }
 
     suspend fun findById(
         objectId: String
@@ -53,5 +52,9 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
         findById(objectId)
             ?.copy(count = count, price = price)
             ?.let { update(it) }
+    }
+
+    suspend fun delete(objectId: String) {
+        repo.deleteFile(objectId)
     }
 }

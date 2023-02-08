@@ -36,12 +36,19 @@ class FolderPreviewFragment :
         initViews()
         val toolbar = binding.folderPreviewToolbar.getBuilder()
             .homeCallback { backPress() }
+            .rightCallback {
+                viewModel.deleteSelectItems()
+            }
             .create()
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
         }
         viewModel.title.observe(viewLifecycleOwner) {
             toolbar.title = it ?: ""
+        }
+        viewModel.deleteIconLiveData().observe(viewLifecycleOwner) {
+            toolbar.rightButtonShow(it, "Delete")
+            adapter?.highlightGlobal = it
         }
         systemBackPressedCallback { backPress() }
         viewModel.fetchData()
@@ -71,6 +78,7 @@ class FolderPreviewFragment :
                 is AdapterCallback.RowName -> router.fromFolderToEditRow(this.value.objectId)
                 is AdapterCallback.RowPrice -> showDialogOne(this, this.value)
                 is AdapterCallback.RowCount -> showDialogOne(this, this.value)
+                is AdapterCallback.FileHighlight -> viewModel.fileHighlight(this.value.objectId)
                 is AdapterCallback.RowBuy -> viewModel.changeRowBuy(this.value)
                 is AdapterCallback.AddButton -> handleButtonClick(this.value.type)
                 is AdapterCallback.FolderOpen -> {

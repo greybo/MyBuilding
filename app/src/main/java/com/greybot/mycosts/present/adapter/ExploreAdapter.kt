@@ -1,10 +1,13 @@
 package com.greybot.mycosts.present.adapter
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.greybot.mycosts.R
 import com.greybot.mycosts.databinding.*
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.utility.inflateAdapter
@@ -12,10 +15,9 @@ import com.greybot.mycosts.utility.inflateAdapter
 class ExploreAdapter(
     val onClick: (AdapterCallback) -> Unit
 ) : ListAdapter<AdapterItems, ExploreAdapter.Holder>(
-    AsyncDifferConfig.Builder(DiffCallback()).build()
+    AsyncDifferConfig.Builder(ExploreDiffCallback()).build()
 ) {
-//    ListAdapter<AdapterItems,ExploreAdapter.Holder>(DiffCallback()){
-//    RecyclerView.Adapter<ExploreAdapter.Holder>() {
+    var highlightGlobal = false
 
     companion object {
         const val EXPLORE_ITEM = 0
@@ -95,6 +97,9 @@ class ExploreAdapter(
 
     inner class RowHolder(private val binding: RowAdapterItemBinding) :
         Holder(binding.root) {
+
+        var highlight = false
+
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.RowItem
             binding.rowItemCheckDone.isChecked = item.isBought
@@ -103,17 +108,41 @@ class ExploreAdapter(
             binding.rowItemPrice.text = item.price.toString()
 
             binding.rowItemName.setOnClickListener {
-                onClick.invoke(AdapterCallback.RowName(item))
+                if (highlight || highlightGlobal) {
+                    onClick.invoke(AdapterCallback.FileHighlight(item))
+                    markItem()
+                } else onClick.invoke(AdapterCallback.RowName(item))
             }
             binding.rowItemPrice.setOnClickListener {
-                onClick.invoke(AdapterCallback.RowPrice(item))
+                if (!highlightGlobal)
+                    onClick.invoke(AdapterCallback.RowPrice(item))
             }
             binding.rowItemCount.setOnClickListener {
-                onClick.invoke(AdapterCallback.RowCount(item))
+                if (!highlightGlobal)
+                    onClick.invoke(AdapterCallback.RowCount(item))
             }
             binding.rowItemCheckDone.setOnClickListener {
                 onClick.invoke(AdapterCallback.RowBuy(item))
             }
+
+            binding.rowItemName.setOnLongClickListener {
+                onClick.invoke(AdapterCallback.FileHighlight(item))
+                markItem()
+                true
+            }
+        }
+
+        private fun markItem() {
+            val colorHighlight = ContextCompat.getColor(
+                itemView.context,
+                R.color.divider_color
+            )
+            highlight = !highlight
+            if (highlight)
+                itemView.setBackgroundColor(colorHighlight)
+            else
+                itemView.setBackgroundColor(Color.WHITE);
+
         }
     }
 

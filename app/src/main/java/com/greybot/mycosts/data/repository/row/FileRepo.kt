@@ -95,53 +95,7 @@ class FileRepo @Inject constructor() {
         return true
     }
 
-//    private fun equalsList(newList: List<FileRow>, backupList: List<FileRow>): Boolean {
-//        if (newList.size != backupList.size) return false
-//        newList.forEachIndexed { index, dto ->
-//            if (dto != backupList.getOrNull(index)) return false
-//        }
-//        return true
-//    }
-
-//    fun updateBackupList(list: List<FileRow>) {
-//        backupList.clear()
-//        backupList.addAll(list)
-//    }
-
-//    suspend fun getById(objectId: String): FileRow? {
-//        val deferred = CompletableDeferred<FileRow?>()
-//        myRef.child(objectId).addListenerForSingleValueEvent(
-//            object : ValueEventListener {
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    val itemRow = snapshot.getValue(FileRow::class.java)
-//                    deferred.complete(itemRow)
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    deferred.completeExceptionally(error.toException())
-//                    LogApp.e("RowRepo", error.toException())
-//                }
-//            }
-//        )
-//        return deferred.await()
-//    }
-//
-//    suspend fun getByParentId(objectId: String): FileRow? {
-//        val deferred = CompletableDeferred<FileRow?>()
-//        myRef.child(objectId).addListenerForSingleValueEvent(
-//            object : ValueEventListener {
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    val itemRow = snapshot.getValue(FileRow::class.java)
-//                    deferred.complete(itemRow)
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    deferred.completeExceptionally(error.toException())
-//                    LogApp.e("RowRepo", error.toException())
-//                }
-//            }
-//        )
-//        return deferred.await()
-//    }
-
+    suspend fun deleteFile(objectId: String) {
+        actor.remote(objectId, myRef)
+    }
 }

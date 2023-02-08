@@ -40,8 +40,8 @@ class ExploreDataSource @Inject constructor(private val repo: ExploreRepository)
         return actor.getAll().find { it.objectId == objectId }
     }
 
-    suspend fun findByParentId(objectId: String): List<ExploreRow>? {
-        return groupByParentId(actor.getAll()).getOrNull(objectId)
+    suspend fun getCurrentList(parentId: String): List<ExploreRow>? {
+        return groupByParentId(actor.getAll()).getOrNull(parentId)
     }
 }
 

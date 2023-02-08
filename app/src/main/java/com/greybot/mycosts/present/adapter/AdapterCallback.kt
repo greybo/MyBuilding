@@ -11,4 +11,5 @@ sealed class AdapterCallback {
     class AddButton(val value: AdapterItems.ButtonAddItem) : AdapterCallback()
     class FolderOpen(val value: AdapterItems.FolderItem) : AdapterCallback()
     class FolderLong(val value: AdapterItems.FolderItem) : AdapterCallback()
+    class FileHighlight(val value: AdapterItems.RowItem) : AdapterCallback()
 }
