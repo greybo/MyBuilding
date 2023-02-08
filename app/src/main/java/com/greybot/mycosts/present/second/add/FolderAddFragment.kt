@@ -23,23 +23,14 @@ class FolderAddFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        viewModel.fetchData(viewModel.objectId)
+//        viewModel.fetchData(viewModel.objectId)
     }
 
     private fun initViews() {
         with(binding) {
-//            addFolderSaveButton.setOnClickListener {
-////                setFragmentResult(
-////                    FRAGMENT_RESULT_ADD_FOLDER,
-////                    bundleOf(
-////                        ARG_FOLDER_NAME to addFolderName.text.toString(),
-////                        ARG_FOLDER_PATH to args?.path
-////                    )
-////                )
-//                saveFolder(addFolderName.text.toString())
-//            }
-            val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-            addFolderDate.text = sdf.format(Date())
+            val timestamp = Date().time
+            val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault())
+            addFolderDate.text = sdf.format(timestamp)
             addFolderName.setOnEditorActionListener(object : TextView.OnEditorActionListener {
                 override fun onEditorAction(
                     v: TextView?,
@@ -47,11 +38,10 @@ class FolderAddFragment :
                     event: KeyEvent?
                 ): Boolean {
                     if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        // Do whatever you want here
-                        saveFolder(addFolderName.text.toString())
-                        return true;
+                        saveFolder(addFolderName.text.toString(), timestamp)
+                        return true
                     }
-                    return false;
+                    return false
                 }
             })
             addFolderName.requestFocus()
@@ -59,9 +49,8 @@ class FolderAddFragment :
         }
     }
 
-    private fun saveFolder(name: String) {
-//        viewModel.addFolder(name, args?.path,Date().time)
-        viewModel.addFolderNew(name)
+    private fun saveFolder(name: String, timestamp: Long) {
+        viewModel.addFolderNew(name, timestamp)
         findNavController().popBackStack()
     }
 }

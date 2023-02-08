@@ -30,14 +30,17 @@ class FileActorCoroutine(private val coroutineContext: CoroutineContext = EmptyC
                     }
                 }
                 is FileActorCommand.Remote -> backupList.remove(command.model)
-                is FileActorCommand.GetAll -> command.response.complete(backupList)
+                is FileActorCommand.GetAll -> {
+                    val list = backupList.ifEmpty { null }
+                    command.response.complete(list)
+                }
             }
         }
     }
 
     suspend fun add(model: FileRow): List<FileRow> {
         coroutineCommand.send(FileActorCommand.Add(model))
-        return getAll()
+        return getAll() ?: emptyList()
     }
 
     fun addAll(list: List<FileRow>) {
@@ -48,7 +51,7 @@ class FileActorCoroutine(private val coroutineContext: CoroutineContext = EmptyC
         coroutineCommand.send(FileActorCommand.Remote(model))
     }
 
-    suspend fun getAll(): List<FileRow> {
+    suspend fun getAll(): List<FileRow>? {
         val getCounter = FileActorCommand.GetAll()
         coroutineCommand.send(getCounter)
         return getCounter.response.await()
@@ -56,6 +59,6 @@ class FileActorCoroutine(private val coroutineContext: CoroutineContext = EmptyC
 
     suspend fun update(model: FileRow): List<FileRow> {
         coroutineCommand.send(FileActorCommand.Update(model))
-        return getAll()
+        return getAll() ?: emptyList()
     }
 }

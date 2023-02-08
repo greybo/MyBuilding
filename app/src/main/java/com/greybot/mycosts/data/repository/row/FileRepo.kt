@@ -25,12 +25,13 @@ class FileRepo @Inject constructor() {
 
     suspend fun getAll(force: Boolean = false): List<FileRow> {
         val deferred = CompletableDeferred<List<FileRow>>()
-        val list = actor.getAll()
-        if (!force && list.isNotEmpty()) {
-            deferred.complete(list)
+
+        val list = if (force) {
+            getAllData()
         } else {
-            deferred.complete(getAllData() ?: emptyList())
+            actor.getAll() ?: getAllData()
         }
+        deferred.complete(list ?: emptyList())
         return deferred.await()
     }
 

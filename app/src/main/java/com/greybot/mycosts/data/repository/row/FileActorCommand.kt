@@ -8,6 +8,6 @@ sealed class FileActorCommand {
     class AddAll(val list: List<FileRow>) : FileActorCommand()
     class Update(val model: FileRow) : FileActorCommand()
     class Remote(val model: FileRow) : FileActorCommand()
-    class GetAll(val response: CompletableDeferred<List<FileRow>> = CompletableDeferred()) :
+    class GetAll(val response: CompletableDeferred<List<FileRow>?> = CompletableDeferred()) :
         FileActorCommand()
 }

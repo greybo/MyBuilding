@@ -13,27 +13,18 @@ class FolderAddViewModel @Inject constructor(
     private val source: ExploreDataSource
 ) : CompositeViewModel() {
 
-    var explore: ExploreRow? = null
     val objectId by lazy { savedStateHandle.get<String>("objectId") }
-    fun fetchData(objectId: String?) {
-        objectId ?: return
-        launchOnDefault {
-            val folder = source.findByObjectId(objectId)
-            withMain { explore = folder }
-        }
-    }
 
-    fun addFolderNew(name: String?) {
+    fun addFolderNew(name: String?, timestamp: Long) {
         if (name != null) {
             val exploreNew = ExploreRow(
                 name = name,
-                parentObjectId = explore?.objectId
+                parentObjectId = objectId ?: throw Throwable(" objectId must not be null"),
+                timestamp = timestamp
             )
 
-            exploreNew.let {
-                launchOnDefault {
-                    source.addFolder(it)
-                }
+            launchOnDefault {
+                source.addFolder(exploreNew)
             }
         }
     }
