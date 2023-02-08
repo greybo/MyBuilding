@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyCosts</string>
+    <string name="save">save</string>
+    <string name="name_row">Імя запису</string>
+    <string name="count">Кількість</string>
+    <string name="price">Ціна</string>
+    <string name="description_button_save">кнопка зберегти</string>
 </resources>

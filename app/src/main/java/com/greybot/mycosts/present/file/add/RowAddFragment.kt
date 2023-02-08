@@ -1,6 +1,7 @@
 package com.greybot.mycosts.present.file.add
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -9,6 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.RowAddFragmentBinding
+import com.greybot.mycosts.utility.hideKeyboard
+import com.greybot.mycosts.utility.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,32 +28,38 @@ class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragment
 
     private fun initViews() {
         with(binding) {
-            addRowName.setOnEditorActionListener(this@RowAddFragment)
-            addRowCount.setOnEditorActionListener(this@RowAddFragment)
             addRowPrice.setOnEditorActionListener(this@RowAddFragment)
             addRowButton.setOnClickListener {
                 saveFile()
             }
+            addRowName.requestFocus()
+            showKeyboard()
         }
     }
 
     private fun saveFile() {
         with(binding) {
-            val _price = addRowPrice.text.toString()
-                .ifBlank { 0F }.toString()
-                .toFloat()
-            viewModel.addRow(
-                rowName = addRowName.text.toString(),
-                count = addRowCount.text.toString(),
-                price = _price,
-            )
+            val name = addRowName.text.toString()
+            if (name.isNotBlank()) {
+                viewModel.addRow(
+                    rowName = name,
+                    count = addRowCount.text.toString(),
+                    price = addRowPrice.text.getPrice(),
+                )
+            }
         }
         findNavController().popBackStack()
     }
 
+    private fun Editable?.getPrice(): Float {
+        return this.toString()
+            .ifBlank { 0F }.toString()
+            .toFloat()
+    }
+
     override fun onEditorAction(tv: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-            // Do whatever you want here
+            hideKeyboard()
             saveFile()
             return true
         }
