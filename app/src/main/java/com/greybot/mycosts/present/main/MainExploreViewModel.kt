@@ -25,7 +25,7 @@ class MainExploreViewModel @Inject constructor(
     var force = true
     fun fetchData() {
         launchOnDefault {
-            val rowGrouts = rowSource.fetch(force)
+            val rowGrouts = rowSource.fetchData(force)
             val folders = dataSource.fetchData(force)
             force = false
             val totalHandler = ItemTotalHelper(folders, rowGrouts)

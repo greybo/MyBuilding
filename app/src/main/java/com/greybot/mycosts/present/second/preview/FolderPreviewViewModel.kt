@@ -36,7 +36,7 @@ class FolderPreviewViewModel @Inject constructor(
 
     fun fetchData(id: String = parentId) {
         launchOnDefault {
-            val total = ItemTotalHelper(exploreSource.fetchData(), rowSource.fetch())
+            val total = ItemTotalHelper(exploreSource.fetchData(), rowSource.fetchData())
             val folderHandler = FolderHandler(total)
             val folderList = exploreSource.findByParentId(id)
             val files = rowSource.findByParentId(id)

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class FileDataSource @Inject constructor(private val repo: FileRepo) {
 
-    suspend fun fetch(force: Boolean = false): Map<String, List<FileRow>>? {
+    suspend fun fetchData(force: Boolean = false): Map<String, List<FileRow>>? {
         return fileGroup(repo.getAll(force))
     }
 

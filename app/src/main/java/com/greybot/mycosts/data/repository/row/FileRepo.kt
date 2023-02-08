@@ -29,10 +29,7 @@ class FileRepo @Inject constructor() {
         if (!force && list.isNotEmpty()) {
             deferred.complete(list)
         } else {
-            val listRemote = getAllData()?.also {
-                actor.addAll(it)
-            }
-            deferred.complete(listRemote ?: emptyList())
+            deferred.complete(getAllData() ?: emptyList())
         }
         return deferred.await()
     }
@@ -45,6 +42,7 @@ class FileRepo @Inject constructor() {
                         val itemFolder = snapshot.children.mapNotNull {
                             it.getValue(FileRow::class.java)
                         }
+                        actor.addAll(itemFolder)
                         continuation.resume(itemFolder)
                     }
 
