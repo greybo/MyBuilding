@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.CurrencyDto
 import com.greybot.mycosts.data.dto.ExploreRow
-import com.greybot.mycosts.data.repository.explore.ExploreDataSource
+import com.greybot.mycosts.data.repository.explore.FolderDataSource
 import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.utility.LogApp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class RowAddViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val fileSource: FileDataSource,
-    private val exploreSource: ExploreDataSource
+    private val exploreSource: FolderDataSource
 ) : CompositeViewModel() {
 
     private var exploreRow: ExploreRow? = null

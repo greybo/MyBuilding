@@ -12,7 +12,7 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
 
     private fun fileGroup(list: List<FileRow>?) = list?.groupBy { it.parentObjectId ?: "empty" }
 
-    suspend fun getCurrentList(parentId: String) =
+    suspend fun getListById(parentId: String) =
         repo.getAll().filter { it.parentObjectId == parentId }
 
     suspend fun findById(

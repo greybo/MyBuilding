@@ -2,6 +2,7 @@ package com.greybot.mycosts.data.repository.row
 
 import com.google.firebase.database.DatabaseReference
 import com.greybot.mycosts.data.dto.FileRow
+import com.greybot.mycosts.utility.LogApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -18,7 +19,12 @@ class FileActorCoroutine(private val coroutineContext: CoroutineContext = EmptyC
     private val coroutineCommand = scope.actor<FileActorCommand>(capacity = Channel.BUFFERED) {
         for (command in this) {
             when (command) {
-                is FileActorCommand.Add -> backupList.add(command.model)
+                is FileActorCommand.Add -> {
+                    backupList.add(command.model)
+                    LogApp.i(
+                        "FileActor&Add - size: ${backupList.size}, $backupList"
+                    )
+                }
                 is FileActorCommand.AddAll -> {
                     backupList.clear()
                     backupList.addAll(command.list)
@@ -37,6 +43,9 @@ class FileActorCoroutine(private val coroutineContext: CoroutineContext = EmptyC
                 is FileActorCommand.GetAll -> {
                     val list = backupList.ifEmpty { null }
                     command.response.complete(list)
+                    LogApp.i(
+                        "FileActor&GetAll - size: ${backupList.size}, $backupList"
+                    )
                 }
             }
         }

@@ -43,5 +43,19 @@ data class FileRow(
             "parentObjectId" to parentObjectId,
         )
     }
+
+    override fun toString(): String {
+        return "FileRow(" +
+                "name='$name', " +
+//                "measure=$measure, " +
+//                "count=$count, " +
+//                "price=$price, " +
+//                "bought=$bought, " +
+//                "currency=$currency, " +
+//                "date=$date, " +
+                "objectId=$objectId, " +
+//                "parentObjectId=$parentObjectId" +
+                ")"
+    }
 }
 

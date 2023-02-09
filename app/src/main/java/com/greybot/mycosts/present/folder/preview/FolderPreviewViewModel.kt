@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.dto.FileRow
-import com.greybot.mycosts.data.repository.explore.ExploreDataSource
+import com.greybot.mycosts.data.repository.explore.FolderDataSource
 import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.file.FileHandler
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FolderPreviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val exploreSource: ExploreDataSource,
+    private val exploreSource: FolderDataSource,
     private val rowSource: FileDataSource
 ) : CompositeViewModel() {
 
@@ -29,26 +29,28 @@ class FolderPreviewViewModel @Inject constructor(
     val title = makeLiveData<String?>()
     val parentId by lazy { savedStateHandle.get<String>("objectId") ?: "" }
 
-    fun fetchData(id: String = parentId) {
+    init {
         launchOnDefault {
-            val total = ItemTotalHelper(exploreSource.fetchData(), rowSource.fetchData())
-            val folderHandler = FolderHandler(total)
-
             val parentFolder = exploreSource.findByObjectId(parentId)
             title.postValue(parentFolder?.name)
+        }
+    }
 
-            val folderList = exploreSource.getCurrentList(id)
-            val files = rowSource.getCurrentList(id)
+    fun fetchData(id: String = parentId) {
+        launchOnDefault {
+            val folderList = exploreSource.getListById(id)
+            val files = rowSource.getListById(id)
 
             if (!folderList.isNullOrEmpty()) {
-                makeFolderList(folderList, folderHandler)
+                makeFolderList(folderList)
             } else if (files.isNotEmpty()) {
                 makeFileList(files)
             } else makeButtonList()
         }
     }
 
-    private fun makeFolderList(list: List<ExploreRow>, folderHandler: FolderHandler) {
+    private suspend fun makeFolderList(list: List<ExploreRow>) {
+        val folderHandler = FolderHandler(exploreSource.fetchData(), rowSource.fetchData())
         setToLiveData = folderHandler.makeFolderItems(list)
     }
 
@@ -88,6 +90,7 @@ class FolderPreviewViewModel @Inject constructor(
         listDelete.clear()
         return deleteIconLiveData
     }
+
     fun fileHighlight(objectId: String) {
         if (listDelete.contains(objectId)) {
             listDelete.remove(objectId)

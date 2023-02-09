@@ -5,10 +5,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ExploreDataSource @Inject constructor(private val repo: ExploreRepository) {
-    private val tag = "ExploreDataSource"
+class FolderDataSource @Inject constructor(private val repo: FolderRepository) {
+    private val tag = "FolderDataSource"
 
-    private val actor = ExploreActorCoroutine()
+    private val actor = FolderActorCoroutine()
 
     suspend fun fetchData(force: Boolean = false): Map<String, List<ExploreRow>> {
         return if (!force) {
@@ -40,7 +40,7 @@ class ExploreDataSource @Inject constructor(private val repo: ExploreRepository)
         return actor.getAll().find { it.objectId == objectId }
     }
 
-    suspend fun getCurrentList(parentId: String): List<ExploreRow>? {
+    suspend fun getListById(parentId: String): List<ExploreRow>? {
         return groupByParentId(actor.getAll()).getOrNull(parentId)
     }
 }

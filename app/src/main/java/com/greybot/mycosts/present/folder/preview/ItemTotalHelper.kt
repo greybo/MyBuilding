@@ -3,9 +3,9 @@ package com.greybot.mycosts.present.folder.preview
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.data.repository.explore.getOrNull
+import com.greybot.mycosts.utility.LogApp
 
 class ItemTotalHelper(private var folderGroup: Map<String, List<ExploreRow>>?, private var fileGroup:  Map<String, List<FileRow>>?) {
-
 
     fun getTotalById(id: String): ItemTotalModel {
         val totalFolder = folderGroup?.getOrNull(id)
@@ -15,6 +15,7 @@ class ItemTotalHelper(private var folderGroup: Map<String, List<ExploreRow>>?, p
             count = totalFolder.size
         } else {
             fileGroup?.getOrNull(id)?.let { rowList ->
+                LogApp.i("ItemTotalHelper.getTotalById() - size: ${rowList.size}, $rowList" )
                 count = rowList.size
                 price = rowList.foldRight(0F) { row, sum ->
                     row.count.getNotNull() * row.price + sum

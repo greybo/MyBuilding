@@ -8,7 +8,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.utility.LogApp
-import kotlinx.coroutines.CompletableDeferred
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -24,15 +23,12 @@ class FileRepo @Inject constructor() {
     private val myRef = database.child(uid).child(path)
 
     suspend fun getAll(force: Boolean = false): List<FileRow> {
-        val deferred = CompletableDeferred<List<FileRow>>()
-
         val list = if (force) {
             getAllData()
         } else {
             actor.getAll() ?: getAllData()
         }
-        deferred.complete(list ?: emptyList())
-        return deferred.await()
+        return list ?: emptyList()
     }
 
     private suspend fun getAllData(): List<FileRow>? {

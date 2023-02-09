@@ -8,7 +8,7 @@ import kotlinx.coroutines.channels.actor
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-class ExploreActorCoroutine(coroutineContext: CoroutineContext = EmptyCoroutineContext) {
+class FolderActorCoroutine(coroutineContext: CoroutineContext = EmptyCoroutineContext) {
 
     private val backupList = mutableListOf<ExploreRow>()
     private val scope = CoroutineScope(coroutineContext)

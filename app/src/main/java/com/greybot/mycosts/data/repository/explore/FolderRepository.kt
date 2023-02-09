@@ -14,7 +14,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 //@Singleton
-class ExploreRepository @Inject constructor() {
+class FolderRepository @Inject constructor() {
 
     private val uid: String = "654321"
     private val path: String = "exploreNew"

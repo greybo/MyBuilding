@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.ExploreRow
-import com.greybot.mycosts.data.repository.explore.ExploreDataSource
+import com.greybot.mycosts.data.repository.explore.FolderDataSource
 import com.greybot.mycosts.data.repository.explore.getOrNull
 import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainExploreViewModel @Inject constructor(
-    private val dataSource: ExploreDataSource,
+    private val dataSource: FolderDataSource,
     private var rowSource: FileDataSource
 ) : CompositeViewModel() {
 
