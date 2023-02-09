@@ -1,10 +1,10 @@
 package com.greybot.mycosts
 
 import androidx.navigation.NavController
+import com.greybot.mycosts.present.folder.preview.FolderPreviewFragmentDirections
+import com.greybot.mycosts.present.folder.preview.IFolderPreviewRouter
 import com.greybot.mycosts.present.main.IMainExploreRouter
 import com.greybot.mycosts.present.main.MainExploreFragmentDirections
-import com.greybot.mycosts.present.second.preview.FolderPreviewFragmentDirections
-import com.greybot.mycosts.present.second.preview.IFolderPreviewRouter
 
 class AppRouter(private val navController: NavController) : IMainExploreRouter,
     IFolderPreviewRouter {

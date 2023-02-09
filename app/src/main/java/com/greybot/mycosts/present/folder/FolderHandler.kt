@@ -1,9 +1,9 @@
-package com.greybot.mycosts.present.second
+package com.greybot.mycosts.present.folder
 
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.present.second.preview.ButtonType
-import com.greybot.mycosts.present.second.preview.ItemTotalHelper
+import com.greybot.mycosts.present.folder.preview.ButtonType
+import com.greybot.mycosts.present.folder.preview.ItemTotalHelper
 import com.greybot.mycosts.utility.getTotalString
 
 class FolderHandler(private val totalHelper: ItemTotalHelper) {

@@ -8,7 +8,7 @@ import com.greybot.mycosts.data.repository.explore.ExploreDataSource
 import com.greybot.mycosts.data.repository.explore.getOrNull
 import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.present.second.preview.ItemTotalHelper
+import com.greybot.mycosts.present.folder.preview.ItemTotalHelper
 import com.greybot.mycosts.utility.getTotalString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

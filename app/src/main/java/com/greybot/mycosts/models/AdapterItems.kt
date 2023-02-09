@@ -1,7 +1,7 @@
 package com.greybot.mycosts.models
 
 import com.greybot.mycosts.R
-import com.greybot.mycosts.present.second.preview.ButtonType
+import com.greybot.mycosts.present.folder.preview.ButtonType
 
 sealed class AdapterItems {
     class FolderItem(

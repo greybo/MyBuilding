@@ -3,7 +3,7 @@ package com.greybot.mycosts.present.file
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.models.MeasureType
-import com.greybot.mycosts.present.second.preview.ButtonType
+import com.greybot.mycosts.present.folder.preview.ButtonType
 
 class FileHandler {
 

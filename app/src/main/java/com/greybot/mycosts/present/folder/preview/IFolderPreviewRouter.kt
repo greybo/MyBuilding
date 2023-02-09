@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.second.preview
+package com.greybot.mycosts.present.folder.preview
 
 interface IFolderPreviewRouter {
     fun fromFolderToFolder(id: String)

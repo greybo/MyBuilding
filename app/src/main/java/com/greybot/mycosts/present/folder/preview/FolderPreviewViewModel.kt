@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.second.preview
+package com.greybot.mycosts.present.folder.preview
 
 import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
@@ -8,7 +8,7 @@ import com.greybot.mycosts.data.repository.explore.ExploreDataSource
 import com.greybot.mycosts.data.repository.row.FileDataSource
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.file.FileHandler
-import com.greybot.mycosts.present.second.FolderHandler
+import com.greybot.mycosts.present.folder.FolderHandler
 import com.greybot.mycosts.utility.MyLiveData
 import com.greybot.mycosts.utility.makeLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -64,8 +64,9 @@ class FolderPreviewViewModel @Inject constructor(
     }
 
     private suspend fun updateUIRowList() {
-        val files = rowSource.getCurrentList(parentId)
-        makeFileList(files)
+//        val files = rowSource.getCurrentList(parentId)
+//        makeFileList(files)
+        fetchData()
     }
 
     fun changeRowPrice(id: String, count: Int, price: Float) {

@@ -1,4 +1,4 @@
-package com.greybot.mycosts.present.second.preview
+package com.greybot.mycosts.present.folder.preview
 
 import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.dto.FileRow
