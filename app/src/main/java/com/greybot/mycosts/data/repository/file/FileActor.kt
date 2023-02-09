@@ -21,9 +21,7 @@ class FileActor(private val coroutineContext: CoroutineContext = EmptyCoroutineC
             when (command) {
                 is FileCommand.Add -> {
                     backupList.add(command.model)
-                    LogApp.i(
-                        "FileActor&Add - size: ${backupList.size}, $backupList"
-                    )
+                    LogApp.i("FileActor&Add - size: ${backupList.size}, $backupList")
                 }
                 is FileCommand.AddAll -> {
                     backupList.clear()
@@ -43,9 +41,7 @@ class FileActor(private val coroutineContext: CoroutineContext = EmptyCoroutineC
                 is FileCommand.GetAll -> {
                     val list = backupList.ifEmpty { null }
                     command.response.complete(list)
-                    LogApp.i(
-                        "FileActor&GetAll - size: ${backupList.size}, $backupList"
-                    )
+                    LogApp.i("FileActor&GetAll - size: ${backupList.size}, $backupList")
                 }
             }
         }

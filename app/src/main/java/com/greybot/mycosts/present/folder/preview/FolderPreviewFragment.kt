@@ -152,7 +152,7 @@ class FolderPreviewFragment :
         } else {
             model.price
         }
-        LogApp.i(log_tag, "$count | $price")
+        LogApp.d(log_tag, "$count | $price")
 
         viewModel.changeRowPrice(id = model.objectId, count = count, price = price)
     }

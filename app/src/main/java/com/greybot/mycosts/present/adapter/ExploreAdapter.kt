@@ -105,7 +105,7 @@ class ExploreAdapter(
             binding.rowItemCheckDone.isChecked = item.isBought
             binding.rowItemName.text = item.name
             binding.rowItemCount.text = item.count.toString()
-            binding.rowItemPrice.text = item.price.toString()
+            binding.rowItemPrice.text = item.price.toInt().toString()
 
             binding.rowItemName.setOnClickListener {
                 if (highlight || highlightGlobal) {

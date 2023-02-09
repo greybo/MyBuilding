@@ -64,7 +64,7 @@
             android:lines="1"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/rowItemName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rowItemCount"

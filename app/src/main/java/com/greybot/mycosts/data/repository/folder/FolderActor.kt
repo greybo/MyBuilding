@@ -29,8 +29,12 @@ class FolderActor(coroutineContext: CoroutineContext = EmptyCoroutineContext) {
                         }
                     }
                 }
-                is FolderCommand.Remote -> backupList.remove(command.model)
-                is FolderCommand.Get -> command.response.complete(backupList)
+                is FolderCommand.Remote -> {
+                    backupList.find { it.objectId == command.id }?.let {
+                        backupList.remove(it)
+                    }
+                }
+                is FolderCommand.GetAll -> command.response.complete(backupList)
             }
         }
     }
@@ -44,12 +48,12 @@ class FolderActor(coroutineContext: CoroutineContext = EmptyCoroutineContext) {
         coroutineCommand.trySend(FolderCommand.AddAll(list))
     }
 
-    suspend fun remote(model: FolderRow) {
-        coroutineCommand.send(FolderCommand.Remote(model))
+    suspend fun remote(objectId: String) {
+        coroutineCommand.send(FolderCommand.Remote(objectId))
     }
 
     suspend fun getAll(): List<FolderRow> {
-        val getCounter = FolderCommand.Get()
+        val getCounter = FolderCommand.GetAll()
         coroutineCommand.send(getCounter)
         return getCounter.response.await()
     }

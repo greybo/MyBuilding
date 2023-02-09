@@ -7,7 +7,7 @@ sealed class FolderCommand {
     class Add(val model: FolderRow) : FolderCommand()
     class AddAll(val list: List<FolderRow>) : FolderCommand()
     class Update(val model: FolderRow) : FolderCommand()
-    class Remote(val model: FolderRow) : FolderCommand()
-    class Get(val response: CompletableDeferred<List<FolderRow>> = CompletableDeferred()) :
+    class Remote(val id: String) : FolderCommand()
+    class GetAll(val response: CompletableDeferred<List<FolderRow>> = CompletableDeferred()) :
         FolderCommand()
 }
