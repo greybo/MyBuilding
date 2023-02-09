@@ -1,4 +1,4 @@
-package com.greybot.mycosts.data.repository.explore
+package com.greybot.mycosts.data.repository.folder
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -6,7 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.greybot.mycosts.data.dto.ExploreRow
+import com.greybot.mycosts.data.dto.FolderRow
 import com.greybot.mycosts.utility.LogApp
 import com.greybot.mycosts.utility.toastDebug
 import javax.inject.Inject
@@ -20,13 +20,13 @@ class FolderRepository @Inject constructor() {
     private val path: String = "exploreNew"
     private val myRef = Firebase.database.reference.child(uid).child(path)
 
-    suspend fun getAllData(): List<ExploreRow>? {
+    suspend fun getAllData(): List<FolderRow>? {
         return suspendCoroutine {continuation->
             myRef.orderByKey().addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val itemExplore = snapshot.children.mapNotNull {
-                            it.getValue(ExploreRow::class.java)
+                            it.getValue(FolderRow::class.java)
                         }
                         continuation.resume(itemExplore)
                     }
@@ -42,7 +42,7 @@ class FolderRepository @Inject constructor() {
 
     }
 
-    suspend fun addFolder(item: ExploreRow): ExploreRow? {
+    suspend fun addFolder(item: FolderRow): FolderRow? {
         return suspendCoroutine {
             val key = myRef.push().key ?: return@suspendCoroutine it.resume(null)
             item.objectId = key
@@ -60,7 +60,7 @@ class FolderRepository @Inject constructor() {
         }
     }
 
-    fun update(item: ExploreRow) {
+    fun update(item: FolderRow) {
         val database: DatabaseReference = Firebase.database.reference
 
         if (item.objectId == null) {
@@ -89,8 +89,8 @@ class FolderRepository @Inject constructor() {
 
 
     private fun equalsList(
-        newList: List<ExploreRow>,
-        backupList: MutableList<ExploreRow>
+        newList: List<FolderRow>,
+        backupList: MutableList<FolderRow>
     ): Boolean {
         if (newList.size != backupList.size) return false
         newList.forEachIndexed { index, dto ->

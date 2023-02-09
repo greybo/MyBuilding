@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.BaseBindingFragment
-import com.greybot.mycosts.data.dto.ExploreRow
+import com.greybot.mycosts.data.dto.FolderRow
 import com.greybot.mycosts.databinding.FolderAddFragmentBinding
 import com.greybot.mycosts.utility.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +30,7 @@ class FolderEditFragment :
         }
     }
 
-    private fun fillFields(row: ExploreRow?) {
+    private fun fillFields(row: FolderRow?) {
         with(binding) {
             addFolderName.setText(row?.name)
         }

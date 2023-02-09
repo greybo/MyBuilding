@@ -3,9 +3,9 @@ package com.greybot.mycosts.present.file.add
 import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.CurrencyDto
-import com.greybot.mycosts.data.dto.ExploreRow
-import com.greybot.mycosts.data.repository.explore.FolderDataSource
-import com.greybot.mycosts.data.repository.row.FileDataSource
+import com.greybot.mycosts.data.dto.FolderRow
+import com.greybot.mycosts.data.repository.file.FileDataSource
+import com.greybot.mycosts.data.repository.folder.FolderDataSource
 import com.greybot.mycosts.utility.LogApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,13 +17,13 @@ class RowAddViewModel @Inject constructor(
     private val exploreSource: FolderDataSource
 ) : CompositeViewModel() {
 
-    private var exploreRow: ExploreRow? = null
+    private var folderRow: FolderRow? = null
     private val objectId: String
         get() = savedStateHandle.get<String>("objectId") ?: throw Throwable()
 
     fun fetchData() {
         launchOnDefault {
-            exploreRow = exploreSource.findByObjectId(objectId)
+            folderRow = exploreSource.findByObjectId(objectId)
         }
     }
 
@@ -45,7 +45,7 @@ class RowAddViewModel @Inject constructor(
                 _count = 1
             }
             fileSource.addFile(rowName, _count, price, currency, parentId)
-            exploreRow?.let {
+            folderRow?.let {
                 exploreSource.updateFolder(it.copy(files = true))
             } ?: throw Throwable()
         }

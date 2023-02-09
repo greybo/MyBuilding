@@ -3,10 +3,10 @@ package com.greybot.mycosts.present.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
-import com.greybot.mycosts.data.dto.ExploreRow
-import com.greybot.mycosts.data.repository.explore.FolderDataSource
-import com.greybot.mycosts.data.repository.explore.getOrNull
-import com.greybot.mycosts.data.repository.row.FileDataSource
+import com.greybot.mycosts.data.dto.FolderRow
+import com.greybot.mycosts.data.repository.file.FileDataSource
+import com.greybot.mycosts.data.repository.folder.FolderDataSource
+import com.greybot.mycosts.data.repository.folder.getOrNull
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.folder.preview.ItemTotalHelper
 import com.greybot.mycosts.utility.getTotalString
@@ -33,7 +33,7 @@ class MainExploreViewModel @Inject constructor(
         }
     }
 
-    private fun makeFolderItems(explores: List<ExploreRow>?, totalHandler: ItemTotalHelper) {
+    private fun makeFolderItems(explores: List<FolderRow>?, totalHandler: ItemTotalHelper) {
         val items = explores?.map { f ->
 
             val total = totalHandler.getTotalById(f.objectId ?: "")

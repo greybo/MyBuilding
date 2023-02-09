@@ -4,7 +4,7 @@ import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
-data class ExploreRow(
+data class FolderRow(
     val name: String? = null,
     var objectId: String? = null,
     var parentObjectId: String? = null,

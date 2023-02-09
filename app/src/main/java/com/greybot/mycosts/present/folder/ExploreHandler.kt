@@ -1,11 +1,11 @@
 package com.greybot.mycosts.present.folder
 
-import com.greybot.mycosts.data.dto.ExploreRow
+import com.greybot.mycosts.data.dto.FolderRow
 import com.greybot.mycosts.models.AdapterItems
 
 class ExploreHandler {
 
-    fun makeFolderItems(explores: List<ExploreRow>?): List<AdapterItems> {
+    fun makeFolderItems(explores: List<FolderRow>?): List<AdapterItems> {
         return explores?.map { f ->
 //                val currentPath = Path(path).addToPath(name)
 //                val currentFolder = entry.value.find { it.path == currentPath }

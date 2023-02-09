@@ -1,4 +1,4 @@
-package com.greybot.mycosts.data.repository.row
+package com.greybot.mycosts.data.repository.file
 
 import com.greybot.mycosts.data.dto.CurrencyDto
 import com.greybot.mycosts.data.dto.FileRow

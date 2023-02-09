@@ -1,6 +1,6 @@
-package com.greybot.mycosts.data.repository.explore
+package com.greybot.mycosts.data.repository.folder
 
-import com.greybot.mycosts.data.dto.ExploreRow
+import com.greybot.mycosts.data.dto.FolderRow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -8,9 +8,9 @@ import javax.inject.Singleton
 class FolderDataSource @Inject constructor(private val repo: FolderRepository) {
     private val tag = "FolderDataSource"
 
-    private val actor = FolderActorCoroutine()
+    private val actor = FolderActor()
 
-    suspend fun fetchData(force: Boolean = false): Map<String, List<ExploreRow>> {
+    suspend fun fetchData(force: Boolean = false): Map<String, List<FolderRow>> {
         return if (!force) {
             groupByParentId(actor.getAll())
         } else {
@@ -20,27 +20,27 @@ class FolderDataSource @Inject constructor(private val repo: FolderRepository) {
         }
     }
 
-    private fun groupByParentId(list: List<ExploreRow>?): Map<String, List<ExploreRow>> {
+    private fun groupByParentId(list: List<FolderRow>?): Map<String, List<FolderRow>> {
         return list?.groupBy { it.parentObjectId ?: "root" } ?: emptyMap()
     }
 
-    suspend fun addFolder(model: ExploreRow) {
+    suspend fun addFolder(model: FolderRow) {
         repo.addFolder(model)?.let {
             actor.add(it)
             groupByParentId(actor.getAll())
         }
     }
 
-    suspend fun updateFolder(model: ExploreRow) {
+    suspend fun updateFolder(model: FolderRow) {
         repo.update(model)
         groupByParentId(actor.update(model))
     }
 
-    suspend fun findByObjectId(objectId: String): ExploreRow? {
+    suspend fun findByObjectId(objectId: String): FolderRow? {
         return actor.getAll().find { it.objectId == objectId }
     }
 
-    suspend fun getListById(parentId: String): List<ExploreRow>? {
+    suspend fun getListById(parentId: String): List<FolderRow>? {
         return groupByParentId(actor.getAll()).getOrNull(parentId)
     }
 }

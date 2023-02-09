@@ -2,7 +2,7 @@ package com.greybot.mycosts.present.file.edit
 
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.FileRow
-import com.greybot.mycosts.data.repository.row.FileDataSource
+import com.greybot.mycosts.data.repository.file.FileDataSource
 import com.greybot.mycosts.utility.makeLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

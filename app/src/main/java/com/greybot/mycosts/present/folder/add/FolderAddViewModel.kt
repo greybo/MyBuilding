@@ -2,8 +2,8 @@ package com.greybot.mycosts.present.folder.add
 
 import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
-import com.greybot.mycosts.data.dto.ExploreRow
-import com.greybot.mycosts.data.repository.explore.FolderDataSource
+import com.greybot.mycosts.data.dto.FolderRow
+import com.greybot.mycosts.data.repository.folder.FolderDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class FolderAddViewModel @Inject constructor(
 
     fun addFolderNew(name: String?, timestamp: Long) {
         if (name != null) {
-            val exploreNew = ExploreRow(
+            val exploreNew = FolderRow(
                 name = name,
                 parentObjectId = objectId ?: throw Throwable(" objectId must not be null"),
                 timestamp = timestamp

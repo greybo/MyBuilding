@@ -1,4 +1,4 @@
-package com.greybot.mycosts.data.repository.row
+package com.greybot.mycosts.data.repository.file
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,7 +16,7 @@ import kotlin.coroutines.suspendCoroutine
 @Singleton
 class FileRepo @Inject constructor() {
 
-    private val actor = FileActorCoroutine()
+    private val actor = FileActor()
     private val uid: String = "654321"
     private val path: String = "file"
     private val database = Firebase.database.reference

@@ -2,10 +2,10 @@ package com.greybot.mycosts.present.folder.preview
 
 import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
-import com.greybot.mycosts.data.dto.ExploreRow
 import com.greybot.mycosts.data.dto.FileRow
-import com.greybot.mycosts.data.repository.explore.FolderDataSource
-import com.greybot.mycosts.data.repository.row.FileDataSource
+import com.greybot.mycosts.data.dto.FolderRow
+import com.greybot.mycosts.data.repository.file.FileDataSource
+import com.greybot.mycosts.data.repository.folder.FolderDataSource
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.file.FileHandler
 import com.greybot.mycosts.present.folder.FolderHandler
@@ -49,7 +49,7 @@ class FolderPreviewViewModel @Inject constructor(
         }
     }
 
-    private suspend fun makeFolderList(list: List<ExploreRow>) {
+    private suspend fun makeFolderList(list: List<FolderRow>) {
         val folderHandler = FolderHandler(exploreSource.fetchData(), rowSource.fetchData())
         setToLiveData = folderHandler.makeFolderItems(list)
     }
