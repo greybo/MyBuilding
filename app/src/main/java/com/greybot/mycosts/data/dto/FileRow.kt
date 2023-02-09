@@ -4,30 +4,66 @@ import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 import java.util.*
 
-interface IFile {
+interface IFolder {
     val name: String
     val measure: String?
-    val count: Int
-    val price: Float
+    var count: String
+    var price: String
     val bought: Boolean
     val currency: CurrencyDto?
     val date: Long
+    var objectId: String?
+    var parentObjectId: String?
 }
 
-interface IFolder
+data class FileDto(
+    val name: String? = null,
+    val measure: String? = null,
+    var count: String? = null,
+    var price: String? = null,
+    val bought: Boolean? = null,
+    val currency: CurrencyDto? = null,
+    val date: Long  = Date().time,
+    var objectId: String? = null,
+    var parentObjectId: String? = null,
+) {
+
+    fun getModel() = FileRow(
+        name = name ?: "",
+        measure = measure,
+        count = (count ?: "1.0").toFloat(),
+        price = (price ?: "0.0").toFloat(),
+        bought = bought ?: false,
+        currency = currency,
+        date = date ,
+        objectId = objectId,
+        parentObjectId = parentObjectId
+    )
+}
 
 @IgnoreExtraProperties
 data class FileRow(
-    override val name: String = "",
-    override val measure: String? = null,
-    override val count: Int = 1,
-    override val price: Float = 0F,
-    override val bought: Boolean = false,
-    override val currency: CurrencyDto? = CurrencyDto(),
-    override val date: Long = Date().time,
+    val name: String = "",
+    val measure: String? = null,
+    var count: Float = 1f,
+    var price: Float = 0f,
+    val bought: Boolean = false,
+    val currency: CurrencyDto? = CurrencyDto(),
+    val date: Long = Date().time,
     var objectId: String? = null,
     var parentObjectId: String? = null,
-) : IFile, IFolder {
+) {
+    fun getDto() = FileDto(
+        name,
+        measure,
+        count.toString(),
+        price.toString(),
+        bought,
+        currency,
+        date,
+        objectId,
+        parentObjectId
+    )
 
     @Exclude
     fun toMap(): Map<String, Any?> {
@@ -35,8 +71,8 @@ data class FileRow(
             "name" to name,
             "measure" to measure,
             "count" to count,
-            "price" to price,
-            "bought" to bought,
+            "price" to price.toString(),
+            "bought" to bought.toString(),
             "currency" to currency,
             "data" to date,
             "objectId" to objectId,

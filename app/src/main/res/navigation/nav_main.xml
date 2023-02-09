@@ -124,6 +124,12 @@
     <fragment
         android:id="@+id/ExploreAddRootFragment"
         android:name="com.greybot.mycosts.present.folder.add.FolderAddFragment"
-        android:label="ExploreAddRootFragment" />
+        android:label="ExploreAddRootFragment">
+
+        <argument
+            android:name="objectId"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>

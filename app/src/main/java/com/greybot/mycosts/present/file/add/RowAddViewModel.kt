@@ -29,20 +29,20 @@ class RowAddViewModel @Inject constructor(
 
     fun addRow(
         rowName: String,
-        count: String = "1",
+        count: String = "1.0",
         price: Float = 0F,
         currency: CurrencyDto? = null,
         parentId: String? = objectId
     ) {
         launchOnDefault {
             var _count = try {
-                count.toInt()
+                count.toFloat()
             } catch (e: Exception) {
                 LogApp.w("addRow_tag", e)
-                1
+                1F
             }
-            if (_count == 0) {
-                _count = 1
+            if (_count == 0F) {
+                _count = 1F
             }
             fileSource.addFile(rowName, _count, price, currency, parentId)
             folderRow?.let {

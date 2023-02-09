@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.greybot.mycosts.data.dto.FileDto
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.utility.LogApp
 import javax.inject.Inject
@@ -37,7 +38,7 @@ class FileRepo @Inject constructor() {
                 object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val itemFolder = snapshot.children.mapNotNull {
-                            it.getValue(FileRow::class.java)
+                            it.getValue(FileDto::class.java)?.getModel()
                         }
                         actor.addAll(itemFolder)
                         continuation.resume(itemFolder)
@@ -52,12 +53,12 @@ class FileRepo @Inject constructor() {
         }
     }
 
-    suspend fun addFile(dto: FileRow) {
+    suspend fun addFile(model: FileRow) {
         val key = myRef.push().key ?: return
-        dto.objectId = key
-        actor.add(dto)
+        model.objectId = key
+        actor.add(model)
 
-        myRef.child(key).setValue(dto) { error, ref ->
+        myRef.child(key).setValue(model.getDto()) { error, ref ->
             if (error != null) {
                 LogApp.e("RowRepo", error.toException())
             }

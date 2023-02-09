@@ -21,7 +21,7 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
 
     suspend fun addFile(
         rowName: String,
-        count: Int = 0,
+        count: Float = 0f,
         price: Float = 0F,
         currency: CurrencyDto? = null,
         parentId: String?
@@ -48,7 +48,7 @@ class FileDataSource @Inject constructor(private val repo: FileRepo) {
         } ?: false
     }
 
-    suspend fun changePrice(objectId: String, count: Int, price: Float) {
+    suspend fun changePrice(objectId: String, count: Float, price: Float) {
         findById(objectId)
             ?.copy(count = count, price = price)
             ?.let { update(it) }

@@ -20,17 +20,6 @@ class MainExploreFragment :
     private var adapter: ExploreAdapter? = null
     private val router: IMainExploreRouter by getRouter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        setFragmentResultListener(FRAGMENT_RESULT_ADD_FOLDER) { key, bundle ->
-//            if (FRAGMENT_RESULT_ADD_FOLDER == key) {
-//                val name = (bundle.get(ARG_FOLDER_NAME) as? String)
-//                val path = (bundle.get(ARG_FOLDER_PATH) as? String)
-//                viewModel.addFolder(name, path)
-//            }
-//        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -48,7 +37,7 @@ class MainExploreFragment :
         with(binding) {
             exploreFloatButton.setOnClickListener {
                 exploreFloatButton.animateFabHide {
-                    router.fromExploreToAddFolder()
+                    router.fromExploreToAddFolder("root")
                 }
             }
         }
@@ -69,7 +58,7 @@ class MainExploreFragment :
         when (callback) {
             is AdapterCallback.FolderOpen -> {
                 binding.exploreFloatButton.animateFabHide {
-                    router.fromExploreToFolder(callback.value.objectId ?: "")
+                    router.fromExploreToFolder(callback.value.objectId ?: "root")
                 }
             }
             is AdapterCallback.FolderLong -> {

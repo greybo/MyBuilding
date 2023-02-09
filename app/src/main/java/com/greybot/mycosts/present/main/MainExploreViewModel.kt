@@ -22,12 +22,12 @@ class MainExploreViewModel @Inject constructor(
 
     private var _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
-    var force = true
-    fun fetchData() {
+    var _force:Boolean = true
+    fun fetchData(force:Boolean = _force) {
         launchOnDefault {
             val rowGrouts = rowSource.fetchData(force)
             val folders = dataSource.fetchData(force)
-            force = false
+            _force = false
             val totalHandler = ItemTotalHelper(folders, rowGrouts)
             makeFolderItems(folders.getOrNull("root"), totalHandler)
         }

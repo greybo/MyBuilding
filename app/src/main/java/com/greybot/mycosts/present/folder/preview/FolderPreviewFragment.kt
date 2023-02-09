@@ -122,13 +122,13 @@ class FolderPreviewFragment :
         dialog.setOnShowListener {
             when (action) {
                 is AdapterCallback.RowPrice -> {
-//                    showKeyboardInner(binding.bottomSheetEditPrice)
-                    showKeyboard(binding.bottomSheetEditPrice)
+                    showKeyboardInner(binding.bottomSheetEditPrice)
+//                    showKeyboard(binding.bottomSheetEditPrice)
                     binding.bottomSheetEditPrice.selectAll()
                 }
                 is AdapterCallback.RowCount -> {
-//                    showKeyboardInner(binding.bottomSheetEditCount)
-                    showKeyboard(binding.bottomSheetEditCount)
+                    showKeyboardInner(binding.bottomSheetEditCount)
+//                    showKeyboard(binding.bottomSheetEditCount)
                     binding.bottomSheetEditCount.selectAll()
                 }
                 else -> {}
@@ -143,7 +143,7 @@ class FolderPreviewFragment :
     ) {
         binding.bottomSheetEditCount.text?.toString()
         val count = if (binding.bottomSheetEditCount.text.isNotEmpty()) {
-            binding.bottomSheetEditCount.text.toString().toInt()
+            binding.bottomSheetEditCount.text.toString().toFloat()
         } else
             model.count
 

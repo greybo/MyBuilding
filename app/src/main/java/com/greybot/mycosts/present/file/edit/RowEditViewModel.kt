@@ -33,7 +33,7 @@ class RowEditViewModel @Inject constructor(private val dataSource: FileDataSourc
 
     fun update(rowName: String, count: String, price: String) {
         val _price = price.ifBlank { 0F }.toString().toFloat()
-        val _count = count.ifBlank { 0 }.toString().toInt()
+        val _count = count.ifBlank { 0f }.toString().toFloat()
 
         val editModel = fileModel?.copy(
             name = rowName,

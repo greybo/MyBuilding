@@ -23,7 +23,6 @@ class FolderAddFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-//        viewModel.fetchData(viewModel.objectId)
     }
 
     private fun initViews() {

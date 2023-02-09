@@ -25,10 +25,9 @@ class FolderDataSource @Inject constructor(private val repo: FolderRepository) {
     }
 
     suspend fun addFolder(model: FolderRow) {
-        repo.addFolder(model)?.let {
-            actor.add(it)
-            groupByParentId(actor.getAll())
-        }
+        actor.add(model)
+        groupByParentId(actor.getAll())
+        repo.addFolder(model)
     }
 
     suspend fun updateFolder(model: FolderRow) {

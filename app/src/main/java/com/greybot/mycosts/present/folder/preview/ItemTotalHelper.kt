@@ -26,8 +26,8 @@ class ItemTotalHelper(private var folderGroup: Map<String, List<FolderRow>>?, pr
     }
 }
 
-private fun Int?.getNotNull(): Int {
-    return if (this == null || this == 0) 1 else this
+private fun Float?.getNotNull(): Float {
+    return if (this == null || this == 0F) 1f else this
 }
 
 data class ItemTotalModel(private val count: Int? = null, private val price: Float? = null) {

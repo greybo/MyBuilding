@@ -2,8 +2,6 @@ package com.greybot.mycosts.utility
 
 import android.app.Activity
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.view.WindowInsetsCompat
@@ -13,10 +11,10 @@ import androidx.fragment.app.Fragment
 fun Fragment.showKeyboard(editText: EditText, delayMillis: Long = 200) {
     editText.requestFocus()
     with(requireContext()) {
-        Handler(Looper.getMainLooper()).postDelayed({
+//        Handler(Looper.getMainLooper()).postDelayed({
             val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
-        }, delayMillis)
+//        }, delayMillis)
     }
 }
 

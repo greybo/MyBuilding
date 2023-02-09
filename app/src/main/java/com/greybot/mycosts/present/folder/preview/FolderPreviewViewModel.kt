@@ -71,7 +71,7 @@ class FolderPreviewViewModel @Inject constructor(
         fetchData()
     }
 
-    fun changeRowPrice(id: String, count: Int, price: Float) {
+    fun changeRowPrice(id: String, count: Float, price: Float) {
         launchOnDefault {
             rowSource.changePrice(id, count, price)
             updateUIRowList()
