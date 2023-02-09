@@ -32,5 +32,5 @@ private fun Double?.getNotNull(): Double {
 
 data class ItemTotalModel(private val count: Int? = null, private val price: Double? = null) {
     val totalCount: String = count?.toString() ?: ""
-    val totalPrice: String = price?.toString() ?: ""
+    val totalPrice: String = price?.toString() ?: "" //.round2()//
 }
