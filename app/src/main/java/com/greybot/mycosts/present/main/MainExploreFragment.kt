@@ -7,6 +7,7 @@ import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.ExploreAdapter
+import com.greybot.mycosts.utility.ROOT_FOLDER
 import com.greybot.mycosts.utility.animateFabHide
 import com.greybot.mycosts.utility.animateShowFab
 import com.greybot.mycosts.utility.getRouter
@@ -58,7 +59,7 @@ class MainExploreFragment :
         when (callback) {
             is AdapterCallback.FolderOpen -> {
                 binding.exploreFloatButton.animateFabHide {
-                    router.fromExploreToFolder(callback.value.objectId ?: "root")
+                    router.fromExploreToFolder(callback.value.objectId ?: ROOT_FOLDER)
                 }
             }
             is AdapterCallback.FolderLong -> {

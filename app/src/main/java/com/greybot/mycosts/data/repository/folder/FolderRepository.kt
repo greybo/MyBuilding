@@ -17,7 +17,7 @@ import kotlin.coroutines.suspendCoroutine
 class FolderRepository @Inject constructor() {
 
     private val uid: String = "654321"
-    private val path: String = "exploreNew"
+    private val path: String = "Folder"
     private val myRef = Firebase.database.reference.child(uid).child(path)
 
     suspend fun getAllData(): List<FolderRow>? {

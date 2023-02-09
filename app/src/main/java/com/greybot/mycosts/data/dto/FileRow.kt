@@ -16,54 +16,54 @@ interface IFolder {
     var parentObjectId: String?
 }
 
-data class FileDto(
-    val name: String? = null,
-    val measure: String? = null,
-    var count: String? = null,
-    var price: String? = null,
-    val bought: Boolean? = null,
-    val currency: CurrencyDto? = null,
-    val date: Long  = Date().time,
-    var objectId: String? = null,
-    var parentObjectId: String? = null,
-) {
-
-    fun getModel() = FileRow(
-        name = name ?: "",
-        measure = measure,
-        count = (count ?: "1.0").toFloat(),
-        price = (price ?: "0.0").toFloat(),
-        bought = bought ?: false,
-        currency = currency,
-        date = date ,
-        objectId = objectId,
-        parentObjectId = parentObjectId
-    )
-}
+//data class FileDto(
+//    val name: String? = null,
+//    val measure: String? = null,
+//    var count: String? = null,
+//    var price: String? = null,
+//    val bought: Boolean = false,
+//    val currency: CurrencyDto? = null,
+//    val date: Long  = 0L/*Date().time*/,
+//    var objectId: String? = null,
+//    var parentObjectId: String? = null,
+//) {
+//
+//    fun getModel() = FileRow(
+//        name = name ?: "",
+//        measure = measure,
+//        count = (count ?: "1.0").toDouble().roundToInt().toFloat(),
+//        price = (price ?: "0.0").toDouble().roundToInt().toFloat(),
+//        bought = bought ?: false,
+//        currency = currency,
+//        date = date ,
+//        objectId = objectId,
+//        parentObjectId = parentObjectId
+//    )
+//}
 
 @IgnoreExtraProperties
 data class FileRow(
     val name: String = "",
     val measure: String? = null,
-    var count: Float = 1f,
-    var price: Float = 0f,
+    var count: Double = 1.0,
+    var price: Double = 0.0,
     val bought: Boolean = false,
     val currency: CurrencyDto? = CurrencyDto(),
     val date: Long = Date().time,
     var objectId: String? = null,
     var parentObjectId: String? = null,
 ) {
-    fun getDto() = FileDto(
-        name,
-        measure,
-        count.toString(),
-        price.toString(),
-        bought,
-        currency,
-        date,
-        objectId,
-        parentObjectId
-    )
+//    fun getDto() = FileDto(
+//        name,
+//        measure,
+//        count.toDouble().roundToInt().toString(),
+//        price.toDouble().roundToInt().toString(),
+//        bought,
+//        currency,
+//        date,
+//        objectId,
+//        parentObjectId
+//    )
 
     @Exclude
     fun toMap(): Map<String, Any?> {

@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp">
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/rowItemCheckDone"
@@ -43,14 +43,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
+            android:gravity="end"
+            android:lines="1"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
             android:textSize="14sp"
-            android:gravity="end"
             app:layout_constraintBottom_toBottomOf="@+id/rowItemName"
             app:layout_constraintStart_toEndOf="@+id/rowItemName"
             app:layout_constraintTop_toTopOf="@+id/rowItemName"
-            app:layout_constraintWidth_percent="0.075"
+            app:layout_constraintWidth_percent="0.12"
             tools:text="Text" />
 
         <TextView
@@ -62,8 +63,6 @@
             android:ellipsize="end"
             android:gravity="start"
             android:lines="1"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/rowItemName"
             app:layout_constraintEnd_toEndOf="parent"

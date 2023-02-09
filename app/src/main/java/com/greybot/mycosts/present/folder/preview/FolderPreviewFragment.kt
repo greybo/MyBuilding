@@ -16,10 +16,7 @@ import com.greybot.mycosts.databinding.SampleDialogOneBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.ExploreAdapter
-import com.greybot.mycosts.utility.LogApp
-import com.greybot.mycosts.utility.bindingDialog
-import com.greybot.mycosts.utility.getRouter
-import com.greybot.mycosts.utility.showKeyboard
+import com.greybot.mycosts.utility.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -122,13 +119,11 @@ class FolderPreviewFragment :
         dialog.setOnShowListener {
             when (action) {
                 is AdapterCallback.RowPrice -> {
-                    showKeyboardInner(binding.bottomSheetEditPrice)
-//                    showKeyboard(binding.bottomSheetEditPrice)
+                    showKeyboardDelay(binding.bottomSheetEditPrice)
                     binding.bottomSheetEditPrice.selectAll()
                 }
                 is AdapterCallback.RowCount -> {
-                    showKeyboardInner(binding.bottomSheetEditCount)
-//                    showKeyboard(binding.bottomSheetEditCount)
+                    showKeyboardDelay(binding.bottomSheetEditCount)
                     binding.bottomSheetEditCount.selectAll()
                 }
                 else -> {}
@@ -141,23 +136,16 @@ class FolderPreviewFragment :
         binding: SampleDialogOneBinding,
         model: AdapterItems.RowItem
     ) {
-        binding.bottomSheetEditCount.text?.toString()
-        val count = if (binding.bottomSheetEditCount.text.isNotEmpty()) {
-            binding.bottomSheetEditCount.text.toString().toFloat()
-        } else
-            model.count
 
-        val price = if (binding.bottomSheetEditPrice.text.isNotEmpty()) {
-            binding.bottomSheetEditPrice.text.toString().toFloat()
-        } else {
-            model.price
-        }
+        val count = binding.bottomSheetEditCount.text.roundTwo() ?: model.count
+        val price = binding.bottomSheetEditPrice.text.roundTwo() ?: model.price
+
         LogApp.d(log_tag, "$count | $price")
 
         viewModel.changeRowPrice(id = model.objectId, count = count, price = price)
     }
 
-    private fun showKeyboardInner(text: EditText) {
+    private fun showKeyboardDelay(text: EditText) {
         Handler(Looper.getMainLooper()).postDelayed({
             showKeyboard(text)
         }, 200)

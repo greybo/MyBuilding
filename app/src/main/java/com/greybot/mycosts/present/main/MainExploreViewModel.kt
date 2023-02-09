@@ -9,6 +9,7 @@ import com.greybot.mycosts.data.repository.folder.FolderDataSource
 import com.greybot.mycosts.data.repository.folder.getOrNull
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.folder.preview.ItemTotalHelper
+import com.greybot.mycosts.utility.ROOT_FOLDER
 import com.greybot.mycosts.utility.getTotalString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -29,7 +30,7 @@ class MainExploreViewModel @Inject constructor(
             val folders = dataSource.fetchData(force)
             _force = false
             val totalHandler = ItemTotalHelper(folders, rowGrouts)
-            makeFolderItems(folders.getOrNull("root"), totalHandler)
+            makeFolderItems(folders.getOrNull(ROOT_FOLDER), totalHandler)
         }
     }
 

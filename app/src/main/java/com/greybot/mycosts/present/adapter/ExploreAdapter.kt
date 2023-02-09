@@ -104,9 +104,8 @@ class ExploreAdapter(
             item as AdapterItems.RowItem
             binding.rowItemCheckDone.isChecked = item.isBought
             binding.rowItemName.text = item.name
-            binding.rowItemCount.text = item.count.toString()
+            binding.rowItemCount.text = "${item.count}"
             binding.rowItemPrice.text = item.price.toInt().toString()
-
             binding.rowItemName.setOnClickListener {
                 if (highlight || highlightGlobal) {
                     onClick.invoke(AdapterCallback.FileHighlight(item))

@@ -8,13 +8,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 
-fun Fragment.showKeyboard(editText: EditText, delayMillis: Long = 200) {
+fun Fragment.showKeyboard(editText: EditText) {
     editText.requestFocus()
     with(requireContext()) {
-//        Handler(Looper.getMainLooper()).postDelayed({
-            val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
-//        }, delayMillis)
+        val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
     }
 }
 

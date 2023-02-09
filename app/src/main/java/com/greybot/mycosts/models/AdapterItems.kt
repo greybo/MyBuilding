@@ -42,8 +42,8 @@ sealed class AdapterItems {
         val name: String,
         val path: String,
         val measure: MeasureType,
-        val count: Float = 0f,
-        val price: Float = 0F,
+        val count: Double = 0.0,
+        val price: Double = 0.0,
         val isBought: Boolean = false,
         val highlight: Boolean = false,
     ) : AdapterItems()
