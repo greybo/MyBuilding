@@ -1,7 +1,6 @@
 package com.greybot.mycosts.present.file.add
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -43,19 +42,19 @@ class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragment
             if (name.isNotBlank()) {
                 viewModel.addRow(
                     rowName = name,
-                    count = addRowCount.text.toString(),
-                    price = addRowPrice.text.getPrice(),
+                    count = addRowCount.text,
+                    price = addRowPrice.text,
                 )
             }
         }
         findNavController().popBackStack()
     }
 
-    private fun Editable?.getPrice(): Float {
-        return this.toString()
-            .ifBlank { 0F }.toString()
-            .toFloat()
-    }
+//    private fun Editable?.getPrice(): Float {
+//        return this.toString()
+//            .ifBlank { 0F }.toString()
+//            .toFloat()
+//    }
 
     override fun onEditorAction(tv: TextView?, actionId: Int, event: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_DONE) {

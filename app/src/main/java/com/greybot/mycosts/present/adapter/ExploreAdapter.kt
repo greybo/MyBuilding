@@ -11,6 +11,7 @@ import com.greybot.mycosts.R
 import com.greybot.mycosts.databinding.*
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.utility.inflateAdapter
+import com.greybot.mycosts.utility.round2
 
 class ExploreAdapter(
     val onClick: (AdapterCallback) -> Unit
@@ -104,7 +105,7 @@ class ExploreAdapter(
             item as AdapterItems.RowItem
             binding.rowItemCheckDone.isChecked = item.isBought
             binding.rowItemName.text = item.name
-            binding.rowItemCount.text = "${item.count}"
+            binding.rowItemCount.text = item.count.round2()
             binding.rowItemPrice.text = item.price.toInt().toString()
             binding.rowItemName.setOnClickListener {
                 if (highlight || highlightGlobal) {

@@ -31,7 +31,7 @@ class ExploreDiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
                 oldItem.isBought == newItem.isBought &&
                         oldItem.name == newItem.name &&
                         oldItem.path == newItem.path &&
-                        oldItem.count == newItem.count &&
+                        oldItem.count.toFloat() == newItem.count.toFloat() &&
                         oldItem.price == newItem.price
             }
             oldItem is AdapterItems.TotalItem && newItem is AdapterItems.TotalItem -> {
@@ -46,6 +46,6 @@ class ExploreDiffCallback : DiffUtil.ItemCallback<AdapterItems>() {
             oldItem is AdapterItems.ButtonAddItem && newItem is AdapterItems.ButtonAddItem -> {
                 oldItem.type == newItem.type
             }
-            else ->false //oldItem::class == newItem::class//
+            else -> false //oldItem::class == newItem::class//
         }
 }

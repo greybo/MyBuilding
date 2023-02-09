@@ -42,8 +42,8 @@ sealed class AdapterItems {
         val name: String,
         val path: String,
         val measure: MeasureType,
-        val count: Double = 0.0,
-        val price: Double = 0.0,
+        val count: Double,
+        val price: Double,
         val isBought: Boolean = false,
         val highlight: Boolean = false,
     ) : AdapterItems()
@@ -51,9 +51,9 @@ sealed class AdapterItems {
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
     class TotalItem(
         val name1: String = "Total: Order",
-        val value1: Float,
+        val value1: Double,
         val name2: String = "Total: Check",
-        val value2: Float
+        val value2: Double
     ) : AdapterItems()
 
     data class SpaceItem(val heightRes: Int = R.dimen.height_margin_84) : AdapterItems()

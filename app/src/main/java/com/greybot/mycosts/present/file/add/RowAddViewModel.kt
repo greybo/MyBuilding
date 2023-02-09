@@ -1,12 +1,12 @@
 package com.greybot.mycosts.present.file.add
 
+import android.text.Editable
 import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.CurrencyDto
 import com.greybot.mycosts.data.dto.FolderRow
 import com.greybot.mycosts.data.repository.file.FileDataSource
 import com.greybot.mycosts.data.repository.folder.FolderDataSource
-import com.greybot.mycosts.utility.LogApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -29,22 +29,16 @@ class RowAddViewModel @Inject constructor(
 
     fun addRow(
         rowName: String,
-        count: String = "1.0",
-        price: Float = 0F,
+        count: Editable?,
+        price: Editable?,
         currency: CurrencyDto? = null,
         parentId: String? = objectId
     ) {
         launchOnDefault {
-            var _count = try {
-                count.toFloat()
-            } catch (e: Exception) {
-                LogApp.w("addRow_tag", e)
-                1F
-            }
-            if (_count == 0F) {
-                _count = 1F
-            }
-            fileSource.addFile(rowName, _count, price, currency, parentId)
+            val _count = count.toString().toDouble()
+            val _price = price.toString().toDouble()
+
+            fileSource.addFile(rowName, _count, _price, currency, parentId)
             folderRow?.let {
                 exploreSource.updateFolder(it.copy(files = true))
             } ?: throw Throwable()

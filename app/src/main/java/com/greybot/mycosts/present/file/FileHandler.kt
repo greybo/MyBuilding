@@ -25,10 +25,10 @@ class FileHandler {
         }
     }
 
-    private fun makeItems(list: List<FileRow>?): Pair<List<AdapterItems>, Float> {
-        list ?: return Pair(emptyList(), 0F)
+    private fun makeItems(list: List<FileRow>?): Pair<List<AdapterItems>, Double> {
+        list ?: return Pair(emptyList(), 0.0)
         val items = mutableListOf<AdapterItems>()
-        val total = list.foldRight(0f) { row, sum ->
+        val total = list.foldRight(0.0) { row, sum ->
             items.add(mapToRowItem(row))
             row.count * row.price + sum
         }
