@@ -42,8 +42,8 @@ class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragment
             if (name.isNotBlank()) {
                 viewModel.addRow(
                     rowName = name,
-                    count = addRowCount.text,
-                    price = addRowPrice.text,
+                    count = addRowCount.text.toString(),
+                    price = addRowPrice.text.toString(),
                 )
             }
         }

@@ -37,8 +37,8 @@ class RowEditViewModel @Inject constructor(private val dataSource: FileDataSourc
 
         val editModel = fileModel?.copy(
             name = rowName,
-            count = _count,
-            price = _price,
+            count = _count.toDouble(),
+            price = _price.toDouble(),
         )
         launchOnDefault {
             dataSource.update(editModel)
