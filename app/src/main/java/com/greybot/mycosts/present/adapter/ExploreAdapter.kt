@@ -79,8 +79,8 @@ class ExploreAdapter(
                 onClick.invoke(AdapterCallback.FolderOpen(item))
             }
             itemView.setOnLongClickListener {
-                onClick.invoke(AdapterCallback.FolderLong(item))
-                false
+                onClick.invoke(AdapterCallback.FolderHighlight(item))
+                true
             }
         }
     }

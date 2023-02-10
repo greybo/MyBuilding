@@ -10,6 +10,6 @@ sealed class AdapterCallback {
     class Total(val value: AdapterItems.TotalItem) : AdapterCallback()
     class AddButton(val value: AdapterItems.ButtonAddItem) : AdapterCallback()
     class FolderOpen(val value: AdapterItems.FolderItem) : AdapterCallback()
-    class FolderLong(val value: AdapterItems.FolderItem) : AdapterCallback()
+    class FolderHighlight(val value: AdapterItems.FolderItem) : AdapterCallback()
     class FileHighlight(val value: AdapterItems.RowItem) : AdapterCallback()
 }
