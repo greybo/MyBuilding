@@ -28,17 +28,17 @@ class RowAddViewModel @Inject constructor(
     }
 
     fun addRow(
-        rowName: String,
+        fileName: String,
         count: String,
         price: String,
         currency: CurrencyDto? = null,
         parentId: String? = objectId
     ) {
         launchOnDefault {
-            val _count = count.round2Double() ?: 1.0
-            val _price = price.round2Double() ?: 0.0
+            val countConvert = count.round2Double() ?: 1.0
+            val priceConvert = price.round2Double() ?: 0.0
 
-            fileSource.addFile(rowName, _count, _price, currency, parentId)
+            fileSource.addFile(fileName, countConvert, priceConvert, currency, parentId)
             folderRow?.let {
                 exploreSource.updateFolder(it.copy(files = true))
             } ?: throw Throwable()

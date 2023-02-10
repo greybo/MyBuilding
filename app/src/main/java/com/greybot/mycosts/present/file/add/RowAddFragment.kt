@@ -41,7 +41,7 @@ class RowAddFragment : BaseBindingFragment<RowAddFragmentBinding>(RowAddFragment
             val name = addRowName.text.toString()
             if (name.isNotBlank()) {
                 viewModel.addRow(
-                    rowName = name,
+                    fileName = name,
                     count = addRowCount.text.toString(),
                     price = addRowPrice.text.toString(),
                 )
