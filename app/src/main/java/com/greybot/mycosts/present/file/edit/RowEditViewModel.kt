@@ -4,6 +4,7 @@ import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.data.repository.file.FileDataSource
 import com.greybot.mycosts.utility.makeLiveData
+import com.greybot.mycosts.utility.round2Double
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -32,13 +33,13 @@ class RowEditViewModel @Inject constructor(private val dataSource: FileDataSourc
     }
 
     fun update(rowName: String, count: String, price: String) {
-        val _price = price.ifBlank { 0F }.toString().toFloat()
-        val _count = count.ifBlank { 0f }.toString().toFloat()
+        val _count = count.round2Double() ?: 0.0 // ifBlank { 0f }.toString().toFloat()
+        val _price = price.round2Double() ?: 0.0// ifBlank { 0F }.toString().toFloat()
 
         val editModel = fileModel?.copy(
             name = rowName,
-            count = _count.toDouble(),
-            price = _price.toDouble(),
+            count = _count,
+            price = _price,
         )
         launchOnDefault {
             dataSource.update(editModel)

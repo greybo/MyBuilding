@@ -105,8 +105,8 @@ class FolderPreviewFragment :
 
         dialog.setContentView(binding.root)
 
-        binding.bottomSheetEditCount.setText(model.count.toString())
-        binding.bottomSheetEditPrice.setText(model.price.toString())
+        binding.bottomSheetEditCount.setText(model.count.round2String())
+        binding.bottomSheetEditPrice.setText(model.price.round2String())
 
         binding.bottomSheetEditPrice.setOnEditorActionListener { _, editorInfo, _ ->
             if (editorInfo == EditorInfo.IME_ACTION_DONE) {
