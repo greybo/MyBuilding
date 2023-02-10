@@ -137,8 +137,8 @@ class FolderPreviewFragment :
         model: AdapterItems.RowItem
     ) {
 
-        val count = binding.bottomSheetEditCount.text.roundTwo() ?: model.count
-        val price = binding.bottomSheetEditPrice.text.roundTwo() ?: model.price
+        val count = binding.bottomSheetEditCount.text.round2Double() ?: model.count
+        val price = binding.bottomSheetEditPrice.text.round2Double() ?: model.price
 
         LogApp.d(log_tag, "$count | $price")
 

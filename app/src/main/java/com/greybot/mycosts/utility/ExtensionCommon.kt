@@ -6,16 +6,16 @@ fun String?.getTotalString(prefix: String): String {
     return if (this.isNullOrBlank()) "" else "$prefix: $this"
 }
 
-fun Double?.round2(): String {
+fun Double.round2String(): String {
     return try {
-        String.format("%.2f", this!!).replace(",", ".")
+        String.format("%.2f", (this.toFloat())).replace(",", ".")
     } catch (e: Throwable) {
         LogApp.e("try roundTwo", e)
-        "0"
+        "0.0"
     }
 }
 
-fun Editable?.roundTwo(): Double? {
+fun Editable.round2Double(): Double? {
     return try {
         String.format("%.2f", this.toString()).replace(",", ".").toDouble()
     } catch (e: Throwable) {
@@ -24,7 +24,7 @@ fun Editable?.roundTwo(): Double? {
     }
 }
 
-fun Float?.roundTwo(): String? {
+fun Float.round2String(): String? {
     return try {
         String.format("%.2f", this).replace(",", ".")
     } catch (e: Throwable) {
@@ -33,7 +33,7 @@ fun Float?.roundTwo(): String? {
     }
 }
 
-fun Float.roundTwo(): Double {
+fun Float.round2Double(): Double {
     return try {
         String.format("%.2f", this).replace(",", ".").toDouble()
     } catch (e: Throwable) {

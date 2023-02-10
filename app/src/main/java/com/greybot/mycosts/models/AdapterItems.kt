@@ -51,9 +51,9 @@ sealed class AdapterItems {
     class ButtonAddItem(val type: ButtonType) : AdapterItems()
     class TotalItem(
         val name1: String = "Total: Order",
-        val value1: Double,
+        val value1: String,
         val name2: String = "Total: Check",
-        val value2: Double
+        val value2: String
     ) : AdapterItems()
 
     data class SpaceItem(val heightRes: Int = R.dimen.height_margin_84) : AdapterItems()

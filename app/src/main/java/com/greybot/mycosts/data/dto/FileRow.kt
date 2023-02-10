@@ -16,31 +16,6 @@ interface IFolder {
     var parentObjectId: String?
 }
 
-//data class FileDto(
-//    val name: String? = null,
-//    val measure: String? = null,
-//    var count: String? = null,
-//    var price: String? = null,
-//    val bought: Boolean = false,
-//    val currency: CurrencyDto? = null,
-//    val date: Long  = 0L/*Date().time*/,
-//    var objectId: String? = null,
-//    var parentObjectId: String? = null,
-//) {
-//
-//    fun getModel() = FileRow(
-//        name = name ?: "",
-//        measure = measure,
-//        count = (count ?: "1.0").toDouble().roundToInt().toFloat(),
-//        price = (price ?: "0.0").toDouble().roundToInt().toFloat(),
-//        bought = bought ?: false,
-//        currency = currency,
-//        date = date ,
-//        objectId = objectId,
-//        parentObjectId = parentObjectId
-//    )
-//}
-
 @IgnoreExtraProperties
 data class FileRow(
     val name: String = "",
@@ -53,17 +28,6 @@ data class FileRow(
     var objectId: String? = null,
     var parentObjectId: String? = null,
 ) {
-//    fun getDto() = FileDto(
-//        name,
-//        measure,
-//        count.toDouble().roundToInt().toString(),
-//        price.toDouble().roundToInt().toString(),
-//        bought,
-//        currency,
-//        date,
-//        objectId,
-//        parentObjectId
-//    )
 
     @Exclude
     fun toMap(): Map<String, Any?> {
