@@ -20,7 +20,7 @@ class FileRepo @Inject constructor() {
     private val uid: String = "654321"
     private val path: String = "file"
     private val database = Firebase.database.reference
-    private val myRef = database.child(uid).child(path)
+    private val userPathRef = database.child(uid).child(path)
 
     suspend fun getAll(force: Boolean = false): List<FileRow> {
         val list = if (force) {
@@ -33,7 +33,7 @@ class FileRepo @Inject constructor() {
 
     private suspend fun getAllData(): List<FileRow>? {
         return suspendCoroutine { continuation ->
-            myRef.orderByKey().addListenerForSingleValueEvent(
+            userPathRef.orderByKey().addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val itemFolder = snapshot.children.mapNotNull {
@@ -53,11 +53,11 @@ class FileRepo @Inject constructor() {
     }
 
     suspend fun addFile(model: FileRow) {
-        val key = myRef.push().key ?: return
+        val key = userPathRef.push().key ?: return
         model.objectId = key
         actor.add(model)
 
-        myRef.child(key).setValue(model) { error, ref ->
+        userPathRef.child(key).setValue(model) { error, ref ->
             if (error != null) {
                 LogApp.e("RowRepo", error.toException())
             }
@@ -92,6 +92,6 @@ class FileRepo @Inject constructor() {
     }
 
     suspend fun deleteFile(objectId: String) {
-        actor.remote(objectId, myRef)
+        actor.remote(objectId, userPathRef)
     }
 }
