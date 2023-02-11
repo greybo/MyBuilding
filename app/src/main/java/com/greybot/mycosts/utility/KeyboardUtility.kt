@@ -2,12 +2,19 @@ package com.greybot.mycosts.utility
 
 import android.app.Activity
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 
+fun Fragment.showKeyboardWithDelay(text: EditText) {
+    Handler(Looper.getMainLooper()).postDelayed({
+        showKeyboard(text)
+    }, 200)
+}
 fun Fragment.showKeyboard(editText: EditText) {
     editText.requestFocus()
     with(requireContext()) {

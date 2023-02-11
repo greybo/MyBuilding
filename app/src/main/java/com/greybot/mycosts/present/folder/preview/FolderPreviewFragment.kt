@@ -1,22 +1,17 @@
 package com.greybot.mycosts.present.folder.preview
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
-import com.greybot.mycosts.databinding.SampleDialogOneBinding
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.ExploreAdapter
-import com.greybot.mycosts.utility.*
+import com.greybot.mycosts.utility.LogApp
+import com.greybot.mycosts.utility.getRouter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -73,8 +68,12 @@ class FolderPreviewFragment :
         with(callback) {
             when (this) {
                 is AdapterCallback.RowName -> router.fromFolderToEditRow(this.value.objectId)
-                is AdapterCallback.RowPrice -> showDialogOne(this, this.value)
-                is AdapterCallback.RowCount -> showDialogOne(this, this.value)
+                is AdapterCallback.RowPrice -> showDialogCosts(this, this.value) {
+                    saveData(it)
+                }
+                is AdapterCallback.RowCount -> showDialogCosts(this, this.value) {
+                    saveData(it)
+                }
                 is AdapterCallback.FileHighlight -> viewModel.fileHighlight(this.value.objectId)
                 is AdapterCallback.RowBuy -> viewModel.changeRowBuy(this.value)
                 is AdapterCallback.AddButton -> handleButtonClick(this.value.type)
@@ -99,55 +98,8 @@ class FolderPreviewFragment :
         }
     }
 
-    private fun showDialogOne(action: AdapterCallback, model: AdapterItems.RowItem) {
-        val dialog = BottomSheetDialog(requireContext())
-        val binding = bindingDialog(requireContext(), SampleDialogOneBinding::inflate)
-
-        dialog.setContentView(binding.root)
-
-        binding.bottomSheetEditCount.setText(model.count.round2String())
-        binding.bottomSheetEditPrice.setText(model.price.round2String())
-
-        binding.bottomSheetEditPrice.setOnEditorActionListener { _, editorInfo, _ ->
-            if (editorInfo == EditorInfo.IME_ACTION_DONE) {
-                saveData(binding, model)
-                dialog.dismiss()
-                true
-            } else
-                false
-        }
-        dialog.setOnShowListener {
-            when (action) {
-                is AdapterCallback.RowPrice -> {
-                    showKeyboardDelay(binding.bottomSheetEditPrice)
-                    binding.bottomSheetEditPrice.selectAll()
-                }
-                is AdapterCallback.RowCount -> {
-                    showKeyboardDelay(binding.bottomSheetEditCount)
-                    binding.bottomSheetEditCount.selectAll()
-                }
-                else -> {}
-            }
-        }
-        dialog.show()
-    }
-
-    private fun saveData(
-        binding: SampleDialogOneBinding,
-        model: AdapterItems.RowItem
-    ) {
-
-        val count = binding.bottomSheetEditCount.text.round2Double() ?: model.count
-        val price = binding.bottomSheetEditPrice.text.round2Double() ?: model.price
-
-        LogApp.d(log_tag, "$count | $price")
-
-        viewModel.changeRowPrice(id = model.objectId, count = count, price = price)
-    }
-
-    private fun showKeyboardDelay(text: EditText) {
-        Handler(Looper.getMainLooper()).postDelayed({
-            showKeyboard(text)
-        }, 200)
+    private fun saveData(model: AdapterItems.RowItem) {
+        LogApp.d(log_tag, "${model.count} | ${model.price}")
+        viewModel.changeRowPrice(id = model.objectId, count = model.count, price = model.price)
     }
 }

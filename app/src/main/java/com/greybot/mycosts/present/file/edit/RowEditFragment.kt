@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.databinding.RowAddFragmentBinding
+import com.greybot.mycosts.utility.round2String
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,8 +32,8 @@ class RowEditFragment :
     private fun initView(rowDto: FileRow?) {
         with(binding) {
             addRowName.setText(rowDto?.name)
-            addRowCount.setText(rowDto?.count.toString())
-            addRowPrice.setText(rowDto?.price.toString())
+            addRowCount.setText(rowDto?.count?.round2String())
+            addRowPrice.setText(rowDto?.price?.round2String())
 
             addRowName.setOnEditorActionListener(this@RowEditFragment)
             addRowCount.setOnEditorActionListener(this@RowEditFragment)

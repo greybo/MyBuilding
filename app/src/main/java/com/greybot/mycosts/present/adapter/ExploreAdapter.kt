@@ -69,17 +69,20 @@ class ExploreAdapter(
 
     inner class FolderHolder(private val binding: ExploreAdapterItemBinding) :
         Holder(binding.root) {
-
+        private val markItem by lazy { MarkItem(itemView) }
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.FolderItem
             binding.exploreItemTitle.text = item.name
             binding.exploreItemCount.text = item.countInner
             binding.exploreItemTotal.text = item.total
             itemView.setOnClickListener {
-                onClick.invoke(AdapterCallback.FolderOpen(item))
+                if (markItem.highlight) {
+                    markItem.mark()
+                } else onClick.invoke(AdapterCallback.FolderOpen(item))
             }
             itemView.setOnLongClickListener {
                 onClick.invoke(AdapterCallback.FolderHighlight(item))
+                markItem.mark()
                 true
             }
         }
@@ -99,7 +102,7 @@ class ExploreAdapter(
     inner class RowHolder(private val binding: RowAdapterItemBinding) :
         Holder(binding.root) {
 
-        var highlight = false
+        private val markItem by lazy { MarkItem(itemView) }
 
         override fun onBind(item: AdapterItems) {
             item as AdapterItems.RowItem
@@ -108,9 +111,9 @@ class ExploreAdapter(
             binding.rowItemCount.text = item.count.round1String()
             binding.rowItemPrice.text = item.price.toInt().toString()
             binding.rowItemName.setOnClickListener {
-                if (highlight || highlightGlobal) {
+                if (markItem.highlight || highlightGlobal) {
                     onClick.invoke(AdapterCallback.FileHighlight(item))
-                    markItem()
+                    markItem.mark()
                 } else onClick.invoke(AdapterCallback.RowName(item))
             }
             binding.rowItemPrice.setOnClickListener {
@@ -127,22 +130,26 @@ class ExploreAdapter(
 
             binding.rowItemName.setOnLongClickListener {
                 onClick.invoke(AdapterCallback.FileHighlight(item))
-                markItem()
+                markItem.mark()
                 true
             }
         }
+    }
 
-        private fun markItem() {
-            val colorHighlight = ContextCompat.getColor(
-                itemView.context,
-                R.color.divider_color
-            )
+    inner class MarkItem(private val itemView: View) {
+        var highlight = false
+
+        private val colorHighlight = ContextCompat.getColor(
+            itemView.context,
+            R.color.divider_color
+        )
+
+        fun mark() {
             highlight = !highlight
             if (highlight)
                 itemView.setBackgroundColor(colorHighlight)
             else
-                itemView.setBackgroundColor(Color.WHITE);
-
+                itemView.setBackgroundColor(Color.WHITE)
         }
     }
 
