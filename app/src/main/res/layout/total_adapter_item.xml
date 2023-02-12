@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:background="@color/white">
+    android:layout_marginTop="1dp"
+    android:background="@color/total_bg_color">
 
     <View
         android:id="@+id/totalItemDivider1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="4dp"
         android:background="@color/divider_color"
         app:layout_constraintBottom_toTopOf="@+id/totalItemTitle_2" />
 
@@ -75,7 +74,6 @@
         android:id="@+id/totalItemDivider2"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="4dp"
         android:background="@color/divider_color"
         app:layout_constraintTop_toBottomOf="@+id/totalItemValue_2" />
     <!--        app:layout_constraintStart_toEndOf="@+id/rowItem_Title"-->

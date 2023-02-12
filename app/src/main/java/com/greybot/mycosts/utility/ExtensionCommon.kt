@@ -22,6 +22,15 @@ fun Double.round1String(): String {
         "0.0"
     }
 }
+
+fun Double.roundToString(): String {
+    return try {
+        String.format("%.0f", this.toFloat()).replace(",", ".")
+    } catch (e: Throwable) {
+        LogApp.e("try roundTwo", e)
+        "0.0"
+    }
+}
 fun Editable.round1Double(): Double? {
     return try {
         String.format("%.1f", this.toString().toFloat()).replace(",", ".").toDouble()
