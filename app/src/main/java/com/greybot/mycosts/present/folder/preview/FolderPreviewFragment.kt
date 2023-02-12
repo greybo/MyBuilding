@@ -2,8 +2,10 @@ package com.greybot.mycosts.present.folder.preview
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.greybot.mycosts.R
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.base.systemBackPressedCallback
 import com.greybot.mycosts.databinding.FolderPreviewFragmentBinding
@@ -39,9 +41,13 @@ class FolderPreviewFragment :
         viewModel.title.observe(viewLifecycleOwner) {
             toolbar.title = it ?: ""
         }
-        viewModel.deleteIconLiveData().observe(viewLifecycleOwner) {
-            toolbar.rightButtonShow(it, "Delete")
-            adapter?.highlightGlobal = it
+        viewModel.deleteIconLiveData().observe(viewLifecycleOwner) { isShow ->
+            toolbar.rightButtonShow(
+                show = isShow,
+                text = "Delete",
+                textColor = ContextCompat.getColor(requireContext(), R.color.red)
+            )
+            adapter?.highlightGlobal = isShow
         }
         systemBackPressedCallback { backPress() }
         viewModel.fetchData()

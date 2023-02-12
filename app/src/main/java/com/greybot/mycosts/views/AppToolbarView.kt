@@ -16,7 +16,7 @@ import com.greybot.mycosts.databinding.ActionBarCustomNewBinding
 interface ToolbarDelegateListener {
     var title: String?
     fun rightButtonEnable(enable: Boolean?, rightTextColor: Int = -1)
-    fun rightButtonShow(enable: Boolean, text: String)
+    fun rightButtonShow(show: Boolean, text: String, textColor: Int)
 }
 
 class AppToolbarView @JvmOverloads constructor(
@@ -34,9 +34,9 @@ class AppToolbarView @JvmOverloads constructor(
     }
 
     override var title: String?
-        get() = binding.crownToolbar.title.toString()
+        get() = binding.customToolbar.title.toString()
         set(value) {
-            binding.crownToolbar.title = value
+            binding.customToolbar.title = value
         }
 
     private fun setThemeType(enum: Int): ToolbarThemeStyle {
@@ -57,12 +57,12 @@ class AppToolbarView @JvmOverloads constructor(
     }
 
     private fun setBgColor(bgColor: Int) {
-        binding.crownToolbar.setBackgroundColor(ContextCompat.getColor(context, bgColor))
+        binding.customToolbar.setBackgroundColor(ContextCompat.getColor(context, bgColor))
     }
 
     private fun setTextColor(textColor: Int) {
         val color = ContextCompat.getColor(context, textColor)
-        binding.crownToolbar.setTitleTextColor(color)
+        binding.customToolbar.setTitleTextColor(color)
         binding.crownToolbarButtonRight.setTextColor(color)
     }
 
@@ -71,11 +71,11 @@ class AppToolbarView @JvmOverloads constructor(
     }
 
     private fun setNavIcon(drawable: Drawable?) {
-        binding.crownToolbar.navigationIcon = drawable
+        binding.customToolbar.navigationIcon = drawable
     }
 
     private fun setModel(model: ToolbarModel): ToolbarDelegateListener {
-        binding.crownToolbar.setBackgroundColor(
+        binding.customToolbar.setBackgroundColor(
             ContextCompat.getColor(
                 context,
                 model.theme.bgColor
@@ -83,18 +83,18 @@ class AppToolbarView @JvmOverloads constructor(
         )
 
         model.homeBtnCallback?.let { callback ->
-            binding.crownToolbar.navigationIcon = getDrawable(context, model.theme.homeIconId)
-            binding.crownToolbar.setNavigationOnClickListener {
+            binding.customToolbar.navigationIcon = getDrawable(context, model.theme.homeIconId)
+            binding.customToolbar.setNavigationOnClickListener {
                 callback("back")
             }
         }
-        binding.crownToolbar.setTitleTextColor(
+        binding.customToolbar.setTitleTextColor(
             ContextCompat.getColor(
                 context,
                 model.theme.titleColor
             )
         )
-        binding.crownToolbar.title = if (model.titleResId > 0) {
+        binding.customToolbar.title = if (model.titleResId > 0) {
             resources.getString(model.titleResId)
         } else model.title
 
@@ -138,14 +138,9 @@ class AppToolbarView @JvmOverloads constructor(
         binding.crownToolbarButtonRight.setTextColor(color)
     }
 
-    override fun rightButtonShow(enable: Boolean, text: String) {
-        binding.crownToolbarButtonRight.setGoneOrVisible(enable)
-        binding.crownToolbarButtonRight.setTextColor(
-            ContextCompat.getColor(
-                context,
-                R.color.red
-            )
-        )
+    override fun rightButtonShow(show: Boolean, text: String, textColor: Int) {
+        binding.crownToolbarButtonRight.setGoneOrVisible(show)
+        binding.crownToolbarButtonRight.setTextColor(textColor)
         binding.crownToolbarButtonRight.text = text
     }
 

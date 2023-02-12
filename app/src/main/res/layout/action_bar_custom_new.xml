@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/crownToolbar"
+            android:id="@+id/custom_toolbar"
             style="@style/AppToolbarDefault"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
