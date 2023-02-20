@@ -6,7 +6,6 @@ import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.present.adapter.AdapterCallback
-import com.greybot.mycosts.present.adapter.ExploreAdapter
 import com.greybot.mycosts.theme.MyCostsTheme
 import com.greybot.mycosts.utility.ROOT_FOLDER
 import com.greybot.mycosts.utility.animateFabHide
@@ -19,23 +18,19 @@ class MainExploreFragment :
     BaseBindingFragment<ExploreFragmentBinding>(ExploreFragmentBinding::inflate) {
 
     private val viewModel by viewModels<MainExploreViewModel>()
-    private var adapter: ExploreAdapter? = null
     private val router: IMainExploreRouter by getRouter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.composeView.setContent {
             MyCostsTheme {
-                MainExampleScreen()
+                MainExampleScreen(viewModel, ::handleOnClick)
             }
         }
         initViews()
         binding.toolbar.getBuilder()
             .title("My costs")
             .create()
-        viewModel.state.observe(viewLifecycleOwner) {
-            adapter?.updateAdapter(it)
-        }
         viewModel.fetchData()
     }
 
@@ -46,17 +41,6 @@ class MainExploreFragment :
                     router.fromExploreToAddFolder("root")
                 }
             }
-        }
-        initAdapter()
-    }
-
-    private fun initAdapter() {
-        with(binding) {
-            adapter = ExploreAdapter {
-                handleOnClick(it)
-            }
-            mainRecyclerViewX.setHasFixedSize(true)
-            mainRecyclerViewX.adapter = adapter
         }
     }
 
