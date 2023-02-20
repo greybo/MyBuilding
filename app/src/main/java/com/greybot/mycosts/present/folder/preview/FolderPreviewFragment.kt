@@ -30,9 +30,6 @@ class FolderPreviewFragment :
         initViews()
         val toolbar = binding.folderPreviewToolbar.getBuilder()
             .homeCallback { backPress() }
-            .rightCallback {
-                viewModel.deleteSelectItems()
-            }
             .rightIconCallback {
                 handleOnClickMenu(it)
             }
@@ -47,11 +44,6 @@ class FolderPreviewFragment :
             val deleteIcon = if (isShow) {
                 R.drawable.ic_action_delete_outline
             } else 0
-//            toolbar.rightButtonShow(
-//                show = isShow,
-//                text = "Delete",
-//                textColor = ContextCompat.getColor(requireContext(), R.color.red)
-//            )
             toolbar.rightIcon(deleteIcon)
             adapter?.highlightGlobal = isShow
         }
@@ -61,7 +53,8 @@ class FolderPreviewFragment :
 
     private fun handleOnClickMenu(resId: Int) {
         when (resId) {
-
+            R.drawable.ic_action_menu->{}
+            R.drawable.ic_action_delete_outline->{ viewModel.deleteSelectItems()}
         }
     }
 
