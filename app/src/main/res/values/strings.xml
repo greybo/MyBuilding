@@ -5,4 +5,5 @@
     <string name="count">Кількість</string>
     <string name="price">Ціна</string>
     <string name="description_button_save">кнопка зберегти</string>
+    <string name="description_icon_menu">Icon menu</string>
 </resources>

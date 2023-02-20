@@ -2,7 +2,6 @@ package com.greybot.mycosts.present.folder.preview
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.R
@@ -34,6 +33,9 @@ class FolderPreviewFragment :
             .rightCallback {
                 viewModel.deleteSelectItems()
             }
+            .rightIconCallback {
+                handleOnClickMenu(it)
+            }
             .create()
         viewModel.state.observe(viewLifecycleOwner) {
             adapter?.updateAdapter(it)
@@ -42,15 +44,25 @@ class FolderPreviewFragment :
             toolbar.title = it ?: ""
         }
         viewModel.deleteIconLiveData().observe(viewLifecycleOwner) { isShow ->
-            toolbar.rightButtonShow(
-                show = isShow,
-                text = "Delete",
-                textColor = ContextCompat.getColor(requireContext(), R.color.red)
-            )
+            val deleteIcon = if (isShow) {
+                R.drawable.ic_action_delete_outline
+            } else 0
+//            toolbar.rightButtonShow(
+//                show = isShow,
+//                text = "Delete",
+//                textColor = ContextCompat.getColor(requireContext(), R.color.red)
+//            )
+            toolbar.rightIcon(deleteIcon)
             adapter?.highlightGlobal = isShow
         }
         systemBackPressedCallback { backPress() }
         viewModel.fetchData()
+    }
+
+    private fun handleOnClickMenu(resId: Int) {
+        when (resId) {
+
+        }
     }
 
     private fun backPress() {
