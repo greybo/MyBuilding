@@ -33,7 +33,7 @@ fun ItemFolderComponent(model: AdapterItems.FolderItem, callback: (AdapterCallba
                     style = MyCostsTypography.titleMedium,
                     modifier = Modifier
                         .fillMaxWidth(0.75f)
-                        .padding(8.dp, 0.dp, 0.dp, 0.dp)
+                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         .align(Alignment.CenterVertically)
                         )
                 Column(
