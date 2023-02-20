@@ -2,11 +2,15 @@ package com.greybot.mycosts.present.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.material3.Text
+import androidx.compose.ui.res.colorResource
 import androidx.fragment.app.viewModels
+import com.greybot.mycosts.R
 import com.greybot.mycosts.base.BaseBindingFragment
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.ExploreAdapter
+import com.greybot.mycosts.theme.MyCostsTheme
 import com.greybot.mycosts.utility.ROOT_FOLDER
 import com.greybot.mycosts.utility.animateFabHide
 import com.greybot.mycosts.utility.animateShowFab
@@ -23,7 +27,15 @@ class MainExploreFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.composeView.setContent {
+            MyCostsTheme {
+                Text(
+                    text = "Hello compose!",
+                    color = colorResource(id = R.color.black)
+                )
+            }
 
+        }
         initViews()
         binding.toolbar.getBuilder()
             .title("My costs")
