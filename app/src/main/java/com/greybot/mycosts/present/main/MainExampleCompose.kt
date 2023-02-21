@@ -12,6 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.greybot.mycosts.components.ToolbarApp
+import com.greybot.mycosts.components.ToolbarModel
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.AdapterComponent
 
@@ -28,7 +30,10 @@ fun MainExampleScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        AdapterComponent(list, handleOnClick)
+        Column {
+            ToolbarApp(ToolbarModel("My Costs"))
+            AdapterComponent(list, handleOnClick)
+        }
 
         FloatingActionButton(
             shape = CircleShape,

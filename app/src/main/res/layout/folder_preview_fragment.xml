@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <au.com.crownresorts.crma.view.AppToolbarView
+    <com.greybot.mycosts.views.AppToolbarView
         android:id="@+id/folderPreviewToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
