@@ -30,6 +30,7 @@ class MainExploreFragment :
         binding.toolbar.getBuilder()
             .title("My costs")
             .create()
+        binding.toolbar.gone()
         viewModel.fetchData()
     }
 
