@@ -36,6 +36,7 @@ class FolderPreviewViewModel @Inject constructor(
     val state: LiveData<List<AdapterItems>> = _state
     val title = MutableLiveData<String?>()
     val parentId by lazy { savedStateHandle.get<String>("objectId") ?: "" }
+    var router: FolderPreviewRouter? = null
 
     init {
         launchOnDefault {
@@ -132,13 +133,22 @@ class FolderPreviewViewModel @Inject constructor(
         LogApp.d("log_tag", "${model.count} | ${model.price}")
         changeRowPrice(id = model.objectId, count = model.count, price = model.price)
     }
-    fun handleOnClickOptionMenu(type:ActionButtonType) {
+
+    fun handleOnClickOptionMenu(type: ActionButtonType) {
         when (type) {
-            ActionButtonType.Back -> {}
+            ActionButtonType.Back -> router?.popBackStack()
             ActionButtonType.Menu -> {}
-            ActionButtonType.Delete -> {
-                deleteSelectItems()
-            }
+            ActionButtonType.Delete -> deleteSelectItems()
+        }
+    }
+     fun handleButtonClick(
+        type: ButtonType,
+        id: String = parentId
+    ) {
+        when (type) {
+            ButtonType.Folder -> router?.fromFolderToAddFolder(id)
+            ButtonType.Row -> router?.fromFolderToAddRow(id)
+            else -> {}
         }
     }
 }
