@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
-import com.greybot.mycosts.base.RouterNavigation
+import com.greybot.mycosts.base.RouterCallbackHandler
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.theme.MyCostsTheme
@@ -17,7 +17,7 @@ class MainExploreFragment :
 
     private val viewModel by viewModels<MainExploreViewModel>()
     private val router: IMainExploreRouter by getRouter()
-    private val routerNav: RouterNavigation by lazy { RouterNavigation(router) }
+    private val routerHandler: RouterCallbackHandler by lazy { RouterCallbackHandler(router) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,12 +31,12 @@ class MainExploreFragment :
     }
 
     private fun handleOnClick(callback: AdapterCallback) {
-        routerNav.invoke(callback)
+        routerHandler.invoke(callback)
     }
 
-    override fun onResume() {
-        super.onResume()
-//        binding.exploreFloatButton.animateShowFab()
-    }
+//    override fun onResume() {
+//        super.onResume()
+////        binding.exploreFloatButton.animateShowFab()
+//    }
 }
 

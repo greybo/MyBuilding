@@ -4,7 +4,7 @@ import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.main.IMainExploreRouter
 import com.greybot.mycosts.utility.ROOT_FOLDER
 
-class RouterNavigation(private val router: IMainExploreRouter) {
+class RouterCallbackHandler(private val router: IMainExploreRouter) {
     operator fun invoke(callback: AdapterCallback) {
         when (callback) {
             is AdapterCallback.FolderOpen -> {
