@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.greybot.mycosts.base.BaseBindingFragment
+import com.greybot.mycosts.base.RouterNavigation
 import com.greybot.mycosts.databinding.ExploreFragmentBinding
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.theme.MyCostsTheme
-import com.greybot.mycosts.utility.ROOT_FOLDER
 import com.greybot.mycosts.utility.getRouter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +17,7 @@ class MainExploreFragment :
 
     private val viewModel by viewModels<MainExploreViewModel>()
     private val router: IMainExploreRouter by getRouter()
+    private val routerNav: RouterNavigation by lazy { RouterNavigation(router) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,19 +31,7 @@ class MainExploreFragment :
     }
 
     private fun handleOnClick(callback: AdapterCallback) {
-        when (callback) {
-            is AdapterCallback.FolderOpen -> {
-//                binding.exploreFloatButton.animateFabHide {
-                router.fromExploreToFolder(callback.value.objectId ?: ROOT_FOLDER)
-//                }
-            }
-            is AdapterCallback.FolderHighlight -> {
-//                binding.exploreFloatButton.animateFabHide {
-//                    router.fromExploreToFolder(, callback.value.path)
-//                }
-            }
-            else -> TODO()
-        }
+        routerNav.invoke(callback)
     }
 
     override fun onResume() {

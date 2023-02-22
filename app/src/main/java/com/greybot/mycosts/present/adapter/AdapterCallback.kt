@@ -12,4 +12,5 @@ sealed class AdapterCallback {
     class FolderOpen(val value: AdapterItems.FolderItem) : AdapterCallback()
     class FolderHighlight(val value: AdapterItems.FolderItem) : AdapterCallback()
     class FileHighlight(val value: AdapterItems.RowItem) : AdapterCallback()
+    class FolderAdd(val id: String) : AdapterCallback()
 }

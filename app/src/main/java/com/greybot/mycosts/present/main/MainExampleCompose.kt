@@ -16,6 +16,7 @@ import com.greybot.mycosts.components.ToolbarApp
 import com.greybot.mycosts.components.ToolbarModel
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.AdapterComponent
+import com.greybot.mycosts.utility.ROOT_FOLDER
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +38,11 @@ fun MainExampleScreen(
 
         FloatingActionButton(
             shape = CircleShape,
-            onClick = { expanded = !expanded },
+            onClick = {
+//                expanded = !expanded
+                handleOnClick.invoke(AdapterCallback.FolderAdd(ROOT_FOLDER))
+            },
+
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(0.dp, 0.dp, 32.dp, 32.dp),
