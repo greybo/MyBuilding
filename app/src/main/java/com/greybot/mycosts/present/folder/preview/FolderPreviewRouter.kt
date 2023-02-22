@@ -2,7 +2,7 @@ package com.greybot.mycosts.present.folder.preview
 
 import androidx.navigation.NavController
 
-class FolderPreviewRouter(private val navController: NavController)  {
+class FolderPreviewRouter(private val navController: NavController) {
 
     fun fromFolderToFolder(id: String) {
         val direction = FolderPreviewFragmentDirections.toFolderPreviewFragment(id)
@@ -17,6 +17,10 @@ class FolderPreviewRouter(private val navController: NavController)  {
     fun fromFolderToAddRow(id: String) {
         val direction = FolderPreviewFragmentDirections.toRowAddFragment(id)
         navController.navigate(direction)
+    }
+
+    fun popBackStack() {
+        navController.popBackStack()
     }
 
     fun fromFolderToEditRow(id: String) {

@@ -1,8 +1,5 @@
 package com.greybot.mycosts.components.elements
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,33 +9,34 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.greybot.mycosts.present.folder.preview.ActionButtonType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToolbarAppComponent(
+fun MyCostsToolbar(
     title: String? = null,
-    homeAction: (() -> Unit)? = null,
-    rightAction: (() -> Unit)? = null
+    navigation: ActionButtonType? = null,
+    action: ActionButtonType? = null,
+    callback: ((ActionButtonType) -> Unit)? = null
 ) {
     TopAppBar(
         title = {
             title?.let { Text(it, fontSize = 22.sp) }
         },
         navigationIcon = {
-            homeAction?.let {
+            navigation?.let {
                 IconButton(onClick = {
-                    it.invoke()
-                }) { Icon(Icons.Default.ArrowBack, contentDescription = "Home") }
+                    callback?.invoke(it)
+                }) { Icon(imageVector = it.icon, tint = it.color, contentDescription = "Home") }
             }
 
         },
         actions = {
 //            Spacer(Modifier)
-            rightAction?.let {
+            action?.let {
                 IconButton(onClick = {
-                    it.invoke()
-                }) { Icon(Icons.Filled.Menu, contentDescription = "Menu") }
+                    callback?.invoke(it)
+                }) { Icon(imageVector = it.icon, tint = it.color, contentDescription = "Menu") }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(Color.White),
@@ -49,5 +47,5 @@ fun ToolbarAppComponent(
 @Preview(showBackground = true)
 @Composable
 fun PreviewToolbar() {
-    ToolbarAppComponent("META-NIT.COM", {}, {})
+    MyCostsToolbar("META-NIT.COM")
 }
