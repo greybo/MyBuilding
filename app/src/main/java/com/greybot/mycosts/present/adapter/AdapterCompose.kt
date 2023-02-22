@@ -3,8 +3,8 @@ package com.greybot.mycosts.present.adapter
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import com.greybot.mycosts.components.ItemFileComponent
-import com.greybot.mycosts.components.ItemFolderComponent
+import com.greybot.mycosts.components.items.ItemFileComponent
+import com.greybot.mycosts.components.items.ItemFolderComponent
 import com.greybot.mycosts.models.AdapterItems
 
 @Composable
