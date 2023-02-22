@@ -13,7 +13,6 @@ import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.ExploreAdapter
 import com.greybot.mycosts.utility.LogApp
-import com.greybot.mycosts.utility.getRouter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +22,7 @@ class FolderPreviewFragment :
     private val log_tag = "FolderPreviewFragment"
     private val viewModel by viewModels<FolderPreviewViewModel>()
     private var adapter: ExploreAdapter? = null
-    private val router: IFolderPreviewRouter by getRouter()
+    private val router: FolderPreviewRouter by lazy { FolderPreviewRouter(findNavController()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,8 +52,10 @@ class FolderPreviewFragment :
 
     private fun handleOnClickMenu(resId: Int) {
         when (resId) {
-            R.drawable.ic_action_menu->{}
-            R.drawable.ic_action_delete_outline->{ viewModel.deleteSelectItems()}
+            R.drawable.ic_action_menu -> {}
+            R.drawable.ic_action_delete_outline -> {
+                viewModel.deleteSelectItems()
+            }
         }
     }
 
