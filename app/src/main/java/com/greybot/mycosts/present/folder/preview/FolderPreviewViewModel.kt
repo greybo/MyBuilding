@@ -34,12 +34,12 @@ class FolderPreviewViewModel @Inject constructor(
     private val listDelete = mutableListOf<String>()
     private val _dialogCostsLiveData = MutableLiveData<ResultEvent<AdapterCallback>>()
     val dialogCostsLiveData: LiveData<ResultEvent<AdapterCallback>> = _dialogCostsLiveData
-    private val _toolbarModelLiveData = MutableLiveData<ToolbarModel>(ToolbarModel(title = "Folder"))
-
+    private val _toolbarModelLiveData = MutableLiveData(ToolbarModel(callback = ::handleOnClickOptionMenu))
 
     private val _state = MutableLiveData<List<AdapterItems>>()
+    private val parentId by lazy { savedStateHandle.get<String>("objectId") ?: "" }
+
     val state: LiveData<List<AdapterItems>> = _state
-    val parentId by lazy { savedStateHandle.get<String>("objectId") ?: "" }
     var router: FolderPreviewRouter? = null
 
     init {
@@ -84,7 +84,7 @@ class FolderPreviewViewModel @Inject constructor(
         fetchData()
     }
 
-    fun changeRowPrice(id: String, count: Double, price: Double) {
+    private fun changeRowPrice(id: String, count: Double, price: Double) {
         launchOnDefault {
             rowSource.changePrice(id, count, price)
             updateUIRowList()
@@ -103,12 +103,6 @@ class FolderPreviewViewModel @Inject constructor(
         listDelete.clear()
         return _toolbarModelLiveData
     }
-
-//    fun actionIconLiveData(): LiveData<ActionToolbar> {
-//        actionIconLiveData.value = iconMenu
-//        listDelete.clear()
-//        return actionIconLiveData
-//    }
 
     fun fileHighlight(objectId: String) {
         if (listDelete.contains(objectId)) {
