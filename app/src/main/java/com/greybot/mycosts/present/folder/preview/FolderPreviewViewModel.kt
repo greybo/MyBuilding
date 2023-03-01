@@ -1,23 +1,23 @@
 package com.greybot.mycosts.present.folder.preview
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
+import com.greybot.mycosts.components.toolbar.ActionButtonType
+import com.greybot.mycosts.components.toolbar.ActionToolbar
+import com.greybot.mycosts.components.toolbar.ToolbarModel
 import com.greybot.mycosts.data.dto.FileRow
 import com.greybot.mycosts.data.dto.FolderRow
 import com.greybot.mycosts.data.repository.file.FileDataSource
 import com.greybot.mycosts.data.repository.folder.FolderDataSource
 import com.greybot.mycosts.models.AdapterItems
+import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.file.FileHandler
 import com.greybot.mycosts.present.folder.FolderHandler
 import com.greybot.mycosts.utility.LogApp
+import com.greybot.mycosts.utility.ResultEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -28,20 +28,24 @@ class FolderPreviewViewModel @Inject constructor(
     private val rowSource: FileDataSource
 ) : CompositeViewModel() {
 
+    private val toolbarIconMenu get() = _toolbarModelLiveData.value?.copy(rightAction = ActionToolbar(ActionButtonType.Menu))
+    private val toolbarIconDelete get() = _toolbarModelLiveData.value?.copy(rightAction = ActionToolbar(ActionButtonType.Delete, Color.Red))
     private val fileHandler by lazy { FileHandler() }
     private val listDelete = mutableListOf<String>()
-    private val actionIconLiveData = MutableLiveData(ActionButtonType.Menu)
+    private val _dialogCostsLiveData = MutableLiveData<ResultEvent<AdapterCallback>>()
+    val dialogCostsLiveData: LiveData<ResultEvent<AdapterCallback>> = _dialogCostsLiveData
+    private val _toolbarModelLiveData = MutableLiveData<ToolbarModel>(ToolbarModel(title = "Folder"))
+
 
     private val _state = MutableLiveData<List<AdapterItems>>()
     val state: LiveData<List<AdapterItems>> = _state
-    val title = MutableLiveData<String?>()
     val parentId by lazy { savedStateHandle.get<String>("objectId") ?: "" }
     var router: FolderPreviewRouter? = null
 
     init {
         launchOnDefault {
             val parentFolder = exploreSource.findByObjectId(parentId)
-            title.postValue(parentFolder?.name)
+            _toolbarModelLiveData.postValue(_toolbarModelLiveData.value?.copy(title = parentFolder?.name))
         }
     }
 
@@ -94,11 +98,17 @@ class FolderPreviewViewModel @Inject constructor(
         )
     }
 
-    fun actionIconLiveData(): LiveData<ActionButtonType> {
-        actionIconLiveData.value = ActionButtonType.Menu
+    fun toolbarModelLiveData(): LiveData<ToolbarModel> {
+        _toolbarModelLiveData.value = toolbarIconMenu
         listDelete.clear()
-        return actionIconLiveData
+        return _toolbarModelLiveData
     }
+
+//    fun actionIconLiveData(): LiveData<ActionToolbar> {
+//        actionIconLiveData.value = iconMenu
+//        listDelete.clear()
+//        return actionIconLiveData
+//    }
 
     fun fileHighlight(objectId: String) {
         if (listDelete.contains(objectId)) {
@@ -106,9 +116,9 @@ class FolderPreviewViewModel @Inject constructor(
         } else {
             listDelete.add(objectId)
         }
-        actionIconLiveData.value = if (listDelete.isNotEmpty()) {
-            ActionButtonType.Menu
-        } else ActionButtonType.Delete
+        _toolbarModelLiveData.value = if (listDelete.isNotEmpty()) {
+            toolbarIconMenu
+        } else toolbarIconDelete
     }
 
     private fun deleteSelectItems() {
@@ -119,7 +129,7 @@ class FolderPreviewViewModel @Inject constructor(
             listDelete.clear()
             fetchData()
         }
-        actionIconLiveData.value = ActionButtonType.Menu
+        _toolbarModelLiveData.value = toolbarIconMenu
     }
 
     private var setToLiveData: List<AdapterItems>
@@ -141,7 +151,8 @@ class FolderPreviewViewModel @Inject constructor(
             ActionButtonType.Delete -> deleteSelectItems()
         }
     }
-     fun handleButtonClick(
+
+    fun handleButtonClick(
         type: ButtonType,
         id: String = parentId
     ) {
@@ -157,8 +168,3 @@ enum class ButtonType(val row: String) {
     Folder("Папка"), Row("Товар"), None("")
 }
 
-enum class ActionButtonType(val icon: ImageVector, val color: Color) {
-    Delete(Icons.Default.Delete, Color.Red),
-    Menu(Icons.Default.Menu, Color.Gray),
-    Back(Icons.Default.ArrowBack, Color.Gray)
-}

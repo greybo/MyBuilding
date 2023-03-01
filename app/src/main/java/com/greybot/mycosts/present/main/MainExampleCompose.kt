@@ -7,7 +7,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.greybot.mycosts.components.FabComponent
-import com.greybot.mycosts.components.elements.MyCostsToolbar
+import com.greybot.mycosts.components.toolbar.MyCostsToolbar
+import com.greybot.mycosts.components.toolbar.ToolbarModel
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.AdapterComponent
 import com.greybot.mycosts.utility.ROOT_FOLDER
@@ -25,7 +26,7 @@ fun MainExampleScreen(
 
 
     Scaffold(
-        topBar = { MyCostsToolbar("My Costs") },
+        topBar = { MyCostsToolbar(ToolbarModel(title = "My Costs", homeAction = null, rightAction = null)) },
         floatingActionButton = {
             FabComponent(
                 text = "Add",

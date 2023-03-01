@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.greybot.mycosts.base.systemBackPressedCallback
+import com.greybot.mycosts.components.toolbar.ActionButtonType
 import com.greybot.mycosts.dialog.showDialogCosts
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.IRowCost
@@ -42,12 +43,10 @@ class FolderPreviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.composeView.setContent {
-//            MyCostsTheme {
-//                FolderPreviewScreen(viewModel, ::handleAdapterClick)
-//            }
-//        }
 
+        viewModel.dialogCostsLiveData.observe(viewLifecycleOwner){
+            bottomDialog(it.value)
+        }
         systemBackPressedCallback { viewModel.handleOnClickOptionMenu(ActionButtonType.Back) /*backPress()*/ }
         viewModel.router = router
         viewModel.fetchData()
@@ -73,7 +72,7 @@ class FolderPreviewFragment : Fragment() {
     }
 
     private fun bottomDialog(
-        rowType: AdapterCallback
+        rowType: AdapterCallback?
     ) {
         val value = (rowType as? IRowCost)?.value ?: throw Throwable()
         showDialogCosts(rowType, value, viewModel::saveData)

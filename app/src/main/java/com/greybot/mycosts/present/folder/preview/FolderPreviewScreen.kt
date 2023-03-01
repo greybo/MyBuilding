@@ -8,7 +8,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.greybot.mycosts.components.elements.MyCostsToolbar
+import com.greybot.mycosts.components.toolbar.MyCostsToolbar
 import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.AdapterComponent
 
@@ -20,17 +20,11 @@ fun FolderPreviewScreen(
 ) {
     val context = LocalContext.current
     val itemsList by viewModel.state.observeAsState()
-    val title by viewModel.title.observeAsState()
-    val actionButtonType by viewModel.actionIconLiveData().observeAsState()
+    val toolbarMode by viewModel.toolbarModelLiveData().observeAsState()
 
     Scaffold(
         topBar = {
-            MyCostsToolbar(
-                title,
-                ActionButtonType.Back,
-                actionButtonType,
-                viewModel::handleOnClickOptionMenu
-            )
+            toolbarMode?.let { MyCostsToolbar(it) }
         },
         snackbarHost = {
 
