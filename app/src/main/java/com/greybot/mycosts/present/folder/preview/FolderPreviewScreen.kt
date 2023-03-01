@@ -9,14 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.greybot.mycosts.components.toolbar.MyCostsToolbar
-import com.greybot.mycosts.present.adapter.AdapterCallback
 import com.greybot.mycosts.present.adapter.AdapterComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FolderPreviewScreen(
     viewModel: FolderPreviewViewModel = viewModel(),
-    handleAdapterClick: (AdapterCallback) -> Unit
 ) {
     val context = LocalContext.current
     val itemsList by viewModel.state.observeAsState()
@@ -36,7 +34,7 @@ fun FolderPreviewScreen(
                     .fillMaxSize()
             ) {
 
-                AdapterComponent(list = itemsList, callback = handleAdapterClick)
+                AdapterComponent(list = itemsList, callback =viewModel::handleAdapterClick)
 //                BottomSheetComponent()
 
             }

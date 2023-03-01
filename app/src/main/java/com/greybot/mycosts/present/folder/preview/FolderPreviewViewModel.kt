@@ -137,7 +137,24 @@ class FolderPreviewViewModel @Inject constructor(
         LogApp.d("log_tag", "${model.count} | ${model.price}")
         changeRowPrice(id = model.objectId, count = model.count, price = model.price)
     }
-
+    fun handleAdapterClick(callback: AdapterCallback) {
+        with(callback) {
+            when (this) {
+                is AdapterCallback.RowName -> router?.fromFolderToEditRow(value.objectId)
+                is AdapterCallback.RowPrice,
+                is AdapterCallback.RowCount -> _dialogCostsLiveData.value = ResultEvent.initial(this) //bottomDialog(this)
+                is AdapterCallback.FileHighlight -> fileHighlight(value.objectId)
+                is AdapterCallback.RowBuy -> changeRowBuy(value)
+                is AdapterCallback.AddButton -> handleButtonClick(value.type)
+                is AdapterCallback.FolderOpen -> {
+                    router?.fromFolderToFolder(
+                        value.objectId ?: throw Throwable("objectId must not be empty")
+                    )
+                }
+                else -> {}
+            }
+        }
+    }
     fun handleOnClickOptionMenu(type: ActionButtonType) {
         when (type) {
             ActionButtonType.Back -> router?.popBackStack()

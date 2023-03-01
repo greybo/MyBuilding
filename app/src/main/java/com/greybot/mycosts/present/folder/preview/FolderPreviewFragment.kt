@@ -35,7 +35,7 @@ class FolderPreviewFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MyCostsTheme {
-                    FolderPreviewScreen(viewModel, ::handleAdapterClick)
+                    FolderPreviewScreen(viewModel)
                 }
             }
         }
@@ -52,30 +52,10 @@ class FolderPreviewFragment : Fragment() {
         viewModel.fetchData()
     }
 
-    private fun handleAdapterClick(callback: AdapterCallback) {
-        with(callback) {
-            when (this) {
-                is AdapterCallback.RowName -> router.fromFolderToEditRow(value.objectId)
-                is AdapterCallback.RowPrice,
-                is AdapterCallback.RowCount -> bottomDialog(this)
-                is AdapterCallback.FileHighlight -> viewModel.fileHighlight(value.objectId)
-                is AdapterCallback.RowBuy -> viewModel.changeRowBuy(value)
-                is AdapterCallback.AddButton -> viewModel.handleButtonClick(value.type)
-                is AdapterCallback.FolderOpen -> {
-                    router.fromFolderToFolder(
-                        value.objectId ?: throw Throwable("objectId must not be empty")
-                    )
-                }
-                else -> {}
-            }
-        }
-    }
-
     private fun bottomDialog(
         rowType: AdapterCallback?
     ) {
         val value = (rowType as? IRowCost)?.value ?: throw Throwable()
         showDialogCosts(rowType, value, viewModel::saveData)
     }
-
 }
