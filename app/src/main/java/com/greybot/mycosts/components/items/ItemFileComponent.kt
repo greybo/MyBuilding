@@ -16,33 +16,33 @@ import com.greybot.mycosts.present.adapter.AdapterCallback
 @Composable
 fun ItemFileComponent(model: AdapterItems.RowItem, callback: (AdapterCallback) -> Unit) {
 
-//    Card(modifier = Modifier.fillMaxWidth(1f)) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 8.dp)
+        ) {
             Checkbox(
-                checked = model.isBought, onCheckedChange = {},
+                checked = model.isBought, onCheckedChange = { callback.invoke(AdapterCallback.RowBuy(model)) },
                 modifier = Modifier.size(25.dp)
             )
         }
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    callback.invoke(AdapterCallback.RowName(model))
+                }
         ) {
             Text(
                 text = model.name,
-                modifier = Modifier
-                    .clickable {
-                        callback.invoke(AdapterCallback.RowName(model))
-                    }
-//                    .align(Alignment.CenterVertically)
+                modifier = Modifier.padding(top = 12.dp, end = 16.dp, bottom = 12.dp)
             )
-
         }
-
     }
-//    }
 }
 
 @Preview
@@ -61,6 +61,7 @@ fun getFakeFile(): AdapterItems.RowItem {
         "count: 0",
         MeasureType.None,
         0.0,
-        0.0
+        0.0,
+        isBought = true
     )
 }
