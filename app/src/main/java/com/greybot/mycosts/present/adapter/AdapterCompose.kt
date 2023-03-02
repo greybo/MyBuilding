@@ -9,13 +9,17 @@ import com.greybot.mycosts.components.items.*
 import com.greybot.mycosts.models.AdapterItems
 
 @Composable
-fun AdapterComponent(list: List<AdapterItems>?, callback: (AdapterCallback) -> Unit) {
+fun AdapterComponent(
+    list: List<AdapterItems>?,
+    isDelete: Boolean,
+    callback: (AdapterCallback) -> Unit
+) {
     val itemsNotNull = list ?: emptyList()
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(itemsNotNull) { item ->
             when (item) {
                 is AdapterItems.FolderItem -> ItemFolderComponent(item, callback)
-                is AdapterItems.RowItem -> ItemFileComponent(item, callback)
+                is AdapterItems.RowItem -> ItemFileComponent(item, isDelete,callback)
                 is AdapterItems.ButtonAddItem -> ItemButtonsComponent(item, callback)
 
                 is AdapterItems.TotalItem -> ItemFileTotalComponent(item)

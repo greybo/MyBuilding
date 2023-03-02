@@ -28,14 +28,21 @@ class FolderPreviewViewModel @Inject constructor(
     private val rowSource: FileDataSource
 ) : CompositeViewModel() {
 
-    private val toolbarIconMenu get() = _toolbarModelLiveData.value?.copy(rightAction = ActionToolbar(ActionButtonType.Menu))
-    private val toolbarIconDelete get() = _toolbarModelLiveData.value?.copy(rightAction = ActionToolbar(ActionButtonType.Delete, Color.Red))
+    private val toolbarIconMenu
+        get() = _toolbarModelLiveData.value?.copy(
+            rightAction = ActionToolbar(ActionButtonType.Menu)
+        )
+    private val toolbarIconDelete
+        get() = _toolbarModelLiveData.value?.copy(
+            rightAction = ActionToolbar(ActionButtonType.Delete, Color.Red)
+        )
     private val fileHandler by lazy { FileHandler() }
-    private val listDelete = mutableListOf<String>()
+    private val listDelete =  mutableListOf<String>() //DeleteListActor()//
     private val _dialogCostsLiveData = MutableLiveData<ResultEvent<AdapterCallback>>()
     val dialogCostsLiveData: LiveData<ResultEvent<AdapterCallback>> = _dialogCostsLiveData
-    private val _toolbarModelLiveData = MutableLiveData(ToolbarModel(callback = ::handleOnClickOptionMenu))
-
+    private val _toolbarModelLiveData =
+        MutableLiveData(ToolbarModel(callback = ::handleOnClickOptionMenu))
+    val toolbarModelLiveData: LiveData<ToolbarModel> = _toolbarModelLiveData
     private val _state = MutableLiveData<List<AdapterItems>>()
     private val parentId by lazy { savedStateHandle.get<String>("objectId") ?: "" }
 
@@ -49,70 +56,71 @@ class FolderPreviewViewModel @Inject constructor(
         }
     }
 
-    fun fetchData(id: String = parentId) {
+    fun fetchData() {
         launchOnDefault {
-            val folderList = exploreSource.getListById(id)
-            val files = rowSource.getListById(id)
-
-            if (!folderList.isNullOrEmpty()) {
-                makeFolderList(folderList)
-            } else if (files.isNotEmpty()) {
-                makeFileList(files)
-            } else makeButtonList()
+            listDelete.clear()
+            fetchDataSuspend()
         }
+    }
+
+    private suspend fun fetchDataSuspend(id: String = parentId) {
+        val folderList = exploreSource.getListById(id)
+        val files = rowSource.getListById(id)
+
+        if (!folderList.isNullOrEmpty()) {
+            makeFolderList(folderList)
+        } else if (files.isNotEmpty()) {
+            makeFileList(files)
+        } else makeButtonList()
+
+        _toolbarModelLiveData.postValue(
+            if (listDelete.isEmpty()) {
+                toolbarIconMenu
+            } else toolbarIconDelete
+        )
     }
 
     private suspend fun makeFolderList(list: List<FolderRow>) {
         val folderHandler = FolderHandler(exploreSource.fetchData(), rowSource.fetchData())
-        setToLiveData = folderHandler.makeFolderItems(list)
+        setToLiveData(folderHandler.makeFolderItems(list))
     }
 
     private fun makeFileList(rowList: List<FileRow>) {
-        setToLiveData = fileHandler.makeGroupBuy(rowList)
+        setToLiveData(fileHandler.makeGroupBuy(rowList, listDelete))
     }
 
-    fun changeRowBuy(item: AdapterItems.RowItem) {
+    private fun changeRowBuy(item: AdapterItems.RowItem) {
         launchOnDefault {
             rowSource.changeBuyStatus(item.objectId)
-            updateUIRowList()
+            fetchDataSuspend()
         }
-    }
-
-    private suspend fun updateUIRowList() {
-//        val files = rowSource.getCurrentList(parentId)
-//        makeFileList(files)
-        fetchData()
     }
 
     private fun changeRowPrice(id: String, count: Double, price: Double) {
         launchOnDefault {
             rowSource.changePrice(id, count, price)
-            updateUIRowList()
+            fetchDataSuspend()
         }
     }
 
     private fun makeButtonList() {
-        setToLiveData = listOf(
-            AdapterItems.ButtonAddItem(ButtonType.Folder),
-            AdapterItems.ButtonAddItem(ButtonType.Row)
+        setToLiveData(
+            listOf(
+                AdapterItems.ButtonAddItem(ButtonType.Folder),
+                AdapterItems.ButtonAddItem(ButtonType.Row)
+            )
         )
     }
 
-    fun toolbarModelLiveData(): LiveData<ToolbarModel> {
-        _toolbarModelLiveData.value = toolbarIconMenu
-        listDelete.clear()
-        return _toolbarModelLiveData
-    }
-
     private fun fileHighlight(objectId: String) {
-        if (listDelete.contains(objectId)) {
-            listDelete.remove(objectId)
-        } else {
-            listDelete.add(objectId)
+        launchOnDefault {
+            if (listDelete.contains(objectId)) {
+                listDelete.remove(objectId)
+            } else {
+                listDelete.add(objectId)
+            }
+            fetchDataSuspend()
         }
-        _toolbarModelLiveData.value = if (listDelete.isNotEmpty()) {
-            toolbarIconMenu
-        } else toolbarIconDelete
     }
 
     private fun deleteSelectItems() {
@@ -121,28 +129,28 @@ class FolderPreviewViewModel @Inject constructor(
                 rowSource.delete(objectId)
             }
             listDelete.clear()
-            fetchData()
+            fetchDataSuspend()
         }
-        _toolbarModelLiveData.value = toolbarIconMenu
     }
 
-    private var setToLiveData: List<AdapterItems>
-        get() = _state.value ?: emptyList()
-        set(value) {
-            _state.postValue(value)
-        }
+    private fun setToLiveData(list: List<AdapterItems>): List<AdapterItems> {
+        _state.postValue(list)
+        return _state.value ?: emptyList()
+    }
 
 
     fun saveData(model: AdapterItems.RowItem) {
         LogApp.d("log_tag", "${model.count} | ${model.price}")
         changeRowPrice(id = model.objectId, count = model.count, price = model.price)
     }
+
     fun handleAdapterClick(callback: AdapterCallback) {
         with(callback) {
             when (this) {
                 is AdapterCallback.RowName -> router?.fromFolderToEditRow(value.objectId)
                 is AdapterCallback.RowPrice,
-                is AdapterCallback.RowCount -> _dialogCostsLiveData.value = ResultEvent.initial(this) //bottomDialog(this)
+                is AdapterCallback.RowCount -> _dialogCostsLiveData.value =
+                    ResultEvent.initial(this) //bottomDialog(this)
                 is AdapterCallback.FileHighlight -> fileHighlight(value.objectId)
                 is AdapterCallback.RowBuy -> changeRowBuy(value)
                 is AdapterCallback.AddButton -> handleButtonClick(value.type)
@@ -155,6 +163,7 @@ class FolderPreviewViewModel @Inject constructor(
             }
         }
     }
+
     fun handleOnClickOptionMenu(type: ActionButtonType) {
         when (type) {
             ActionButtonType.Back -> router?.popBackStack()
@@ -163,7 +172,7 @@ class FolderPreviewViewModel @Inject constructor(
         }
     }
 
-    fun handleButtonClick(
+    private fun handleButtonClick(
         type: ButtonType,
         id: String = parentId
     ) {

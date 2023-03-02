@@ -4,7 +4,7 @@ import com.greybot.mycosts.R
 import com.greybot.mycosts.present.folder.preview.ButtonType
 
 sealed class AdapterItems {
-    class FolderItem(
+    data class FolderItem(
         val name: String,
         val path: String,
         val countInner: String,

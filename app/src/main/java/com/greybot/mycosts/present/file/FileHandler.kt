@@ -8,7 +8,12 @@ import com.greybot.mycosts.utility.round2String
 
 class FileHandler {
 
-    fun makeGroupBuy(rowList: List<FileRow>): List<AdapterItems> {
+    private val deleteList = mutableListOf<String>()
+
+    fun makeGroupBuy(rowList: List<FileRow>, listDelete: List<String>?): List<AdapterItems> {
+        deleteList.clear()
+        deleteList.addAll(listDelete ?: emptyList())
+
         val groups = rowList.groupBy { it.bought }
         val pairOrder = makeItems(groups[false])
         val pairCheck = makeItems(groups[true])
@@ -43,7 +48,8 @@ class FileHandler {
         count = item.count,
         price = item.price,
         isBought = item.bought,
-        objectId = item.objectId ?: ""
+        objectId = item.objectId ?: "",
+        highlight = deleteList.contains(item.objectId)
     )
 
 }

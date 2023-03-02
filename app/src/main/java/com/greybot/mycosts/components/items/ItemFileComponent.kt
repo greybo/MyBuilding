@@ -18,8 +18,13 @@ import com.greybot.mycosts.present.adapter.AdapterCallback
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ItemFileComponent(model: AdapterItems.RowItem, callback: (AdapterCallback) -> Unit) {
-
+fun ItemFileComponent(
+    model: AdapterItems.RowItem,
+    isDelete: Boolean,
+    callback: (AdapterCallback) -> Unit
+) {
+//    val highlight = remember { mutableStateOf(false) }
+//    val bgColor = if (highlight.value) Color.Gray else Color.White
     val bgColor = if (model.highlight) Color.Gray else Color.White
 
     Row(
@@ -34,7 +39,8 @@ fun ItemFileComponent(model: AdapterItems.RowItem, callback: (AdapterCallback) -
                 .padding(start = 16.dp, end = 8.dp)
         ) {
             Checkbox(
-                checked = model.isBought, onCheckedChange = { callback.invoke(AdapterCallback.RowBuy(model)) },
+                checked = model.isBought,
+                onCheckedChange = { callback.invoke(AdapterCallback.RowBuy(model)) },
                 modifier = Modifier.size(25.dp)
             )
         }
@@ -42,7 +48,11 @@ fun ItemFileComponent(model: AdapterItems.RowItem, callback: (AdapterCallback) -
             modifier = Modifier
                 .fillMaxWidth()
                 .combinedClickable(
-                    onClick = { callback.invoke(AdapterCallback.RowName(model)) },
+                    onClick = {
+                        if (model.highlight || isDelete) {
+                            callback.invoke(AdapterCallback.FileHighlight(model))
+                        } else callback.invoke(AdapterCallback.RowName(model))
+                    },
                     onLongClick = { callback.invoke(AdapterCallback.FileHighlight(model)) }
                 )
         ) {
@@ -59,6 +69,7 @@ fun ItemFileComponent(model: AdapterItems.RowItem, callback: (AdapterCallback) -
 fun PreviewFileComponent() {
     ItemFileComponent(
         model = getFakeFile(),
+        isDelete = false,
         callback = {}
     )
 }

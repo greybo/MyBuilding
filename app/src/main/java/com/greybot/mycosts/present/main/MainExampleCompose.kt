@@ -26,7 +26,15 @@ fun MainExampleScreen(
 
 
     Scaffold(
-        topBar = { MyCostsToolbar(ToolbarModel(title = "My Costs", homeAction = null, rightAction = null)) },
+        topBar = {
+            MyCostsToolbar(
+                ToolbarModel(
+                    title = "My Costs",
+                    homeAction = null,
+                    rightAction = null
+                )
+            )
+        },
         floatingActionButton = {
             FabComponent(
                 text = "Add",
@@ -36,7 +44,7 @@ fun MainExampleScreen(
         },
         content = {
             Column(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                AdapterComponent(list, handleOnClick)
+                AdapterComponent(list, false, handleOnClick)
             }
         })
 }
