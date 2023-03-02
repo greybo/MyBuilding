@@ -104,7 +104,7 @@ class FolderPreviewViewModel @Inject constructor(
         return _toolbarModelLiveData
     }
 
-    fun fileHighlight(objectId: String) {
+    private fun fileHighlight(objectId: String) {
         if (listDelete.contains(objectId)) {
             listDelete.remove(objectId)
         } else {

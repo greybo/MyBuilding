@@ -1,26 +1,34 @@
 package com.greybot.mycosts.components.items
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.greybot.mycosts.models.AdapterItems
 import com.greybot.mycosts.models.MeasureType
 import com.greybot.mycosts.present.adapter.AdapterCallback
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ItemFileComponent(model: AdapterItems.RowItem, callback: (AdapterCallback) -> Unit) {
 
+    val bgColor = if (model.highlight) Color.Gray else Color.White
+
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+            .fillMaxWidth()
+            .background(bgColor),
+        verticalAlignment = Alignment.CenterVertically,
+
+        ) {
         Column(
             modifier = Modifier
                 .padding(start = 16.dp, end = 8.dp)
@@ -33,9 +41,10 @@ fun ItemFileComponent(model: AdapterItems.RowItem, callback: (AdapterCallback) -
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
-                    callback.invoke(AdapterCallback.RowName(model))
-                }
+                .combinedClickable(
+                    onClick = { callback.invoke(AdapterCallback.RowName(model)) },
+                    onLongClick = { callback.invoke(AdapterCallback.FileHighlight(model)) }
+                )
         ) {
             Text(
                 text = model.name,
