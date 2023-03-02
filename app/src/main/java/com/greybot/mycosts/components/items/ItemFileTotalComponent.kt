@@ -20,8 +20,6 @@ fun ItemFileTotalComponent(model: AdapterItems.TotalItem) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp),
-        /*.clickable { callback.invoke(AdapterCallback.FolderOpen(model)) }*/
-//        shape = MaterialTheme.shapes.medium,
         shadowElevation = 2.dp,
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -32,12 +30,12 @@ fun ItemFileTotalComponent(model: AdapterItems.TotalItem) {
             ) {
                 Text(
                     text = model.name1,
-                    style = MyCostsTypography.titleSmall,
+                    style = MyCostsTypography.labelLarge,
                     modifier = Modifier
                 )
                 Text(
                     text = model.value1,
-                    style = MyCostsTypography.titleSmall,
+                    style = MyCostsTypography.bodySmall,
                     modifier = Modifier
                 )
             }
@@ -48,19 +46,13 @@ fun ItemFileTotalComponent(model: AdapterItems.TotalItem) {
             ) {
                 Text(
                     text = model.name2,
-                    style = MyCostsTypography.titleSmall
+                    style = MyCostsTypography.labelLarge
                 )
                 Text(
                     text = model.value2,
-                    style = MyCostsTypography.titleSmall
+                    style = MyCostsTypography.bodySmall
                 )
             }
-//        Divider(
-//            modifier = Modifier
-//                .padding(8.dp, 0.dp, 8.dp, 2.dp)
-//                .align(Alignment.CenterHorizontally),
-//            thickness = 1.5.dp
-//        )
         }
     }
 }

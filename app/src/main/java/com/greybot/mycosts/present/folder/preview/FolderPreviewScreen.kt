@@ -34,7 +34,7 @@ fun FolderPreviewScreen(
                     .fillMaxSize()
             ) {
 
-                AdapterComponent(list = itemsList, callback =viewModel::handleAdapterClick)
+                AdapterComponent(list = itemsList, callback = viewModel::handleAdapterClick)
 //                BottomSheetComponent()
 
             }
