@@ -8,6 +8,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.greybot.mycosts.components.elements.BottomSheetComponent
 import com.greybot.mycosts.components.toolbar.ActionButtonType
 import com.greybot.mycosts.components.toolbar.MyCostsToolbar
 import com.greybot.mycosts.present.adapter.AdapterComponent
@@ -42,7 +43,7 @@ fun FolderPreviewScreen(
                     isDelete,
                     callback = viewModel::handleAdapterClick
                 )
-//                BottomSheetComponent()
+                BottomSheetComponent()
 
             }
         }
