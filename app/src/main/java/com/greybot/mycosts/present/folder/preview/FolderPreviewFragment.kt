@@ -44,9 +44,9 @@ class FolderPreviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.dialogCostsLiveData.observe(viewLifecycleOwner){
-            bottomDialog(it.value)
-        }
+//        viewModel.dialogCostsLiveData.observe(viewLifecycleOwner){
+////            bottomDialog(it.value)
+//        }
         systemBackPressedCallback { viewModel.handleOnClickOptionMenu(ActionButtonType.Back) /*backPress()*/ }
         viewModel.router = router
         viewModel.fetchData()

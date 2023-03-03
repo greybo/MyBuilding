@@ -20,13 +20,14 @@ fun FolderPreviewScreen(
 ) {
     val context = LocalContext.current
     val itemsList by viewModel.state.observeAsState()
-    val toolbarMode by viewModel.toolbarModelLiveData.observeAsState()
+    val toolbarState by viewModel.toolbarModelLiveData.observeAsState()
+    val bottomSheetState by viewModel.dialogCostsLiveData.observeAsState()
 
-    val isDelete = (toolbarMode?.rightAction?.type == ActionButtonType.Delete)
+    val isDelete = (toolbarState?.rightAction?.type == ActionButtonType.Delete)
 
     Scaffold(
         topBar = {
-            toolbarMode?.let { MyCostsToolbar(it) }
+            toolbarState?.let { MyCostsToolbar(it) }
         },
         snackbarHost = {
 
@@ -43,7 +44,7 @@ fun FolderPreviewScreen(
                     isDelete,
                     callback = viewModel::handleAdapterClick
                 )
-                BottomSheetComponent()
+                BottomSheetComponent(bottomSheetState?.value)
 
             }
         }
