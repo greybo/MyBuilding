@@ -2,6 +2,7 @@ package com.greybot.mycosts.components.items
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Checkbox
@@ -46,7 +47,7 @@ fun ItemFileComponent(
         }
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(0.7f)
                 .combinedClickable(
                     onClick = {
                         if (model.highlight || isDelete) {
@@ -58,9 +59,24 @@ fun ItemFileComponent(
         ) {
             Text(
                 text = model.name,
-                modifier = Modifier.padding(top = 12.dp, end = 16.dp, bottom = 12.dp)
+                modifier = Modifier.padding(top = 12.dp, end = 8.dp, bottom = 12.dp)
             )
         }
+        Text(
+            text = model.count.toString(),
+            modifier = Modifier
+                .padding( end = 8.dp)
+                .fillMaxWidth(0.3f)
+                .clickable { callback.invoke(AdapterCallback.RowCount(model)) }
+        )
+        Text(
+            text = model.price.toString(),
+            modifier = Modifier
+                .padding(top = 12.dp, end = 16.dp, bottom = 12.dp)
+                .fillMaxWidth(0.5f)
+                .clickable { callback.invoke(AdapterCallback.RowPrice(model)) }
+        )
+
     }
 }
 
