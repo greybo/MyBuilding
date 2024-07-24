@@ -13,6 +13,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
     <!--    @color/pin_reset_color_hint-->
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -88,12 +89,23 @@
         <item name="android:textCursorDrawable">@drawable/bg_gold</item>
     </style>
 
-    <style name="CrownToolbarDefault" parent="Theme.MyBuilding">
+    <style name="AppToolbarDefault" parent="Theme.MyBuilding">
         <!--        <item name="android:theme">?attr/actionBarTheme</item>-->
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
         <!--        <item name="android:textAppearance">@style/H6_high</item>-->
         <!--        <item name="titleTextColor">@color/__text_high</item>-->
         <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="TextInputEditTextDefault" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+<!--        <item name="android:minHeight">?attr/actionBarSize</item>-->
+<!--        <item name="contentInsetStartWithNavigation">0dp</item>-->
+<!--        <item name="android:fitsSystemWindows">false</item>-->
+    </style>
+    <style name="InputLayoutDefault" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+<!--        <item name="android:minHeight">?attr/actionBarSize</item>-->
+<!--        <item name="contentInsetStartWithNavigation">0dp</item>-->
+<!--        <item name="android:fitsSystemWindows">false</item>-->
     </style>
 </resources>

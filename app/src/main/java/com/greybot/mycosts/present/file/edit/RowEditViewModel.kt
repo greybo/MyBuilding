@@ -1,16 +1,19 @@
 package com.greybot.mycosts.present.file.edit
 
-import androidx.lifecycle.MutableLiveData
 import com.greybot.mycosts.base.CompositeViewModel
-import com.greybot.mycosts.data.dto.RowDto
-import com.greybot.mycosts.data.repository.row.RowDataSource
-import com.greybot.mycosts.models.AdapterItems
-import com.greybot.mycosts.models.MeasureType
+import com.greybot.mycosts.data.dto.FileRow
+import com.greybot.mycosts.data.repository.file.FileDataSource
+import com.greybot.mycosts.utility.makeLiveData
+import com.greybot.mycosts.utility.round2Double
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RowEditViewModel : CompositeViewModel() {
+@HiltViewModel
+class RowEditViewModel @Inject constructor(private val dataSource: FileDataSource) :
+    CompositeViewModel() {
 
-    private val dataSource = RowDataSource()
-    val status = MutableLiveData<RowDto?>()
+    val status = makeLiveData<FileRow?>()
+    private val fileModel get() = status.values
     fun fetchData(objectId: String?) {
         objectId ?: throw Throwable()
         launchOnDefault {
@@ -18,18 +21,29 @@ class RowEditViewModel : CompositeViewModel() {
             makeItems(model)
         }
     }
-    private fun makeItems(model: RowDto?) {
+
+    private fun makeItems(model: FileRow?) {
         status.postValue(model)
+    }
+
+    fun editRow(editModel: FileRow?) {
+        launchOnDefault {
+            dataSource.update(editModel)
+        }
+    }
+
+    fun update(rowName: String, count: String, price: String) {
+        val _count = count.round2Double() ?: 0.0 // ifBlank { 0f }.toString().toFloat()
+        val _price = price.round2Double() ?: 0.0// ifBlank { 0F }.toString().toFloat()
+
+        val editModel = fileModel?.copy(
+            name = rowName,
+            count = _count,
+            price = _price,
+        )
+        launchOnDefault {
+            dataSource.update(editModel)
+        }
     }
 }
 
-
-fun mapToRowItem(item: RowDto) = AdapterItems.RowItem(
-    name = item.title,
-    path = item.path,
-    measure = MeasureType.toType(item.measure),
-    price = item.price,
-    count = item.count,
-    isBought = item.isBought,
-    objectId = item.objectId!!,
-)

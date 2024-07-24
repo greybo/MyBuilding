@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
@@ -61,14 +62,18 @@ abstract class BaseBindingFragment<VB : ViewBinding>(private val bindingInflater
 }
 
 fun Fragment.systemBackPressedCallback(callback: () -> Unit) {
-    val context: Context = this.requireContext()
+    requireActivity().systemBackPressedCallback(callback)
+}
+
+fun FragmentActivity.systemBackPressedCallback(callback: () -> Unit) {
+    val context: Context = this
     val backPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true /* enabled by default */) {
             override fun handleOnBackPressed() {
                 callback()
             }
         }
-    this.requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    this.onBackPressedDispatcher.addCallback(this, backPressedCallback)
     if (context is LifecycleOwner) {
 //        context.lifecycle.addObserver(TurystLifecycleObserver(backPressedCallback))
         context.lifecycle.addObserver(CustomLifecycleObserver2(backPressedCallback))

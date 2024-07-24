@@ -12,7 +12,7 @@
     <!--        app:popExitAnim="@anim/slide_out_right" />-->
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.greybot.mycosts.present.explore.ExploreFragment"
+        android:name="com.greybot.mycosts.present.main.MainExploreFragment"
         android:label="MainFragment" />
 
     <action
@@ -29,8 +29,7 @@
         android:label="FolderPreviewFragment">
 
         <argument
-            android:name="pathName"
-            android:defaultValue=""
+            android:name="objectId"
             app:argType="string" />
 
     </fragment>
@@ -49,10 +48,29 @@
         android:label="FolderAddFragment">
 
         <argument
-            android:name="path"
+            android:name="objectId"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+    </fragment>
+
+    <action
+        android:id="@+id/toFolderEditFragment"
+        app:destination="@+id/FolderEditFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/FolderEditFragment"
+        android:name="com.greybot.mycosts.present.folder.add.FolderEditFragment"
+        android:label="FolderAddFragment">
+
+        <argument
+            android:name="objectId"
+            app:argType="string"
+            app:nullable="false" />
     </fragment>
 
     <action
@@ -69,7 +87,7 @@
         android:label="RowAddFragment">
 
         <argument
-            android:name="path"
+            android:name="objectId"
             android:defaultValue=""
             app:argType="string"
             app:nullable="false" />
@@ -86,13 +104,32 @@
     <fragment
         android:id="@+id/RowEditFragment"
         android:name="com.greybot.mycosts.present.file.edit.RowEditFragment"
-        android:label="RowEditFragment" >
+        android:label="RowEditFragment">
 
         <argument
             android:name="objectId"
             android:defaultValue=""
             app:argType="string"
             app:nullable="false" />
+    </fragment>
+
+    <action
+        android:id="@+id/toExploreAddRootFragment"
+        app:destination="@+id/ExploreAddRootFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <fragment
+        android:id="@+id/ExploreAddRootFragment"
+        android:name="com.greybot.mycosts.present.folder.add.FolderAddFragment"
+        android:label="ExploreAddRootFragment">
+
+        <argument
+            android:name="objectId"
+            app:argType="string" />
+
     </fragment>
 
 </navigation>

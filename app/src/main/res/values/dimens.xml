@@ -2,4 +2,8 @@
 <resources>
     <dimen name="trouble_text_size">6sp</dimen>
     <dimen name="fab_margin">24dp</dimen>
+    <dimen name="height_margin_36">36dp</dimen>
+    <dimen name="height_margin_48">48dp</dimen>
+    <dimen name="height_margin_72">72dp</dimen>
+    <dimen name="height_margin_84">84dp</dimen>
 </resources>

@@ -1,24 +1,47 @@
 package com.greybot.mycosts.present.file.add
 
+import androidx.lifecycle.SavedStateHandle
 import com.greybot.mycosts.base.CompositeViewModel
 import com.greybot.mycosts.data.dto.CurrencyDto
-import com.greybot.mycosts.data.repository.row.RowDataSource
-import com.greybot.mycosts.utility.LogApp
+import com.greybot.mycosts.data.dto.FolderRow
+import com.greybot.mycosts.data.repository.file.FileDataSource
+import com.greybot.mycosts.data.repository.folder.FolderDataSource
+import com.greybot.mycosts.utility.round2Double
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RowAddViewModel : CompositeViewModel() {
+@HiltViewModel
+class RowAddViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    private val fileSource: FileDataSource,
+    private val exploreSource: FolderDataSource
+) : CompositeViewModel() {
 
-    private val source: RowDataSource by lazy { RowDataSource() }
+    private var folderRow: FolderRow? = null
+    private val objectId: String
+        get() = savedStateHandle.get<String>("objectId") ?: throw Throwable()
 
-    fun addRow(path: String, rowName: String, count: String = "1", price: Float = 0F, currency: CurrencyDto? = null) {
-        var _count = try {
-            count.toInt()
-        } catch (e: Exception) {
-            LogApp.w("addRow_tag", e)
-            1
+    fun fetchData() {
+        launchOnDefault {
+            folderRow = exploreSource.findByObjectId(objectId)
         }
-        if (_count == 0) {
-            _count = 1
+    }
+
+    fun addRow(
+        fileName: String,
+        count: String,
+        price: String,
+        currency: CurrencyDto? = null,
+        parentId: String? = objectId
+    ) {
+        launchOnDefault {
+            val countConvert = count.round2Double() ?: 1.0
+            val priceConvert = price.round2Double() ?: 0.0
+
+            fileSource.addFile(fileName, countConvert, priceConvert, currency, parentId)
+            folderRow?.let {
+                exploreSource.updateFolder(it.copy(files = true))
+            } ?: throw Throwable()
         }
-        source.addRow(path, rowName, _count, price, currency)
     }
 }

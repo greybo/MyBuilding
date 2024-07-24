@@ -11,13 +11,12 @@ import au.com.crownresorts.crma.extensions.setGoneOrVisible
 import au.com.crownresorts.crma.extensions.setTextOrGone
 import com.greybot.mycosts.R
 
-abstract class AbstractActivity<Router> : AppCompatActivity(), BaseActivityListener {
+abstract class AbstractActivity/*<Router>*/ : AppCompatActivity(), BaseActivityListener {
 
     lateinit var navController: NavController
     lateinit var navHost: NavHostFragment
-    abstract val router: Router
+//    abstract val router: Router
     abstract val graphId: Int
-//    abstract fun setRouter()
 
     var isDeepLink = false
 

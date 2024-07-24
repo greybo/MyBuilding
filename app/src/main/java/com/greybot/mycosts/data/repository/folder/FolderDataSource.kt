@@ -1,38 +1,53 @@
 package com.greybot.mycosts.data.repository.folder
 
-import com.greybot.mycosts.data.dto.FolderDTO
-import com.greybot.mycosts.utility.addToPath
-import com.greybot.mycosts.utility.toast
-import kotlinx.coroutines.CoroutineScope
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
+import com.greybot.mycosts.data.dto.FolderRow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class FolderDataSource(coroutineContext: CoroutineContext = EmptyCoroutineContext) {
+@Singleton
+class FolderDataSource @Inject constructor(private val repo: FolderRepository) {
+    private val tag = "FolderDataSource"
 
-    private val scope = CoroutineScope(coroutineContext)
-    private val repo: FolderRepo = FolderRepo()
+    private val actor = FolderActor()
 
-    suspend fun findFolder(
-        path: String
-    ): Map<String?, List<FolderDTO>>? {
-        val findPath = "$path/"
-        return repo.getFolderAll()?.filter { it.path.startsWith(findPath) }
-            ?.groupBy {
-                it.path.substring(findPath.length, it.path.length).split("/").getOrNull(0)
-            }
-
-//        return list?.mapNotNull { item ->
-//            if (item.path.startsWith(findPath)) {
-//                val name = getNameFromPath(findPath, item.path)
-//                AdapterItems.FolderItem(name, "$findPath$name")
-//            } else null
-//        }?.toMutableSet()
+    suspend fun fetchData(force: Boolean = false): Map<String, List<FolderRow>> {
+        return if (!force) {
+            groupByParentId(actor.getAll())
+        } else {
+            val list = repo.getAllData()
+            list?.let { actor.addAll(it) }
+            groupByParentId(list)
+        }
     }
 
-    fun addFolder(name: String?, path: String?) {
-        if (!name.isNullOrBlank()) {
-            val item = FolderDTO(name = name, path = path.addToPath(name))
-            repo.addFolder(item)
-        } else toast("name null")
+    private fun groupByParentId(list: List<FolderRow>?): Map<String, List<FolderRow>> {
+        return list?.groupBy { it.parentObjectId ?: "root" } ?: emptyMap()
+    }
+
+    suspend fun addFolder(model: FolderRow) {
+        actor.add(model)
+        groupByParentId(actor.getAll())
+        repo.addFolder(model)
+    }
+
+    suspend fun updateFolder(model: FolderRow) {
+        repo.update(model)
+        groupByParentId(actor.update(model))
+    }
+
+    suspend fun findByObjectId(objectId: String): FolderRow? {
+        return actor.getAll().find { it.objectId == objectId }
+    }
+
+    suspend fun getListById(parentId: String): List<FolderRow>? {
+        return groupByParentId(actor.getAll()).getOrNull(parentId)
     }
 }
+
+fun <K, V> Map<K, List<V>>.getOrNull(k: K): List<V>? {
+    return getOrElse(k) {
+        null //emptyList()
+    }
+}
+
+

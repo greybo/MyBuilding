@@ -14,8 +14,8 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/crownToolbar"
-            style="@style/CrownToolbarDefault"
+            android:id="@+id/custom_toolbar"
+            style="@style/AppToolbarDefault"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentInsetStart="40dp"
@@ -23,11 +23,21 @@
             tools:background="@color/white"
             tools:title="Title"
             tools:titleTextColor="@color/black">
-            <!--            tools:navigationIcon="@drawable/ic_arrow_back_black_24dp"-->
 
-<!--                style="@style/Button_label"-->
+            <ImageButton
+                android:id="@+id/customToolbarIconRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:background="?android:selectableItemBackground"
+                android:contentDescription="@string/description_icon_menu"
+                android:src="@drawable/ic_action_menu"
+                android:textSize="14sp"
+                tools:text="cancel" />
+
             <Button
-                android:id="@+id/crownToolbarButtonRight"
+                android:id="@+id/customToolbarButtonRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -37,6 +47,7 @@
                 android:textColor="@color/onboard_gradient_start"
                 android:textSize="14sp"
                 tools:text="cancel" />
+
         </androidx.appcompat.widget.Toolbar>
 
         <View

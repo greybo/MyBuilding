@@ -13,7 +13,8 @@
     <color name="onboard_gradient_start">#968756</color>
     <color name="black_disable">#61000000</color>
     <color name="black_opacity_35">#59000000</color>
-    <color name="black_grey">#CCCCCC</color>
+    <color name="divider_color">#CCCCCC</color>
+    <color name="total_bg_color">#F6F6F6</color>
     <color name="text_high">#000000</color>
     <color name="text_medium">#E7382B</color>
     <color name="tint_primary">#968756</color>

@@ -1,11 +1,10 @@
-package au.com.crownresorts.crma.view
+package com.greybot.mycosts.views
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.content.ContextCompat
 import au.com.crownresorts.crma.extensions.gone
@@ -14,39 +13,31 @@ import com.google.android.material.appbar.AppBarLayout
 import com.greybot.mycosts.R
 import com.greybot.mycosts.databinding.ActionBarCustomNewBinding
 
+interface ToolbarDelegateListener {
+    var title: String?
+    fun rightButtonEnable(enable: Boolean?, rightTextColor: Int = -1)
+    fun rightButtonShow(show: Boolean, text: String, textColor: Int)
+    fun rightIcon(resId: Int? = 0)
+}
 
 class AppToolbarView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : AppBarLayout(context, attrs, defStyleAttr) {
+) : AppBarLayout(context, attrs, defStyleAttr), ToolbarDelegateListener {
 
-    private val binding: ActionBarCustomNewBinding = ActionBarCustomNewBinding.inflate(LayoutInflater.from(context), this, true)
+    private val binding: ActionBarCustomNewBinding =
+        ActionBarCustomNewBinding.inflate(LayoutInflater.from(context), this, true)
 
-    val rightButton: Button
-        get() = binding.crownToolbarButtonRight
+    private var rightButton: ((Int) -> Unit)? = null
 
     fun getBuilder(): Builder {
         return Builder()
     }
 
-    init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.AppToolbarView, defStyleAttr, 0/*defStyleRes*/)
-        try {
-            val title = (a.getString(R.styleable.AppToolbarView_title))
-            val rightButton = (a.getString(R.styleable.AppToolbarView_rightButton))
-            val navIcon = (a.getDrawable(R.styleable.AppToolbarView_navIcon))
-            val theme = (a.getInt(R.styleable.AppToolbarView_themeType, 0))
-
-            if (isInEditMode) {
-                setTitle(title)
-                setThemeType(theme)
-                setRightButton(rightButton)
-                navIcon?.let { setNavIcon(it) }
-            }
-//            setTitle(AppToolsAttrs.getString(a, isInEditMode, R.styleable.CrownToolbarView_app_title, R.styleable.CrownToolbarView_tools_title))
-        } finally {
-            a.recycle()
+    override var title: String?
+        get() = binding.customToolbar.title.toString()
+        set(value) {
+            binding.customToolbar.title = value
         }
-    }
 
     private fun setThemeType(enum: Int): ToolbarThemeStyle {
         val theme = when (enum) {
@@ -66,38 +57,41 @@ class AppToolbarView @JvmOverloads constructor(
     }
 
     private fun setBgColor(bgColor: Int) {
-        binding.crownToolbar.setBackgroundColor(ContextCompat.getColor(context, bgColor))
+        binding.customToolbar.setBackgroundColor(ContextCompat.getColor(context, bgColor))
     }
 
     private fun setTextColor(textColor: Int) {
         val color = ContextCompat.getColor(context, textColor)
-        binding.crownToolbar.setTitleTextColor(color)
-        binding.crownToolbarButtonRight.setTextColor(color)
+        binding.customToolbar.setTitleTextColor(color)
+        binding.customToolbarButtonRight.setTextColor(color)
     }
 
     private fun setRightButton(string: String?) {
-        binding.crownToolbarButtonRight.text = string
-    }
-
-    private fun setTitle(title: String?) {
-        binding.crownToolbar.title = title
+        binding.customToolbarButtonRight.text = string
     }
 
     private fun setNavIcon(drawable: Drawable?) {
-        binding.crownToolbar.navigationIcon = drawable
+        binding.customToolbar.navigationIcon = drawable
     }
 
-    private fun setModel(model: ToolbarModel) {
-        binding.crownToolbar.setBackgroundColor(ContextCompat.getColor(context, model.theme.bgColor))
+    private fun setModel(model: ToolbarModel): ToolbarDelegateListener {
+        binding.customToolbar.setBackgroundColor(
+            ContextCompat.getColor(
+                context,
+                model.theme.bgColor
+            )
+        )
 
         model.homeBtnCallback?.let { callback ->
-            binding.crownToolbar.navigationIcon = getDrawable(context, model.theme.homeIconId)
-            binding.crownToolbar.setNavigationOnClickListener {
+            binding.customToolbar.navigationIcon = getDrawable(context, model.theme.homeIconId)
+            binding.customToolbar.setNavigationOnClickListener {
                 callback("back")
             }
         }
-        binding.crownToolbar.setTitleTextColor(ContextCompat.getColor(context, model.theme.titleColor))
-        binding.crownToolbar.title = if (model.titleResId > 0) {
+        binding.customToolbar.setTitleTextColor(
+            ContextCompat.getColor(context, model.theme.titleColor)
+        )
+        binding.customToolbar.title = if (model.titleResId > 0) {
             resources.getString(model.titleResId)
         } else model.title
 
@@ -108,35 +102,82 @@ class AppToolbarView @JvmOverloads constructor(
         }
 
         btnName?.let {
-            binding.crownToolbarButtonRight.text = it
+            binding.customToolbarButtonRight.text = it
+        } ?: binding.customToolbarButtonRight.gone()
 
-            model.rightBtnCallback?.let { callback ->
-                binding.crownToolbarButtonRight.setOnClickListener {
-                    callback(binding.crownToolbarButtonRight)
-                }
+        model.rightBtnCallback?.let { callback ->
+            binding.customToolbarButtonRight.setOnClickListener {
+                callback(binding.customToolbarButtonRight)
             }
+        }
+        model.rightIconBtnCallback?.let {
+            rightButton = model.rightIconBtnCallback
+        } ?: binding.customToolbarIconRight.gone()
 
-        } ?: binding.crownToolbarButtonRight.gone()
 
         rightButtonEnable(model.rightBtnEnabled, model.theme.titleColor)
 
-        binding.crownToolbarButtonRight.isAllCaps = model.rightBtnAllCaps
+        binding.customToolbarButtonRight.isAllCaps = model.rightBtnAllCaps
         if (!model.rightBtnAllCaps) {
-            binding.crownToolbarButtonRight.textSize = binding.root.resources.getDimension(R.dimen.trouble_text_size)
+            binding.customToolbarButtonRight.textSize =
+                binding.root.resources.getDimension(R.dimen.trouble_text_size)
         }
         binding.crownToolbarShadow.setGoneOrVisible(model.shadow)
         invalidate()
         requestLayout()
+
+        return this
     }
 
-    fun rightButtonEnable(enable: Boolean?, rightTextColor: Int = -1) {
-        binding.crownToolbarButtonRight.isEnabled = enable ?: true
+    override fun rightButtonEnable(enable: Boolean?, rightTextColor: Int) {
+        binding.customToolbarButtonRight.isEnabled = enable ?: true
         val color = when (enable) {
             true -> ContextCompat.getColor(context, R.color.onboard_gradient_start)
             false -> ContextCompat.getColor(context, R.color.black_disable)
             else -> ContextCompat.getColor(context, rightTextColor)
         }
-        binding.crownToolbarButtonRight.setTextColor(color)
+        binding.customToolbarButtonRight.setTextColor(color)
+    }
+
+    override fun rightButtonShow(show: Boolean, text: String, textColor: Int) {
+        binding.customToolbarButtonRight.setGoneOrVisible(show)
+        binding.customToolbarButtonRight.setTextColor(textColor)
+        binding.customToolbarButtonRight.text = text
+    }
+
+    override fun rightIcon(resId: Int?) {
+        val id = if (resId != null && resId > 0) {
+            resId
+        } else R.drawable.ic_action_menu
+        binding.customToolbarIconRight.setImageResource(id)
+        binding.customToolbarIconRight.setOnClickListener {
+            rightButton?.invoke(id)
+        }
+    }
+
+    init {
+        val a = context.obtainStyledAttributes(
+            attrs,
+            R.styleable.AppToolbarView,
+            defStyleAttr,
+            0/*defStyleRes*/
+        )
+        try {
+            val title = (a.getString(R.styleable.AppToolbarView_title))
+            val rightButton = (a.getString(R.styleable.AppToolbarView_rightButton))
+            val navIcon = (a.getDrawable(R.styleable.AppToolbarView_navIcon))
+            val theme = (a.getInt(R.styleable.AppToolbarView_themeType, 0))
+
+            if (isInEditMode) {
+                this@AppToolbarView.title = title
+                setThemeType(theme)
+                setRightButton(rightButton)
+                navIcon?.let { setNavIcon(it) }
+            }
+//            setTitle(AppToolsAttrs.getString(a, isInEditMode, R.styleable.CrownToolbarView_app_title, R.styleable.CrownToolbarView_tools_title))
+        } finally {
+            a.recycle()
+        }
     }
 
     inner class Builder {
@@ -147,6 +188,7 @@ class AppToolbarView @JvmOverloads constructor(
         private var rightBtnNameResId: Int = -1
         private var homeBtnCallback: ((String) -> Unit)? = null
         private var rightBtnCallback: ((View) -> Unit)? = null
+        private var rightIconBtnCallback: ((Int) -> Unit)? = null
         private var theme: ToolbarThemeStyle = ToolbarThemeStyle.Light
         private var rightBtnEnabled: Boolean? = null
         private var rightBtnAllCaps: Boolean = true
@@ -158,17 +200,23 @@ class AppToolbarView @JvmOverloads constructor(
         fun rightButtonName(name: String?) = apply { this.rightBtnName = name }
         fun rightButtonName(resId: Int) = apply { this.rightBtnNameResId = resId }
         fun rightBtnAllCaps(allCaps: Boolean = true) = apply { this.rightBtnAllCaps = allCaps }
-        fun rightBtnEnabled(isEnable: Boolean?) = apply { isEnable?.let { this.rightBtnEnabled = it } }
+        fun rightBtnEnabled(isEnable: Boolean?) =
+            apply { isEnable?.let { this.rightBtnEnabled = it } }
+
         fun homeCallback(callback: ((String) -> Unit)?) = apply { this.homeBtnCallback = callback }
         fun rightCallback(callback: ((View) -> Unit)?) = apply { this.rightBtnCallback = callback }
+        fun rightIconCallback(callback: ((Int) -> Unit)?) =
+            apply { this.rightIconBtnCallback = callback }
+
         fun shadow(isShadow: Boolean?) = apply { this.shadow = isShadow }
 
-        fun create() {
+        fun create(): ToolbarDelegateListener {
             val model = ToolbarModel(
                 title = title,
                 titleResId = titleResId,
                 homeBtnCallback = homeBtnCallback,
                 rightBtnCallback = rightBtnCallback,
+                rightIconBtnCallback = rightIconBtnCallback,
                 rightBtnName = rightBtnName,
                 rightBtnNameResId = rightBtnNameResId,
                 theme = theme,
@@ -176,7 +224,7 @@ class AppToolbarView @JvmOverloads constructor(
                 rightBtnAllCaps = rightBtnAllCaps,
                 shadow = shadow ?: false
             )
-            setModel(model)
+            return setModel(model)
         }
     }
 }
@@ -187,6 +235,7 @@ data class ToolbarModel(
     val titleResId: Int = -1,
     val homeBtnCallback: ((String) -> Unit)? = null,
     val rightBtnCallback: ((View) -> Unit)? = null,
+    val rightIconBtnCallback: ((Int) -> Unit)? = null,
     val rightBtnName: String? = null,
     val rightBtnNameResId: Int = -1,
     val theme: ToolbarThemeStyle = ToolbarThemeStyle.Light,
@@ -196,10 +245,24 @@ data class ToolbarModel(
 )
 
 sealed class ToolbarThemeStyle(val homeIconId: Int, val bgColor: Int, val titleColor: Int) {
-    object Dark : ToolbarThemeStyle(R.drawable.ic_arrow_back_white_24dp, R.color.black, titleColor = R.color.white)
-    object Light : ToolbarThemeStyle(R.drawable.ic_arrow_back_black_24dp, R.color.white, R.color.black)
-    object LightWithCrossCancel : ToolbarThemeStyle(R.drawable.ic_pin_close, R.color.white, R.color.black)
-    object Gold : ToolbarThemeStyle(R.drawable.ic_arrow_back_white_24dp, R.color.onboard_gradient_start, R.color.white)
+    object Dark : ToolbarThemeStyle(
+        R.drawable.ic_arrow_back_white_24dp,
+        R.color.black,
+        titleColor = R.color.white
+    )
+
+    object Light :
+        ToolbarThemeStyle(R.drawable.ic_arrow_back_black_24dp, R.color.white, R.color.black)
+
+    object LightWithCrossCancel :
+        ToolbarThemeStyle(R.drawable.ic_pin_close, R.color.white, R.color.black)
+
+    object Gold : ToolbarThemeStyle(
+        R.drawable.ic_arrow_back_white_24dp,
+        R.color.onboard_gradient_start,
+        R.color.white
+    )
+
     object LightWithoutBack : ToolbarThemeStyle(-1, R.color.white, R.color.black)
 }
 
